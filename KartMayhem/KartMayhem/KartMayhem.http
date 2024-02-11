@@ -1,0 +1,6 @@
+@KartMayhem_HostAddress = http://localhost:5030
+
+GET {{KartMayhem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
