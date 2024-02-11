@@ -15,4 +15,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KartMayhem.Model\KartMayhem.Model.csproj" />
+    <ProjectReference Include="..\KartMayhem.Services\KartMayhem.Services.csproj" />
+  </ItemGroup>
+
 </Project>
