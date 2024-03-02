@@ -1,4 +1,4 @@
-﻿namespace KartMayhem.Model
+﻿namespace KartMayhem.Services.Database
 {
     public class Korisnici
     {
@@ -10,12 +10,16 @@
 
         public string? Email { get; set; }
 
-        public string? Telefon { get; set; }
+        public string KorisnickoIme { get; set; } = null!;
 
-        public string PunoIme => $"{Ime} {Prezime}";
-        
+        public string LozinkaHash { get; set; } = null!;
+
+        public string LozinkaSalt { get; set; } = null!;
+
         public bool? IsActive { get; set; }
 
         public virtual ICollection<KorisniciUloge> KorisniciUloges { get; } = new List<KorisniciUloge>();
+        
+        public Nagrade? Nagrada { get; set; }
     }
 }
