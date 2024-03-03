@@ -7,6 +7,7 @@ namespace KartMayhem.Services
         public MappingProfile()
         {
             CreateMap<Database.Tezine, Model.Tezine>();
+            CreateMap<Database.Korisnici, Model.Korisnici>();
         }
     }
 }

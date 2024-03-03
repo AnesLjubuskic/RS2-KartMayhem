@@ -1,3 +1,4 @@
+using KartMayhem.Filters;
 using KartMayhem.Model.SearchObject;
 using KartMayhem.Services.Database;
 using KartMayhem.Services.ServiceInterfaces;
@@ -8,8 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddTransient<ITezinaService,TezineService>();
+builder.Services.AddTransient<IKorisniciService, KorisniciService>();
 builder.Services.AddTransient<IBaseService<KartMayhem.Model.Tezine, BaseSearchObject>, BaseService<KartMayhem.Model.Tezine
     , KartMayhem.Services.Database.Tezine, BaseSearchObject>>();
+
+builder.Services.AddControllers(x =>
+{
+    x.Filters.Add<ErrorFilter>();
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
