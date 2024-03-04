@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace KartMayhem.Services.Services
 {
-    public class KorisniciService : BaseCRUDService<Model.Korisnici, Database.Korisnici, BaseSearchObject, object, object>, IKorisniciService
+    public class KorisniciService : BaseCRUDService<Model.Korisnici, Database.Korisnici, BaseSearchObject, KorisniciInsertRequest, object>, IKorisniciService
     {
         public KorisniciService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
@@ -57,6 +57,38 @@ namespace KartMayhem.Services.Services
             }
 
             return _mapper.Map<Model.Korisnici>(entity);
+        }
+
+        public async Task<Model.Korisnici> Register(KorisniciInsertRequest korisniciInsertRequest)
+        {
+            var korisnici = _context.Set<Database.Korisnici>().AsQueryable();
+
+            if (korisnici.Any(x => x.Email == korisniciInsertRequest.Email))
+            {
+                throw new UserException("Email u upotrebi", "Email je u upotrebi!");
+            }
+
+            var korisniciDb = _mapper.Map<Database.Korisnici>(korisniciInsertRequest);
+
+            korisniciDb.LozinkaSalt = GenerateSalt();
+            korisniciDb.LozinkaHash = GenerateHash(korisniciDb.LozinkaSalt, korisniciInsertRequest.Lozinka);
+
+            _context.Add(korisniciDb);
+            _context.SaveChanges();
+
+            foreach (var role in korisniciInsertRequest.Uloge)
+            {
+                Database.KorisniciUloge korisnikUloge = new Database.KorisniciUloge
+                {
+                    KorisnikId = korisniciDb.Id,
+                    UlogaId = role
+                };
+                _context.KorisniciUloges.Add(korisnikUloge);
+            }
+
+            _context.SaveChanges();
+
+            return _mapper.Map<Model.Korisnici>(korisniciDb);
         }
     }
 }

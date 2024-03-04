@@ -4,6 +4,7 @@ using KartMayhem.Services.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KartMayhem.Services.Migrations
 {
     [DbContext(typeof(KartMayhemContext))]
-    partial class KartMayhemContextModelSnapshot : ModelSnapshot
+    [Migration("20240304202447_database_fix2")]
+    partial class database_fix2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +63,7 @@ namespace KartMayhem.Services.Migrations
 
                     b.HasIndex("NagradaId");
 
-                    b.ToTable("Korisnicis", (string)null);
+                    b.ToTable("Korisnicis");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.KorisniciUloge", b =>
@@ -83,7 +86,7 @@ namespace KartMayhem.Services.Migrations
 
                     b.HasIndex("UlogaId");
 
-                    b.ToTable("KorisniciUloges", (string)null);
+                    b.ToTable("KorisniciUloges");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.Nagrade", b =>
@@ -100,7 +103,7 @@ namespace KartMayhem.Services.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Nagrades", (string)null);
+                    b.ToTable("Nagrades");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.Opreme", b =>
@@ -117,7 +120,7 @@ namespace KartMayhem.Services.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Opremes", (string)null);
+                    b.ToTable("Opremes");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.Rezencije", b =>
@@ -139,7 +142,7 @@ namespace KartMayhem.Services.Migrations
 
                     b.HasIndex("StazaId");
 
-                    b.ToTable("Rezencijes", (string)null);
+                    b.ToTable("Rezencijes");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.Rezervacije", b =>
@@ -174,7 +177,7 @@ namespace KartMayhem.Services.Migrations
 
                     b.HasIndex("StazaId");
 
-                    b.ToTable("Rezervacijes", (string)null);
+                    b.ToTable("Rezervacijes");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.RezervacijeOpreme", b =>
@@ -197,7 +200,7 @@ namespace KartMayhem.Services.Migrations
 
                     b.HasIndex("RezervacijaId");
 
-                    b.ToTable("RezervacijeOpremes", (string)null);
+                    b.ToTable("RezervacijeOpremes");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.StatistikeStaze", b =>
@@ -221,7 +224,7 @@ namespace KartMayhem.Services.Migrations
 
                     b.HasIndex("StazaId");
 
-                    b.ToTable("StatistikeStaze", (string)null);
+                    b.ToTable("StatistikeStaze");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.Staze", b =>
@@ -259,7 +262,7 @@ namespace KartMayhem.Services.Migrations
 
                     b.HasIndex("TezinaId");
 
-                    b.ToTable("Stazes", (string)null);
+                    b.ToTable("Stazes");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.Tezine", b =>
@@ -276,7 +279,7 @@ namespace KartMayhem.Services.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tezines", (string)null);
+                    b.ToTable("Tezines");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.Uloge", b =>
@@ -293,7 +296,7 @@ namespace KartMayhem.Services.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Uloges", (string)null);
+                    b.ToTable("Uloges");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.Korisnici", b =>

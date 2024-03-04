@@ -8,13 +8,11 @@
 
         public string Prezime { get; set; } = null!;
 
-        public string? Email { get; set; }
-
-        public string? Telefon { get; set; }
+        public string Email { get; set; }
 
         public string PunoIme => $"{Ime} {Prezime}";
         
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
 
         public virtual ICollection<KorisniciUloge> KorisniciUloges { get; } = new List<KorisniciUloge>();
     }

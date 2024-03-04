@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace KartMayhem.Controllers
 {
     [Route("[controller]")]
-    public class KorisniciController : BaseCRUDController<Model.Korisnici, BaseSearchObject, object, object>
+    public class KorisniciController : BaseCRUDController<Model.Korisnici, BaseSearchObject, KorisniciInsertRequest, object>
     {
 
         protected IKorisniciService _korisniciService { get; set; }
@@ -25,6 +25,13 @@ namespace KartMayhem.Controllers
         {
             return await _korisniciService.Login(body);
         }
+
+        [HttpPost("register")]
+        public async Task<Model.Korisnici> Register([FromBody] KorisniciInsertRequest korisniciInsertRequest)
+        {
+            return await _korisniciService.Register(korisniciInsertRequest);
+        }
+
 
     }
 }

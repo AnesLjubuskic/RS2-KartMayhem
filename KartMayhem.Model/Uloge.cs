@@ -2,7 +2,7 @@
 {
     public class Uloge
     {
-        public int UlogaId { get; set; }
+        public int Id { get; set; }
 
         public string Naziv { get; set; } = null!;
 

@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace KartMayhem.Services.ServiceInterfaces
 {
-    public interface IKorisniciService : IBaseCRUDService<Korisnici, BaseSearchObject, object, object>
+    public interface IKorisniciService : IBaseCRUDService<Korisnici, BaseSearchObject, KorisniciInsertRequest, object>
     {
         public Task<Model.Korisnici> Login(KorisniciLoginRequest request);
+
+        public Task<Model.Korisnici> Register(KorisniciInsertRequest request);
     }
 }
