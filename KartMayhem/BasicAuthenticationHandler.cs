@@ -46,8 +46,6 @@ namespace KartMayhem
             }
             else
             {
-
-
                 var claims = new List<Claim>()
                 {
                     new Claim(ClaimTypes.Name, user.Ime),
@@ -64,6 +62,7 @@ namespace KartMayhem
                 var principal = new ClaimsPrincipal(identity);
 
                 var ticket = new AuthenticationTicket(principal, Scheme.Name);
+
                 return AuthenticateResult.Success(ticket);
             }
         }

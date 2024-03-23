@@ -32,6 +32,10 @@ namespace KartMayhem.Controllers
             return await _korisniciService.Register(korisniciInsertRequest);
         }
 
-
+        [HttpGet("topUsers")]
+        public async Task<List<Model.Korisnici>> TopUsers()
+        {
+            return await _korisniciService.TopUsers();
+        }
     }
 }

@@ -14,5 +14,7 @@ namespace KartMayhem.Services.ServiceInterfaces
         public Task<Model.Korisnici> Login(KorisniciLoginRequest request);
 
         public Task<Model.Korisnici> Register(KorisniciInsertRequest request);
+
+        public Task<List<Model.Korisnici>> TopUsers();
     }
 }

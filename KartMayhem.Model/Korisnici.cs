@@ -14,6 +14,8 @@
         
         public bool IsActive { get; set; }
 
+        public int BrojRezervacija { get; set; }
+
         public virtual ICollection<KorisniciUloge> KorisniciUloges { get; } = new List<KorisniciUloge>();
     }
 }
