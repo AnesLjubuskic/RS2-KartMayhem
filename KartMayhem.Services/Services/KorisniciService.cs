@@ -93,7 +93,7 @@ namespace KartMayhem.Services.Services
 
         public async Task<List<Model.Korisnici>> TopUsers()
         {
-            var korisnici = _context.Set<Database.Korisnici>().OrderByDescending(x => x.BrojRezervacija).Take(5);
+            var korisnici = _context.Set<Database.Korisnici>().Include(x => x.Nagrada).OrderByDescending(x => x.BrojRezervacija).Take(5);
 
             return _mapper.Map<List<Model.Korisnici>>(korisnici);
         }
