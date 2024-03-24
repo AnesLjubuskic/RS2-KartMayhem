@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using KartMayhem.Model.RequestObjects;
 using KartMayhem.Model.SearchObject;
 using KartMayhem.Services.Database;
 using KartMayhem.Services.ServiceInterfaces;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace KartMayhem.Services.Services
 {
-    public class StazeService : BaseCRUDService<Model.Staze, Database.Staze, BaseSearchObject, object, object>, IStazeService
+    public class StazeService : BaseCRUDService<Model.Staze, Database.Staze, BaseSearchObject, StazeInsertRequest, object>, IStazeService
     {
         public StazeService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {

@@ -1,4 +1,5 @@
 ﻿using KartMayhem.Model;
+using KartMayhem.Model.RequestObjects;
 using KartMayhem.Model.SearchObject;
 using KartMayhem.Services.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace KartMayhem.Controllers
 {
     [Route("[controller]")]
-    public class StazeController : BaseCRUDController<Model.Staze, BaseSearchObject, object, object>
+    public class StazeController : BaseCRUDController<Model.Staze, BaseSearchObject, StazeInsertRequest, object>
     {
         protected IStazeService _stazeService { get; set; }
 
