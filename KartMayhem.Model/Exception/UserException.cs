@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace KartMayhem.Model.Exception
+﻿namespace KartMayhem.Model.Exception
 {
     public class UserException : System.Exception
     {

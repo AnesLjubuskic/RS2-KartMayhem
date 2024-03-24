@@ -13,6 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddTransient<ITezinaService,TezineService>();
 builder.Services.AddTransient<IKorisniciService, KorisniciService>();
+builder.Services.AddTransient<IStazeService, StazeService>();
+builder.Services.AddTransient<IRezencijeService, RezencijeService>();
 builder.Services.AddTransient<IBaseService<KartMayhem.Model.Tezine, BaseSearchObject>, BaseService<KartMayhem.Model.Tezine
     , KartMayhem.Services.Database.Tezine, BaseSearchObject>>();
 

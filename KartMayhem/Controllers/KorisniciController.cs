@@ -2,8 +2,6 @@
 using KartMayhem.Model.SearchObject;
 using KartMayhem.Model.UserRequestObjects;
 using KartMayhem.Services.ServiceInterfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KartMayhem.Controllers
