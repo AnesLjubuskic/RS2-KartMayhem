@@ -1,8 +1,10 @@
+using KartMayhem;
 using KartMayhem.Filters;
 using KartMayhem.Model.SearchObject;
 using KartMayhem.Services.Database;
 using KartMayhem.Services.ServiceInterfaces;
 using KartMayhem.Services.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -51,6 +53,10 @@ builder.Services.AddDbContext<KartMayhemContext>(options =>
 builder.Services.AddAutoMapper(typeof(ITezinaService));
 
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthentication("BasicAuthentication")
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
 
 var app = builder.Build();
 
