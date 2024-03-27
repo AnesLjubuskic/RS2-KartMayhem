@@ -6,6 +6,8 @@ namespace KartMayhem.Services.Services
 {
     public class BaseCRUDService<T, TDb, TSearch, TInsert, TUpdate> : BaseService<T, TDb, TSearch> where TDb : class where T : class where TSearch : BaseSearchObject
     {
+        public string problem = "Problem u poslanim podacima";
+
         public BaseCRUDService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
         }

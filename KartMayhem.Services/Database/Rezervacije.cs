@@ -18,6 +18,8 @@
         public int StazaId { get; set; }
         public Staze Staza { get; set; }
 
+        public bool isCancelled { get; set; } = false;
+
         public virtual ICollection<RezervacijeOpreme> RezervacijeOpremes { get; } = new List<RezervacijeOpreme>();
     }
 }
