@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KartMayhem.Model.RequestObjects
 {
-    public class StazeInsertRequest
+    public class StazeUpsertRequest
     {
         public string NazivStaze { get; set; }
 

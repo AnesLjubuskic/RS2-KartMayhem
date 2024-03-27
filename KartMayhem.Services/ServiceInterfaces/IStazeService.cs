@@ -4,7 +4,7 @@ using KartMayhem.Model.SearchObject;
 
 namespace KartMayhem.Services.ServiceInterfaces
 {
-    public interface IStazeService : IBaseCRUDService<Staze, BaseSearchObject, StazeInsertRequest, object>
+    public interface IStazeService : IBaseCRUDService<Staze, BaseSearchObject, StazeUpsertRequest, StazeUpsertRequest>
     {
     }
 }

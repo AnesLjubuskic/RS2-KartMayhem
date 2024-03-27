@@ -18,7 +18,7 @@ namespace KartMayhem.Services
 
             // Insert requests
             CreateMap<Model.UserRequestObjects.KorisniciInsertRequest, Database.Korisnici>();
-            CreateMap<Model.RequestObjects.StazeInsertRequest, Database.Staze>();
+            CreateMap<Model.RequestObjects.StazeUpsertRequest, Database.Staze>();
 
             // Update requests
         }

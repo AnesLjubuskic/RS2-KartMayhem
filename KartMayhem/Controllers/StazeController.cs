@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace KartMayhem.Controllers
 {
     [Route("[controller]")]
-    public class StazeController : BaseCRUDController<Model.Staze, BaseSearchObject, StazeInsertRequest, object>
+    public class StazeController : BaseCRUDController<Model.Staze, BaseSearchObject, StazeUpsertRequest, StazeUpsertRequest>
     {
         protected IStazeService _stazeService { get; set; }
 
