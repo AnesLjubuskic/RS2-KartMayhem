@@ -13,12 +13,19 @@ namespace KartMayhem.Services
             CreateMap<Database.Uloge, Model.Uloge>();
             CreateMap<Database.Nagrade, Model.Nagrade>();
             CreateMap<Database.Rezencije, Model.Rezencije>();
+            CreateMap<Database.Opreme, Model.Opreme>();
+            CreateMap<Database.RezervacijeOpreme, Model.RezervacijeOpreme>();
+            CreateMap<Database.Rezervacije, Model.Rezervacije>();
             CreateMap<Database.Staze, Model.Staze>()
                 .ForMember(dest => dest.BrojRezervacija, opt => opt.MapFrom(src => src.Rezervacijes.Count));
+            CreateMap<Database.Staze, Model.UniqueGetRequests.StazeForRezervacije>();
+
+            // Upsert requests
+            CreateMap<Model.RequestObjects.StazeUpsertRequest, Database.Staze>();
+            CreateMap<Model.RequestObjects.RezervacijeUpsertRequest, Database.Rezervacije>();
 
             // Insert requests
             CreateMap<Model.UserRequestObjects.KorisniciInsertRequest, Database.Korisnici>();
-            CreateMap<Model.RequestObjects.StazeUpsertRequest, Database.Staze>();
 
             // Update requests
         }

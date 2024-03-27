@@ -1,11 +1,14 @@
-﻿using KartMayhem.Model.UniqueGetRequests;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace KartMayhem.Model
+namespace KartMayhem.Model.RequestObjects
 {
-    public class Rezervacije
+    public class RezervacijeUpsertRequest
     {
-        public int Id { get; set; }
-
         public int CijenaRezervacije { get; set; }
 
         public int BrojOsoba { get; set; }
@@ -14,10 +17,12 @@ namespace KartMayhem.Model
 
         public DateTime TimeSlot { get; set; }
 
-        public int KorisnikId { get; set; }
-        public Korisnici Korisnik { get; set; }
 
-        public StazeForRezervacije Staza { get; set; }
+        [Required(ErrorMessage = "Id korisnika je obavezan!")]
+        public int KorisnikId { get; set; }
+
+        [Required(ErrorMessage = "Id staze je obavezna!")]
+        public int StazaId { get; set; }
 
         public virtual ICollection<RezervacijeOpreme> RezervacijeOpremes { get; } = new List<RezervacijeOpreme>();
     }
