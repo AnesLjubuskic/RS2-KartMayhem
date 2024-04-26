@@ -5,9 +5,9 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KartMayhem", "KartMayhem.csproj", "{8795AAE7-2662-44AD-B716-8F5490D289C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KartMayhem.Model", "..\KartMayhem.Model\KartMayhem.Model.csproj", "{AC63D8AF-4158-43CA-9A63-DC1005B21061}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KartMayhem.Model", "..\KartMayhem.Model\KartMayhem.Model.csproj", "{AC63D8AF-4158-43CA-9A63-DC1005B21061}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KartMayhem.Services", "..\KartMayhem.Services\KartMayhem.Services.csproj", "{D9A98BD7-3DE9-4EB0-A327-4DAFB7E7C59B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KartMayhem.Services", "..\KartMayhem.Services\KartMayhem.Services.csproj", "{D9A98BD7-3DE9-4EB0-A327-4DAFB7E7C59B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
