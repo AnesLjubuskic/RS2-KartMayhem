@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kartmayhem_desktop/Screens/staze_screen.dart';
+import 'package:kartmayhem_desktop/Providers/auth_provider.dart';
 import 'package:kartmayhem_desktop/Utils/util.dart';
 import 'package:provider/provider.dart';
 
-import '../Providers/auth_provider.dart';
-
 RegExp regexLozinka = RegExp(r'^.{6,}$');
-RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+RegExp regexEmail = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
 
 class LoginScreen extends StatefulWidget {
   static const routeName = "/login";
@@ -48,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Kart Mayhem',
+                    "Kart Mayhem",
                     style: TextStyle(
                         fontSize: 50,
                         fontWeight: FontWeight.bold,
@@ -61,14 +59,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (value!.isEmpty) {
                         return "Ovo polje je obavezno";
                       }
-                      if (!emailRegex.hasMatch(value)) {
-                        return 'Email nije validan!';
+                      if (!regexEmail.hasMatch(value)) {
+                        return 'Email nije u validnom formatu!';
+                      }
+                      if (loginFailed) {
+                        return "";
                       }
                       return null;
                     },
                     decoration: const InputDecoration(
                       labelText: 'Email',
-                      hintText: 'user@example.com',
+                      hintText: 'example@example.com',
                     ),
                   ),
                   const SizedBox(
@@ -81,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         return "Ovo polje je obavezno";
                       }
                       if (!regexLozinka.hasMatch(value)) {
-                        return 'Lozinka mora sadržavati 6 karaktera!';
+                        return 'Lozinka mora sadržavati 8 karaktera!';
                       }
                       if (loginFailed) {
                         return "Pogrešan email ili lozinka!";
@@ -99,17 +100,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (loginFailed)
                     const Text(
                       'Login Failed',
-                      style: TextStyle(color: Color(0xFF870000)),
+                      style: TextStyle(color: Colors.red),
                     ),
-                  const SizedBox(height: 40.0),
+                  const SizedBox(height: 100.0),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      backgroundColor: const Color(0xFF870000),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
+                        minimumSize: const Size(double.infinity, 50),
+                        backgroundColor: const Color(0xFF870000),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
                     onPressed: () async {
                       loginFailed = false;
                       if (formKey.currentState!.validate()) {
@@ -120,15 +120,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           if (context.mounted) {
                             _authProvider!.setParameters(data!.id!.toInt());
-
                             Authorization.email = email;
                             Authorization.password = password;
                             Authorization.id = data.id!.toInt();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const StazeScreen(),
-                              ),
-                            );
+                            // Navigator.pushReplacementNamed(
+                            //     context, MainNavigationScreen.routeName);
                           }
                         } on Exception catch (error) {
                           print(error.toString());

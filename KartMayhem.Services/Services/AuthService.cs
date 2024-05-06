@@ -31,14 +31,14 @@ namespace KartMayhem.Services.Services
 
             if (entity == null)
             {
-                throw new UserException("Kredencijali nisu ispravni", "Netacno korisnicko ime ili lozinka!");
+                throw new UserException("Kredencijali nisu ispravni", "Netacan email ili lozinka!");
             }
 
             var hash = GenerateHash(entity.LozinkaSalt, request.Lozinka);
 
             if (hash != entity.LozinkaHash)
             {
-                throw new UserException("Kredencijali nisu ispravni", "Netacno korisnicko ime ili lozinka!");
+                throw new UserException("Kredencijali nisu ispravni", "Netacan email ili lozinka!");
             }
             return _mapper.Map<Model.Korisnici>(entity);
         }
@@ -47,6 +47,12 @@ namespace KartMayhem.Services.Services
         {
             bool admin = false;
             var entity = await _context.Korisnicis.Include("KorisniciUloges.Uloga").FirstOrDefaultAsync(x => x.Email == request.Email);
+
+            if (entity == null)
+            {
+                throw new UserException("Kredencijali nisu ispravni", "Netacan email ili lozinka!");
+            }
+
             var uloge = _context.KorisniciUloges.Include(x => x.Uloga).Where(x => x.KorisnikId == entity.Id).ToList();
 
             foreach (var uloga in uloge)
@@ -57,13 +63,6 @@ namespace KartMayhem.Services.Services
                 }
             }
 
-            if (entity == null)
-            {
-                throw new UserException("Kredencijali nisu ispravni", "Netacno korisnicko ime ili lozinka!");
-            }
-
-
-
             var hash = GenerateHash(entity.LozinkaSalt, request.Lozinka);
 
             if (hash == entity.LozinkaHash)
@@ -72,7 +71,7 @@ namespace KartMayhem.Services.Services
                     return _mapper.Map<Model.Korisnici>(entity);
             }
 
-            throw new UserException("Kredencijali nisu ispravni", "Netacno korisnicko ime ili lozinka!");
+            throw new UserException("Kredencijali nisu ispravni", "Netacan email ili lozinka!");
         }
 
         public async Task<Model.Korisnici> Register(KorisniciInsertRequest request)
