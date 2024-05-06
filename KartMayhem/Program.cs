@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddTransient<ITezinaService,TezineService>();
+builder.Services.AddTransient<IAuthService,AuthService>();
 builder.Services.AddTransient<IKorisniciService, KorisniciService>();
 builder.Services.AddTransient<IStazeService, StazeService>();
 builder.Services.AddTransient<IRezencijeService, RezencijeService>();

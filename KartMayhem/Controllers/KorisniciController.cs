@@ -2,32 +2,22 @@
 using KartMayhem.Model.SearchObject;
 using KartMayhem.Model.UserRequestObjects;
 using KartMayhem.Services.ServiceInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KartMayhem.Controllers
 {
+    [ApiController]
     [Route("[controller]")]
-    public class KorisniciController : BaseCRUDController<Model.Korisnici, BaseSearchObject, KorisniciInsertRequest, object>
+    [Authorize]
+    public class KorisniciController : BaseController<Model.Korisnici, Model.SearchObject.BaseSearchObject>
     {
 
-        protected IKorisniciService _korisniciService { get; set; }
-
-        public KorisniciController(ILogger<BaseController<Korisnici, BaseSearchObject>> logger, IKorisniciService service) 
+        private readonly IKorisniciService _korisniciService;
+        public KorisniciController(ILogger<BaseController<Korisnici, BaseSearchObject>> logger,IKorisniciService service) 
             : base(logger, service)
         {            
             _korisniciService = service;
-        }
-
-        [HttpPost("login")]
-        public async Task<Model.Korisnici> Login([FromBody] KorisniciLoginRequest body)
-        {
-            return await _korisniciService.Login(body);
-        }
-
-        [HttpPost("register")]
-        public async Task<Model.Korisnici> Register([FromBody] KorisniciInsertRequest korisniciInsertRequest)
-        {
-            return await _korisniciService.Register(korisniciInsertRequest);
         }
 
         [HttpGet("topUsers")]
