@@ -123,8 +123,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             Authorization.email = email;
                             Authorization.password = password;
                             Authorization.id = data.id!.toInt();
-                            // Navigator.pushReplacementNamed(
-                            //     context, MainNavigationScreen.routeName);
+                            Navigator.of(context)
+                                .pushReplacementNamed('/staze');
                           }
                         } on Exception catch (error) {
                           print(error.toString());

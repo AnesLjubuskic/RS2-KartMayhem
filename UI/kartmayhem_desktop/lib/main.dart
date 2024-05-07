@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kartmayhem_desktop/Providers/auth_provider.dart';
 import 'package:kartmayhem_desktop/Screens/login_screen.dart';
+import 'package:kartmayhem_desktop/Screens/rezervacije_screen.dart';
+import 'package:kartmayhem_desktop/Screens/staze_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -27,6 +29,8 @@ class MyApp extends StatelessWidget {
       initialRoute: LoginScreen.routeName,
       routes: {
         LoginScreen.routeName: (context) => const LoginScreen(),
+        StazeScreen.routeName: (context) => const StazeScreen(),
+        RezervacijeScreen.routeName: (context) => const RezervacijeScreen()
       },
     );
   }
