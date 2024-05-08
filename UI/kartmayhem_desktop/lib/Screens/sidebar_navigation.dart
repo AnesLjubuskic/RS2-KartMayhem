@@ -22,7 +22,23 @@ class SidebarNavigation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const SizedBox(
-            height: 150,
+            height: 20,
+          ),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                "KART MAYHEM",
+                style: TextStyle(
+                  fontSize: 35,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
           ),
           SidebarButton(
             title: 'Staze',
@@ -36,6 +52,22 @@ class SidebarNavigation extends StatelessWidget {
             title: 'Rezervacije',
             isSelected: selectedPage == 'rezervacije',
             onTap: () => onPageSelected('rezervacije'),
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          SidebarButton(
+            title: 'Korisnici',
+            isSelected: selectedPage == 'staze',
+            onTap: () => onPageSelected('staze'),
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          SidebarButton(
+            title: 'Nagradi Korisnika',
+            isSelected: selectedPage == 'staze',
+            onTap: () => onPageSelected('staze'),
           ),
         ],
       ),
