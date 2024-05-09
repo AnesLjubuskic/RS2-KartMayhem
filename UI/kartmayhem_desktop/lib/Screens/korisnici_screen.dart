@@ -55,7 +55,7 @@ class KorisniciScreen extends StatelessWidget {
               color: Colors.green, // Placeholder content for demonstration
               child: const Center(
                 child: Text(
-                  'Korisnici Page Content', // Adjust this content as needed
+                  'Nagrada Page Content', // Adjust this content as needed
                   style: TextStyle(fontSize: 24),
                 ),
               ),

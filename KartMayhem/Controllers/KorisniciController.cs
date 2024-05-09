@@ -9,7 +9,7 @@ namespace KartMayhem.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    [AllowAnonymous]
     public class KorisniciController : BaseController<Model.Korisnici, Model.SearchObject.BaseSearchObject>
     {
 

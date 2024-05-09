@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kartmayhem_desktop/Providers/auth_provider.dart';
+import 'package:kartmayhem_desktop/Providers/korisnik_provider.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
 import 'package:kartmayhem_desktop/Screens/login_screen.dart';
 import 'package:kartmayhem_desktop/Screens/nagradi_screen.dart';
@@ -12,6 +13,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => KorisnikProvider()),
       ],
       child: const MyApp(),
     ),

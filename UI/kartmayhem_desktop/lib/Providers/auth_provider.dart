@@ -50,20 +50,6 @@ class AuthProvider extends BaseProvider<Korisnik> {
     }
   }
 
-  Future<Korisnik?> register(dynamic request) async {
-    var url = "$_baseUrl" + "Auth/register";
-    var headers = createHeaders();
-    var uri = Uri.parse(url);
-    var jsonRequest = jsonEncode(request);
-    var response = await http!.post(uri, headers: headers, body: jsonRequest);
-    if (isValidResponseCode(response)) {
-      var data = jsonDecode(response.body);
-      return fromJson(data);
-    } else {
-      return jsonDecode(response.body);
-    }
-  }
-
   void logout() {
     //_username = "";
     _loggedUserId = 0;
