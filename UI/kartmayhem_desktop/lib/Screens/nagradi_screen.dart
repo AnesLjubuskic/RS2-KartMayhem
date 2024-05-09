@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
-import 'package:kartmayhem_desktop/Screens/nagradi_screen.dart';
 import 'package:kartmayhem_desktop/Screens/sidebar_navigation.dart';
+import 'package:kartmayhem_desktop/Screens/rezervacije_screen.dart';
 import 'package:kartmayhem_desktop/Screens/staze_screen.dart';
 
-class RezervacijeScreen extends StatelessWidget {
-  static const String routeName = '/rezervacije';
+class NagradiScreen extends StatelessWidget {
+  static const String routeName = '/nagradi';
 
-  const RezervacijeScreen({Key? key}) : super(key: key);
+  const NagradiScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class RezervacijeScreen extends StatelessWidget {
         children: [
           // Sidebar
           SidebarNavigation(
-            selectedPage: 'rezervacije',
+            selectedPage: 'nagradi',
             onPageSelected: (page) {
               if (page == 'staze') {
                 Navigator.of(context).pushReplacement(
@@ -55,7 +55,7 @@ class RezervacijeScreen extends StatelessWidget {
               color: Colors.green, // Placeholder content for demonstration
               child: const Center(
                 child: Text(
-                  'Rezervacije Page Content', // Adjust this content as needed
+                  'Nagrada Page Content', // Adjust this content as needed
                   style: TextStyle(fontSize: 24),
                 ),
               ),
