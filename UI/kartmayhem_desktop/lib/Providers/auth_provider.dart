@@ -12,7 +12,7 @@ class AuthProvider extends BaseProvider<Korisnik> {
   HttpClient client = HttpClient();
   IOClient? http;
   static String? _baseUrl;
-  AuthProvider() : super("Korisnik") {
+  AuthProvider() : super("Auth") {
     _baseUrl = const String.fromEnvironment("baseUrl",
         defaultValue: "https://localhost:44338/");
     print("baseurl: $_baseUrl");

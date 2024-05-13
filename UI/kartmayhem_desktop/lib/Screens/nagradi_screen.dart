@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kartmayhem_desktop/Models/topuser.dart';
+import 'package:kartmayhem_desktop/Models/korisnik.dart';
 import 'package:kartmayhem_desktop/Providers/korisnik_provider.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
 import 'package:kartmayhem_desktop/Screens/sidebar_navigation.dart';
@@ -18,7 +18,7 @@ class NagradiScreen extends StatefulWidget {
 
 class _NagradiScreenState extends State<NagradiScreen> {
   late KorisnikProvider _korisnikProvider;
-  List<TopUser>? result;
+  List<Korisnik>? result;
 
   @override
   void initState() {
@@ -163,7 +163,7 @@ class _NagradiScreenState extends State<NagradiScreen> {
                 ),
               ),
             ],
-            rows: result?.map((TopUser user) {
+            rows: result?.map((Korisnik user) {
                   return DataRow(cells: [
                     DataCell(
                         Text('${user.punoIme}')), // Combine ime and prezime

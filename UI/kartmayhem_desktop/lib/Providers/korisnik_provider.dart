@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:kartmayhem_desktop/Models/topuser.dart';
+import 'package:kartmayhem_desktop/Models/korisnik.dart';
 import 'package:kartmayhem_desktop/Providers/base_provided.dart';
 
-class KorisnikProvider extends BaseProvider<TopUser> {
+class KorisnikProvider extends BaseProvider<Korisnik> {
   static String? _baseUrl;
-  KorisnikProvider() : super("Korisnik") {
+  KorisnikProvider() : super("Korisnici") {
     _baseUrl = const String.fromEnvironment("baseUrl",
         defaultValue: "https://localhost:44338/");
     if (_baseUrl!.endsWith("/") == false) {
@@ -12,11 +12,11 @@ class KorisnikProvider extends BaseProvider<TopUser> {
     }
   }
   @override
-  TopUser fromJson(data) {
-    return TopUser.fromJson(data);
+  Korisnik fromJson(data) {
+    return Korisnik.fromJson(data);
   }
 
-  Future<List<TopUser>?> gettopkorisnike() async {
+  Future<List<Korisnik>?> gettopkorisnike() async {
     var url = "$_baseUrl" "Korisnici/topUsers";
     var headers = createHeaders();
     var uri = Uri.parse(url);
@@ -25,7 +25,7 @@ class KorisnikProvider extends BaseProvider<TopUser> {
     if (isValidResponseCode(response)) {
       var data = jsonDecode(response.body);
       print(data);
-      var topUsers = data.map<TopUser>((x) => fromJson(x)).toList();
+      var topUsers = data.map<Korisnik>((x) => fromJson(x)).toList();
       return topUsers;
     } else {
       throw Exception("Exception... handle this gracefully");

@@ -89,6 +89,7 @@ namespace KartMayhem.Services.Services
         {
             var filter = base.AddFilter(query, search);
 
+            if (search != null && !string.IsNullOrWhiteSpace(search.Ime))
             filter = filter.Where(x => x.Ime.ToLower().Contains(search.Ime.ToLower()) || x.Prezime.ToLower().Contains(search.Ime.ToLower()));
 
             return filter;

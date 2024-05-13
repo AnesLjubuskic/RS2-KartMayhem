@@ -1,3 +1,5 @@
+import 'package:kartmayhem_desktop/Models/search_result.dart';
+
 import '../utils/util.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -15,7 +17,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
   BaseProvider(String endpoint) {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://localhost:44338/");
+        defaultValue: "https://localhost:44338/");
     print("baseurl: $_baseUrl");
 
     if (_baseUrl!.endsWith("/") == false) {
@@ -42,7 +44,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     }
   }
 
-  Future<List<T>> get([dynamic search]) async {
+  Future<SearchResult<T>> get([dynamic search]) async {
     var url = "$_baseUrl$_endpoint";
 
     if (search != null) {
@@ -52,13 +54,21 @@ abstract class BaseProvider<T> with ChangeNotifier {
 
     var uri = Uri.parse(url);
 
-    Map<String, String> headers = createHeaders();
+    var headers = createHeaders();
     print("get me");
     var response = await http!.get(uri, headers: headers);
     print("done $response");
     if (isValidResponseCode(response)) {
       var data = jsonDecode(response.body);
-      return data.map((x) => fromJson(x)).cast<T>().toList();
+      var result = SearchResult<T>();
+      result.count = data['count'];
+      print("data decode korisnici" + result.count.toString());
+
+      for (var item in data['result']) {
+        result.result.add(fromJson(item));
+      }
+
+      return result;
     } else {
       throw Exception("Exception... handle this gracefully");
     }

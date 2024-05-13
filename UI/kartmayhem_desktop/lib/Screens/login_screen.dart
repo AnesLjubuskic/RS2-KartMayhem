@@ -117,11 +117,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         Map user = {'email': email, 'lozinka': password};
                         try {
                           var data = await _authProvider!.loginAdmin(user);
-
+                          Authorization.email = email;
+                          Authorization.password = password;
                           if (context.mounted) {
                             _authProvider!.setParameters(data!.id!.toInt());
-                            Authorization.email = email;
-                            Authorization.password = password;
+
                             Authorization.id = data.id!.toInt();
                             Navigator.of(context)
                                 .pushReplacementNamed('/staze');
