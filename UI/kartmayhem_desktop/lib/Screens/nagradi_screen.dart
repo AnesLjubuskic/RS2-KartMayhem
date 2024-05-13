@@ -137,8 +137,8 @@ class _NagradiScreenState extends State<NagradiScreen> {
         child: SizedBox(
           width: double.infinity, // Expand to maximum width
           child: DataTable(
-            columns: [
-              const DataColumn(
+            columns: const [
+              DataColumn(
                 label: Expanded(
                   child: Text(
                     'Naziv korisnika',
@@ -146,7 +146,7 @@ class _NagradiScreenState extends State<NagradiScreen> {
                   ),
                 ),
               ),
-              const DataColumn(
+              DataColumn(
                 label: Expanded(
                   child: Text(
                     'Broj ispunjenih rezervacija',
@@ -154,7 +154,7 @@ class _NagradiScreenState extends State<NagradiScreen> {
                   ),
                 ),
               ),
-              const DataColumn(
+              DataColumn(
                 label: Expanded(
                   child: Text(
                     'Akcija',
@@ -168,10 +168,53 @@ class _NagradiScreenState extends State<NagradiScreen> {
                     DataCell(
                         Text('${user.punoIme}')), // Combine ime and prezime
                     DataCell(Text('${user.brojRezervacija}')), // Display email
-                    DataCell(Icon(Icons.edit)), // Example action icon
+                    DataCell(
+                      Container(
+                        width: double.infinity,
+                        constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.1),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            if (user.isNagrada != null) {
+                              if (user.isNagrada!) {
+                                var success = await _korisnikProvider
+                                    .cancelUserAward(user.id!.toInt());
+                                if (success) {
+                                  setState(() {
+                                    user.isNagrada = false;
+                                  });
+                                }
+                              } else {
+                                var success = await _korisnikProvider
+                                    .awardUser(user.id!.toInt());
+                                if (success) {
+                                  setState(() {
+                                    user.isNagrada = true;
+                                  });
+                                }
+                              }
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: user.isNagrada ?? false
+                                  ? const Color(0xFF870000)
+                                  : const Color(0xFFE8E8E8),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          child: Text(
+                            user.isNagrada ?? false ? 'Otkazi' : 'Nagradi',
+                            style: TextStyle(
+                                color: user.isNagrada ?? false
+                                    ? Colors.white
+                                    : Colors
+                                        .black), // Text color based on isNagrada
+                          ),
+                        ),
+                      ),
+                    ),
                   ]);
                 }).toList() ??
-                [], // If result is null, show an empty list of rows
+                [],
           ),
         ),
       ),

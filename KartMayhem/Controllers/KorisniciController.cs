@@ -10,11 +10,11 @@ namespace KartMayhem.Controllers
     [ApiController]
     [Route("[controller]")]
     [AllowAnonymous]
-    public class KorisniciController : BaseController<Model.Korisnici, Model.SearchObject.BaseSearchObject>
+    public class KorisniciController : BaseController<Model.Korisnici, Model.SearchObject.KorisniciSearchObject>
     {
 
         private readonly IKorisniciService _korisniciService;
-        public KorisniciController(ILogger<BaseController<Korisnici, BaseSearchObject>> logger,IKorisniciService service) 
+        public KorisniciController(ILogger<BaseController<Korisnici, KorisniciSearchObject>> logger,IKorisniciService service) 
             : base(logger, service)
         {            
             _korisniciService = service;
@@ -26,16 +26,16 @@ namespace KartMayhem.Controllers
             return await _korisniciService.TopUsers();
         }
 
-        [HttpPut("rewardUser")]
-        public async Task<bool> RewardUser(int userId)
+        [HttpPut("rewardUser/{id}")]
+        public async Task<bool> RewardUser(int id)
         {
-            return await _korisniciService.RewardUser(userId);
+            return await _korisniciService.RewardUser(id);
         }
 
-        [HttpPut("cancelUserReward")]
-        public async Task<bool> CancelUserReward(int userId)
+        [HttpPut("cancelUserReward/{id}")]
+        public async Task<bool> CancelUserReward(int id)
         {
-            return await _korisniciService.CancelRewardUser(userId);
+            return await _korisniciService.CancelRewardUser(id);
         }
     }
 }

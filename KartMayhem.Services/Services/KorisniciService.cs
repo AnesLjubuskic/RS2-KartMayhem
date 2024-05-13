@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace KartMayhem.Services.Services
 {
-    public class KorisniciService : BaseService<Model.Korisnici, Database.Korisnici, Model.SearchObject.BaseSearchObject>, IKorisniciService
+    public class KorisniciService : BaseService<Model.Korisnici, Database.Korisnici, Model.SearchObject.KorisniciSearchObject>, IKorisniciService
     {
         public KorisniciService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
@@ -53,7 +53,7 @@ namespace KartMayhem.Services.Services
             {
                 throw new UserException("Korisnik ne postoji", "Korisnik ne postoji!");
             }
-            
+
             if (korisnici.Nagrada != null)
             {
                 throw new UserException("Korisnik posjeduje nagradu", "Korisnik posjeduje nagradu!");
@@ -77,12 +77,21 @@ namespace KartMayhem.Services.Services
 
             var korisniciDto = _mapper.Map<List<Model.Korisnici>>(korisnici);
 
-            foreach(var korisnik in korisniciDto)
+            foreach (var korisnik in korisniciDto)
             {
                 korisnik.IsNagrada = korisnik.Nagrada != null;
             }
 
             return korisniciDto;
+        }
+
+        public override IQueryable<Korisnici> AddFilter(IQueryable<Korisnici> query, KorisniciSearchObject? search = null)
+        {
+            var filter = base.AddFilter(query, search);
+
+            filter = filter.Where(x => x.Ime.ToLower().Contains(search.Ime.ToLower()) || x.Prezime.ToLower().Contains(search.Ime.ToLower()));
+
+            return filter;
         }
     }
 }

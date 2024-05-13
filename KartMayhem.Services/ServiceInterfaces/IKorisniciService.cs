@@ -4,7 +4,7 @@ using KartMayhem.Model.UserRequestObjects;
 
 namespace KartMayhem.Services.ServiceInterfaces
 {
-    public interface IKorisniciService : IBaseService<Model.Korisnici, Model.SearchObject.BaseSearchObject>
+    public interface IKorisniciService : IBaseService<Model.Korisnici, Model.SearchObject.KorisniciSearchObject>
     {
         public Task<List<Model.Korisnici>> TopUsers();
         public Task<bool> RewardUser(int userId);

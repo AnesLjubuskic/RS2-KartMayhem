@@ -7,11 +7,13 @@ class TopUser {
   int? id;
   String? punoIme;
   int? brojRezervacija;
+  bool? isNagrada;
 
-  TopUser({this.id, this.punoIme, this.brojRezervacija});
+  TopUser({this.id, this.punoIme, this.brojRezervacija, this.isNagrada});
 
   /// Connect the generated [_$TopuserFromJson] function to the `fromJson`
   /// factory.
+  /// dart run build_runner build
   factory TopUser.fromJson(Map<String, dynamic> json) =>
       _$TopUserFromJson(json);
 

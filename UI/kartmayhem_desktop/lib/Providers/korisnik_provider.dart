@@ -31,4 +31,37 @@ class KorisnikProvider extends BaseProvider<TopUser> {
       throw Exception("Exception... handle this gracefully");
     }
   }
+
+  Future<bool> awardUser(int id) {
+    var url = "$_baseUrl" "Korisnici/rewardUser/$id";
+    var uri = Uri.parse(url);
+
+    Map<String, String> headers = createHeaders();
+
+    return http!.put(uri, headers: headers).then((response) {
+      if (isValidResponseCode(response)) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        throw Exception("Exception... handle this gracefully");
+      }
+    });
+  }
+
+  Future<bool> cancelUserAward(int id) {
+    var url = "$_baseUrl" "Korisnici/cancelUserReward/$id";
+    var uri = Uri.parse(url);
+
+    Map<String, String> headers = createHeaders();
+
+    return http!.put(uri, headers: headers).then((response) {
+      print(response.toString());
+      if (isValidResponseCode(response)) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        throw Exception("Exception... handle this gracefully");
+      }
+    });
+  }
 }
