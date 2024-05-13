@@ -20,11 +20,69 @@ namespace KartMayhem.Services.Services
         {
         }
 
+        public async Task<bool> CancelRewardUser(int userId)
+        {
+            var korisnici = _context.Set<Database.Korisnici>()
+                            .Include(x => x.Nagrada)
+                            .FirstOrDefault(x => x.Id == userId);
+
+            if (korisnici == null)
+            {
+                throw new UserException("Korisnik ne postoji", "Korisnik ne postoji!");
+            }
+
+            if (korisnici.Nagrada == null)
+            {
+                throw new UserException("Korisnik ne posjeduje nagradu", "Korisnik ne posjeduje nagradu!");
+            }
+
+            korisnici.Nagrada = null;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> RewardUser(int userId)
+        {
+            var korisnici = _context.Set<Database.Korisnici>()
+                .Include(x => x.Nagrada)
+                .FirstOrDefault(x => x.Id == userId);
+
+            if (korisnici == null)
+            {
+                throw new UserException("Korisnik ne postoji", "Korisnik ne postoji!");
+            }
+            
+            if (korisnici.Nagrada != null)
+            {
+                throw new UserException("Korisnik posjeduje nagradu", "Korisnik posjeduje nagradu!");
+            }
+
+            var nagrada = _context.Set<Database.Nagrade>().FirstOrDefault();
+
+            korisnici.Nagrada = nagrada;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<List<Model.Korisnici>> TopUsers()
         {
-            var korisnici = _context.Set<Database.Korisnici>().Include(x => x.Nagrada).OrderByDescending(x => x.BrojRezervacija).Take(5);
+            var korisnici = _context.Set<Database.Korisnici>()
+                .Include(x => x.Nagrada)
+                .OrderByDescending(x => x.BrojRezervacija)
+                .Take(5);
 
-            return _mapper.Map<List<Model.Korisnici>>(korisnici);
+            var korisniciDto = _mapper.Map<List<Model.Korisnici>>(korisnici);
+
+            foreach(var korisnik in korisniciDto)
+            {
+                korisnik.IsNagrada = korisnik.Nagrada != null;
+            }
+
+            return korisniciDto;
         }
     }
 }

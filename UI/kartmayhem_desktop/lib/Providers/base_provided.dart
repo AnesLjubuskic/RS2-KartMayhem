@@ -1,10 +1,10 @@
+import '../utils/util.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
 import 'package:flutter/foundation.dart';
-import '../utils/util.dart';
 
 abstract class BaseProvider<T> with ChangeNotifier {
   static String? _baseUrl;

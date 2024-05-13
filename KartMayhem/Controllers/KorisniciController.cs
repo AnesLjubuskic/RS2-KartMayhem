@@ -25,5 +25,17 @@ namespace KartMayhem.Controllers
         {
             return await _korisniciService.TopUsers();
         }
+
+        [HttpPut("rewardUser")]
+        public async Task<bool> RewardUser(int userId)
+        {
+            return await _korisniciService.RewardUser(userId);
+        }
+
+        [HttpPut("cancelUserReward")]
+        public async Task<bool> CancelUserReward(int userId)
+        {
+            return await _korisniciService.CancelRewardUser(userId);
+        }
     }
 }
