@@ -9,6 +9,6 @@ namespace KartMayhem.Services.ServiceInterfaces
         public Task<List<Model.Korisnici>> TopUsers();
         public Task<bool> RewardUser(int userId);
         public Task<bool> CancelRewardUser(int userId);
-
+        public Task<bool> DeactivateUser(int userId);
     }
 }

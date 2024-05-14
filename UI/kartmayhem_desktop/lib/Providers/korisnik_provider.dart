@@ -64,4 +64,21 @@ class KorisnikProvider extends BaseProvider<Korisnik> {
       }
     });
   }
+
+  Future<bool> deactivateUser(int id) {
+    var url = "$_baseUrl" "Korisnici/deactivateUser/$id";
+    var uri = Uri.parse(url);
+
+    Map<String, String> headers = createHeaders();
+
+    return http!.put(uri, headers: headers).then((response) {
+      print(response.toString());
+      if (isValidResponseCode(response)) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        throw Exception("Exception... handle this gracefully");
+      }
+    });
+  }
 }

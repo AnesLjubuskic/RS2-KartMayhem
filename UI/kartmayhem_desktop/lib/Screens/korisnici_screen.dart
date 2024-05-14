@@ -102,6 +102,77 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 20), // Adjust spacing as needed
+                    Row(
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(10.0),
+                              height: MediaQuery.of(context).size.width * 0.1,
+                              alignment: Alignment.topLeft,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                height: 50,
+                                child: TextField(
+                                  onSubmitted: (value) {
+                                    print('Enter tapped!');
+                                  },
+                                  decoration: InputDecoration(
+                                    prefixIcon: IconButton(
+                                      // Use IconButton instead of GestureDetector
+                                      onPressed: () {
+                                        // Call your function or perform any action here
+                                        print('Prefix icon tapped!');
+                                      },
+                                      icon: Icon(Icons.search),
+                                    ),
+                                    hintText: 'Pretraga po imenu...',
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: SizedBox(),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          height: MediaQuery.of(context).size.width * 0.1,
+                          padding: const EdgeInsets.all(10.0),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: const Color(0xFFD9D9D9),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Broj korisnika",
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  result?.count.toString() ?? 'Učitavanje...',
+                                  style: const TextStyle(
+                                      fontSize: 35,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 50), // Adjust spacing as needed
                     _buildDataListView(), // Adding the table here
                   ],
@@ -166,9 +237,12 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                         Text('${user.punoIme}')), // Combine ime and prezime
                     DataCell(Text('${user.brojRezervacija}')), // Display email
                     DataCell(Icon(Icons.edit)),
-                    DataCell(Icon(
-                      Icons.dangerous,
-                      color: const Color(0xFF870000),
+                    DataCell(IconButton(
+                      icon:
+                          const Icon(Icons.dangerous, color: Color(0xFF870000)),
+                      onPressed: () {
+                        openDeleteModal(user.id!);
+                      },
                     )),
                   ]);
                 }).toList() ??
@@ -176,6 +250,56 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void openDeleteModal(int id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Obriši'),
+          content: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Da li ste sigurni da želite da izbrišete korisnika?'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Poništi'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  await _korisnikProvider.deactivateUser(id);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    _initializeData();
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text('Ne možete obrisati ovaj Teren!'),
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text(
+                'Obriši',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

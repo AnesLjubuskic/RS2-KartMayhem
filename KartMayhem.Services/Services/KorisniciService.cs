@@ -72,6 +72,7 @@ namespace KartMayhem.Services.Services
         {
             var korisnici = _context.Set<Database.Korisnici>()
                 .Include(x => x.Nagrada)
+                .Where(x => x.IsActive)
                 .OrderByDescending(x => x.BrojRezervacija)
                 .Take(5);
 
@@ -89,10 +90,28 @@ namespace KartMayhem.Services.Services
         {
             var filter = base.AddFilter(query, search);
 
+            filter = filter.Where(x => x.IsActive);
+
             if (search != null && !string.IsNullOrWhiteSpace(search.Ime))
             filter = filter.Where(x => x.Ime.ToLower().Contains(search.Ime.ToLower()) || x.Prezime.ToLower().Contains(search.Ime.ToLower()));
 
             return filter;
+        }
+
+        public async Task<bool> DeactivateUser(int userId)
+        {
+            var korisnici = _context.Set<Database.Korisnici>().Find(userId);
+
+            if (korisnici == null)
+            {
+                throw new UserException("Korisnik ne postoji", "Korisnik ne postoji!");
+            }
+
+            korisnici.IsActive = false;
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

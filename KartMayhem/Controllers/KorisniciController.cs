@@ -37,5 +37,11 @@ namespace KartMayhem.Controllers
         {
             return await _korisniciService.CancelRewardUser(id);
         }
+
+        [HttpPut("deactivateUser/{id}")]
+        public async Task<bool> DeactivateUser(int id)
+        {
+            return await _korisniciService.DeactivateUser(id);
+        }
     }
 }
