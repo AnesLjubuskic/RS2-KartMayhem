@@ -1,6 +1,6 @@
 import 'package:kartmayhem_desktop/Models/search_result.dart';
 
-import '../utils/util.dart';
+import 'package:kartmayhem_desktop/Utils/util.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
@@ -126,7 +126,6 @@ abstract class BaseProvider<T> with ChangeNotifier {
   Map<String, String> createHeaders() {
     String? email = Authorization.email;
     String? password = Authorization.password;
-    print(email.toString());
 
     String basicAuth = "Basic ${base64Encode(utf8.encode('$email:$password'))}";
 

@@ -6,7 +6,6 @@ import 'package:kartmayhem_desktop/Models/korisnik.dart';
 import 'package:kartmayhem_desktop/Providers/base_provided.dart';
 
 class AuthProvider extends BaseProvider<Korisnik> {
-  // static String _username = "";
   static int? _loggedUserId = 0;
 
   HttpClient client = HttpClient();
@@ -51,7 +50,6 @@ class AuthProvider extends BaseProvider<Korisnik> {
   }
 
   void logout() {
-    //_username = "";
     _loggedUserId = 0;
   }
 

@@ -33,7 +33,6 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
     setState(() {
       result = data;
     });
-    print("Korisnici screen" + result!.toString());
   }
 
   @override
