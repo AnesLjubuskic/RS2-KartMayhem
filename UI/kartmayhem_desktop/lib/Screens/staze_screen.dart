@@ -20,6 +20,9 @@ class _StazeScreenState extends State<StazeScreen> {
   late StazeProvider _stazeProvider;
   SearchResult<Staze>? result;
   TextEditingController _searchController = new TextEditingController();
+  bool amater = false;
+  bool pocetnik = false;
+  bool pro = false;
 
   @override
   void initState() {
@@ -29,8 +32,15 @@ class _StazeScreenState extends State<StazeScreen> {
 
   Future<void> _initializeData() async {
     _stazeProvider = StazeProvider(); // Initialize your provider
+    List<int> tezineId = [];
+
+    if (pocetnik) tezineId.add(1);
+    if (amater) tezineId.add(2);
+    if (pro) tezineId.add(3);
+
     var data = await _stazeProvider.get(search: {
-      'nazivStaze': _searchController.text
+      'nazivStaze': _searchController.text,
+      'tezineId': tezineId
     }); // Call your method to get data
     setState(() {
       result = data;
@@ -104,7 +114,7 @@ class _StazeScreenState extends State<StazeScreen> {
                           children: [
                             Container(
                               padding: const EdgeInsets.all(10.0),
-                              height: MediaQuery.of(context).size.width * 0.1,
+                              height: MediaQuery.of(context).size.width * 0.05,
                               alignment: Alignment.topLeft,
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.25,
@@ -112,14 +122,12 @@ class _StazeScreenState extends State<StazeScreen> {
                                 child: TextField(
                                   onSubmitted: (value) {
                                     _initializeData();
-                                    print('Enter tapped!');
                                   },
                                   controller: _searchController,
                                   decoration: InputDecoration(
                                     prefixIcon: IconButton(
                                       onPressed: () {
                                         _initializeData();
-                                        print('Prefix icon tapped!');
                                       },
                                       icon: Icon(Icons.search),
                                     ),
@@ -131,19 +139,117 @@ class _StazeScreenState extends State<StazeScreen> {
                                 ),
                               ),
                             ),
+                            SizedBox(
+                                height: MediaQuery.of(context).size.height *
+                                    0.000001), // Adjust spacing as needed
+
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              child: const Text(
+                                "Filtriraj staze po težini:",
+                              ),
+                            ),
+                            SizedBox(height: 10), // Adjust spacing as needed
+                            Container(
+                              padding: const EdgeInsets.all(10.0),
+                              height: MediaQuery.of(context).size.width * 0.05,
+                              alignment: Alignment.topLeft,
+                              child: Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  height: 50,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: pocetnik
+                                                ? const Color(0xFF870000)
+                                                : const Color(0xFFE8E8E8),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10))),
+                                        onPressed: () {
+                                          pocetnik = !pocetnik;
+                                          _initializeData();
+                                        },
+                                        child: Text(
+                                          'Početnik',
+                                          style: TextStyle(
+                                              color: pocetnik
+                                                  ? Colors.white
+                                                  : Colors.black),
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: amater
+                                                ? const Color(0xFF870000)
+                                                : const Color(0xFFE8E8E8),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10))),
+                                        onPressed: () {
+                                          amater = !amater;
+                                          _initializeData();
+                                        },
+                                        child: Text(
+                                          'Amater',
+                                          style: TextStyle(
+                                              color: amater
+                                                  ? Colors.white
+                                                  : Colors.black),
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: pro
+                                                ? const Color(0xFF870000)
+                                                : const Color(0xFFE8E8E8),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10))),
+                                        onPressed: () {
+                                          pro = !pro;
+                                          _initializeData();
+                                        },
+                                        child: Text(
+                                          style: TextStyle(
+                                              color: pro
+                                                  ? Colors.white
+                                                  : Colors.black),
+                                          'Profesionalac',
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                            ),
                           ],
                         ),
                         Expanded(
                           child: SizedBox(),
                         ),
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.2,
                           height: MediaQuery.of(context).size.width * 0.1,
-                          padding: const EdgeInsets.all(10.0),
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: const Color(0xFFD9D9D9),
+                          color: Colors.black,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            height: 70,
+                            padding: const EdgeInsets.all(10.0),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF870000),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10))),
+                              onPressed: () {
+                                //implement loggic
+                              },
+                              child: Text(
+                                'Dodaj stazu',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 25),
+                              ),
                             ),
                           ),
                         ),
