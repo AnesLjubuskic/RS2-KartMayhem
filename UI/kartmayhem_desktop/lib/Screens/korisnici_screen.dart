@@ -20,6 +20,7 @@ class KorisniciScreen extends StatefulWidget {
 class _KorisniciScreenState extends State<KorisniciScreen> {
   late KorisnikProvider _korisnikProvider;
   SearchResult<Korisnik>? result;
+  TextEditingController _searchController = new TextEditingController();
 
   @override
   void initState() {
@@ -29,7 +30,9 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
 
   Future<void> _initializeData() async {
     _korisnikProvider = KorisnikProvider(); // Initialize your provider
-    var data = await _korisnikProvider.get(); // Call your method to get data
+    var data = await _korisnikProvider.get(search: {
+      'ime': _searchController.text
+    }); // Call your method to get data
     setState(() {
       result = data;
     });
@@ -116,13 +119,14 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                 height: 50,
                                 child: TextField(
                                   onSubmitted: (value) {
+                                    _initializeData();
                                     print('Enter tapped!');
                                   },
+                                  controller: _searchController,
                                   decoration: InputDecoration(
                                     prefixIcon: IconButton(
-                                      // Use IconButton instead of GestureDetector
                                       onPressed: () {
-                                        // Call your function or perform any action here
+                                        _initializeData();
                                         print('Prefix icon tapped!');
                                       },
                                       icon: Icon(Icons.search),
@@ -286,7 +290,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.red,
-                        content: Text('Ne možete obrisati ovaj Teren!'),
+                        content: Text('Ne možete obrisati ovog korisnika!'),
                       ),
                     );
                   }

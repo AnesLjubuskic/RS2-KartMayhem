@@ -44,7 +44,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     }
   }
 
-  Future<SearchResult<T>> get([dynamic search]) async {
+  Future<SearchResult<T>> get({dynamic search}) async {
     var url = "$_baseUrl$_endpoint";
 
     if (search != null) {

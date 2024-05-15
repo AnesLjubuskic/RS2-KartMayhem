@@ -1,9 +1,11 @@
 ﻿using KartMayhem.Services.ServiceInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KartMayhem.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     public class BaseCRUDController<T, TSearch, TInsert, TUpdate> : BaseController<T, TSearch> where T : class where TSearch : class
     {
         protected new readonly IBaseCRUDService<T, TSearch, TInsert, TUpdate> _service;

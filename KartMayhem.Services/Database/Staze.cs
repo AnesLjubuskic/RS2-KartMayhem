@@ -20,6 +20,10 @@
 
         public Tezine Tezina { get; set; }
 
+        public byte[]? Slika { get; set; }
+
+        public bool IsActive { get; set; }
+
         public ICollection<Rezervacije> Rezervacijes { get; set; } = new List<Rezervacije>();
 
         public ICollection<Rezencije> Rezencijes { get; } = new List<Rezencije>();

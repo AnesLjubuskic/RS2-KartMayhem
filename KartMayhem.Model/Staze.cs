@@ -20,6 +20,10 @@
 
         public int? BrojRezervacija { get; set; }
 
+        public byte[]? Slika { get; set; }
+
+        public bool IsActive { get; set; }
+
         public ICollection<Rezencije> Rezencijes { get; } = new List<Rezencije>();
     }
 }

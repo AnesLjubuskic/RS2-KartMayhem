@@ -14,6 +14,10 @@ Image imageFromBase64String(String base64Image) {
   return Image.memory(base64Decode(base64Image));
 }
 
+String imageToBase64(Uint8List imageBytes) {
+  return base64Encode(imageBytes);
+}
+
 String formatNumber(dynamic) {
   var f = NumberFormat('###,00');
 

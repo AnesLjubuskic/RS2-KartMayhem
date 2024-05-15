@@ -4,6 +4,7 @@ using KartMayhem.Services.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KartMayhem.Services.Migrations
 {
     [DbContext(typeof(KartMayhemContext))]
-    partial class KartMayhemContextModelSnapshot : ModelSnapshot
+    [Migration("20240515195618_pictures")]
+    partial class pictures
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,9 +250,6 @@ namespace KartMayhem.Services.Migrations
                     b.Property<double>("DuzinaStaze")
                         .HasColumnType("float");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<int>("MaxBrojOsoba")
                         .HasColumnType("int");
 
@@ -262,6 +262,7 @@ namespace KartMayhem.Services.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("Slika")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<int>("TezinaId")
