@@ -43,5 +43,11 @@ namespace KartMayhem.Controllers
         {
             return await _korisniciService.DeactivateUser(id);
         }
+
+        [HttpPut("editUserByAdmin/{id}")]
+        public async Task<bool> EditUserByAdmin(int id, [FromBody] KorisniciUpdateByAdminRequest request)
+        {
+            return await _korisniciService.EditUserByAdmin(id, request);
+        }
     }
 }

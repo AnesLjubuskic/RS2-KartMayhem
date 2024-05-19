@@ -58,7 +58,7 @@ namespace KartMayhem.Services.Services
 
             if (staza == null)
             {
-                throw new UserException("Staza ne postoji", "Staza ne postoji!");
+                throw new StazeException("Staza ne postoji", "Staza ne postoji!");
             }
 
             staza.IsActive = false;

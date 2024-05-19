@@ -178,7 +178,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     } else if (response.statusCode == 204) {
       return true;
     } else if (response.statusCode == 400) {
-      throw Exception(response);
+      return false;
     } else if (response.statusCode == 401) {
       throw Exception("Unauthorized");
     } else if (response.statusCode == 403) {

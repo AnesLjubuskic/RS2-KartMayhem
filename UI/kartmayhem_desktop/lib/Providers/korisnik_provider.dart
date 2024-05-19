@@ -28,11 +28,16 @@ class KorisnikProvider extends BaseProvider<Korisnik> {
       var topUsers = data.map<Korisnik>((x) => fromJson(x)).toList();
       return topUsers;
     } else {
-      throw Exception("Exception... handle this gracefully");
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        print(data.toString());
+        throw Exception("${data["errors"]["userError"][0].toString()}");
+      }
+      throw Exception('Something went wrong!');
     }
   }
 
-  Future<bool> awardUser(int id) {
+  Future<bool?> awardUser(int id) {
     var url = "$_baseUrl" "Korisnici/rewardUser/$id";
     var uri = Uri.parse(url);
 
@@ -43,12 +48,17 @@ class KorisnikProvider extends BaseProvider<Korisnik> {
         var data = jsonDecode(response.body);
         return data;
       } else {
-        throw Exception("Exception... handle this gracefully");
+        if (response.body.isNotEmpty) {
+          var data = jsonDecode(response.body);
+          print(data.toString());
+          throw Exception("${data["errors"]["userError"][0].toString()}");
+        }
+        throw Exception('Something went wrong!');
       }
     });
   }
 
-  Future<bool> cancelUserAward(int id) {
+  Future<bool?> cancelUserAward(int id) {
     var url = "$_baseUrl" "Korisnici/cancelUserReward/$id";
     var uri = Uri.parse(url);
 
@@ -60,12 +70,17 @@ class KorisnikProvider extends BaseProvider<Korisnik> {
         var data = jsonDecode(response.body);
         return data;
       } else {
-        throw Exception("Exception... handle this gracefully");
+        if (response.body.isNotEmpty) {
+          var data = jsonDecode(response.body);
+          print(data.toString());
+          throw Exception("${data["errors"]["userError"][0].toString()}");
+        }
+        throw Exception('Something went wrong!');
       }
     });
   }
 
-  Future<bool> deactivateUser(int id) {
+  Future<bool?> deactivateUser(int id) {
     var url = "$_baseUrl" "Korisnici/deactivateUser/$id";
     var uri = Uri.parse(url);
 
@@ -77,7 +92,35 @@ class KorisnikProvider extends BaseProvider<Korisnik> {
         var data = jsonDecode(response.body);
         return data;
       } else {
-        throw Exception("Exception... handle this gracefully");
+        if (response.body.isNotEmpty) {
+          var data = jsonDecode(response.body);
+          print("${data["errors"].toString()}");
+          throw Exception("${data["errors"]["userError"][0].toString()}");
+        }
+        throw Exception('Something went wrong!');
+      }
+    });
+  }
+
+  Future<bool?> editUser(int id, [dynamic request]) {
+    var url = "$_baseUrl" "Korisnici/editUserByAdmin/$id";
+    var uri = Uri.parse(url);
+
+    Map<String, String> headers = createHeaders();
+
+    return http!
+        .put(uri, headers: headers, body: jsonEncode(request))
+        .then((response) {
+      print(response.toString());
+      if (isValidResponseCode(response)) {
+        var data = jsonDecode(response.body);
+        return data;
+      } else {
+        if (response.body.isNotEmpty) {
+          var data = jsonDecode(response.body);
+          throw Exception("${data["errors"]["userError"][0].toString()}");
+        }
+        throw Exception('Something went wrong!');
       }
     });
   }

@@ -28,12 +28,12 @@ namespace KartMayhem.Services.Services
 
             if (korisnici == null)
             {
-                throw new UserException("Korisnik ne postoji", "Korisnik ne postoji!");
+                throw new UserException("Korisnik ne postoji!");
             }
 
             if (korisnici.Nagrada == null)
             {
-                throw new UserException("Korisnik ne posjeduje nagradu", "Korisnik ne posjeduje nagradu!");
+                throw new UserException("Korisnik ne posjeduje nagradu!");
             }
 
             korisnici.Nagrada = null;
@@ -51,12 +51,12 @@ namespace KartMayhem.Services.Services
 
             if (korisnici == null)
             {
-                throw new UserException("Korisnik ne postoji", "Korisnik ne postoji!");
+                throw new UserException("Korisnik ne postoji!");
             }
 
             if (korisnici.Nagrada != null)
             {
-                throw new UserException("Korisnik posjeduje nagradu", "Korisnik posjeduje nagradu!");
+                throw new UserException("Korisnik posjeduje nagradu!");
             }
 
             var nagrada = _context.Set<Database.Nagrade>().FirstOrDefault();
@@ -104,10 +104,63 @@ namespace KartMayhem.Services.Services
 
             if (korisnici == null)
             {
-                throw new UserException("Korisnik ne postoji", "Korisnik ne postoji!");
+                throw new UserException("Korisnik ne postoji!");
+            }
+
+            var isAdmin = false;
+
+            foreach (var admin in korisnici.KorisniciUloges)
+            {
+                if (admin.UlogaId == 2)
+                {
+                    isAdmin = true;
+                }
+            }
+
+            if (isAdmin)
+            {
+                throw new UserException("Admin ne može biti izbrisan!");
             }
 
             korisnici.IsActive = false;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> EditUserByAdmin(int userId, KorisniciUpdateByAdminRequest request)
+        {
+            var korisnici = _context.Set<Database.Korisnici>().Find(userId);
+
+            if (korisnici == null)
+            {
+                throw new UserException("Korisnik ne postoji!");
+            }
+
+            var isAdmin = false;
+
+            foreach(var admin in korisnici.KorisniciUloges)
+            {
+                if (admin.UlogaId == 2)
+                {
+                    isAdmin = true;
+                }
+            }
+
+            if (isAdmin)
+            {
+                throw new UserException("Admin ne može biti editovan!");
+            }
+
+            if (string.IsNullOrEmpty(korisnici.Ime) || string.IsNullOrEmpty(korisnici.Prezime) || string.IsNullOrEmpty(korisnici.Email))
+            {
+                throw new UserException("Invalidni podaci!");
+            }
+
+            korisnici.Ime = request.Ime;
+            korisnici.Prezime = request.Prezime;
+            korisnici.Email = request.Email;
 
             await _context.SaveChangesAsync();
 

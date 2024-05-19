@@ -2,12 +2,9 @@
 {
     public class UserException : System.Exception
     {
-        public string Title { get; set; }
-
-        public UserException(string title, string message) :
+        public UserException(string message) :
             base(message)
         {
-            Title = title;
         }
     }
 }

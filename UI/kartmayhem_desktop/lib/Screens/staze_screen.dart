@@ -6,7 +6,9 @@ import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
 import 'package:kartmayhem_desktop/Screens/nagradi_screen.dart';
 import 'package:kartmayhem_desktop/Screens/rezervacije_screen.dart';
 import 'package:kartmayhem_desktop/Screens/sidebar_navigation.dart';
+import 'package:kartmayhem_desktop/Widgets/Modals/Staze/detalji_stazu.dart';
 import 'package:kartmayhem_desktop/Widgets/Modals/Staze/dodaj_stazu.dart';
+import 'package:kartmayhem_desktop/Widgets/Modals/Staze/edit_stazu.dart';
 
 class StazeScreen extends StatefulWidget {
   static const String routeName = '/staze';
@@ -82,6 +84,59 @@ class _StazeScreenState extends State<StazeScreen> {
         ),
       );
     }
+  }
+
+  void handleEdit(
+      int id,
+      String? nazivStaze,
+      String? opisStaze,
+      int? cijenaPoOsobi,
+      double? duzinaStaze,
+      int? brojKrugova,
+      int? maxBrojOsoba,
+      int? tezinaId) async {
+    await _stazeProvider.update(id, {
+      'nazivStaze': nazivStaze,
+      'opisStaze': opisStaze,
+      'cijenaPoOsobi': cijenaPoOsobi,
+      'duzinaStaze': duzinaStaze,
+      'brojKrugova': brojKrugova,
+      'maxBrojOsoba': maxBrojOsoba,
+      'tezinaId': tezinaId
+    });
+    if (context.mounted) {
+      Navigator.pop(context);
+      _initializeData();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          content: const Text('Uspješno ste editovali stazu!'),
+        ),
+      );
+    }
+  }
+
+  void openEditModal(Staze staze) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return EditStazeModal(
+          staze: staze,
+          handleEdit: handleEdit,
+        );
+      },
+    );
+  }
+
+  void openDetailModal(Staze staze) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return DetailStazeModal(
+          staze: staze,
+        );
+      },
+    );
   }
 
   void openAddModal() {
@@ -393,8 +448,20 @@ class _StazeScreenState extends State<StazeScreen> {
                     DataCell(Text('${staze.tezina?.naziv}')),
                     DataCell(Text('${staze.duzinaStaze}')),
                     DataCell(Text('${staze.cijenaPoOsobi}')),
-                    DataCell(Text('test')),
-                    DataCell(Icon(Icons.edit)),
+                    DataCell(IconButton(
+                      icon: const Icon(Icons.details, color: Colors.black),
+                      onPressed: () {
+                        print(staze);
+                        openDetailModal(staze);
+                      },
+                    )),
+                    DataCell(IconButton(
+                      icon: const Icon(Icons.edit, color: Colors.black),
+                      onPressed: () {
+                        print(staze);
+                        openEditModal(staze);
+                      },
+                    )),
                     DataCell(IconButton(
                       icon:
                           const Icon(Icons.dangerous, color: Color(0xFF870000)),

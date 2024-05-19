@@ -66,12 +66,11 @@ class AuthProvider extends BaseProvider<Korisnik> {
     } else if (response.statusCode == 400) {
       if (response.body.isNotEmpty) {
         var data = jsonDecode(response.body);
-        if (data['errors'] != null && !data['errors'].isEmpty) {
-          var errorData = data["errors"] as Map<dynamic, dynamic>;
-          var firstKey = errorData.keys.toList().first;
-          var errorString = data['errors'][firstKey];
-          print("Error string is $errorString");
-          throw Exception("Bad request $errorString");
+        if (data['errors']['userError'][0] != null &&
+            !data['errors']['userError'][0].isEmpty) {
+          var errorData = data["errors"]['userError'][0].toString();
+          print("Error string is $errorData");
+          throw Exception(errorData);
         }
         throw Exception('Bad request');
       }

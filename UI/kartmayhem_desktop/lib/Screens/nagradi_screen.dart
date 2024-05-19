@@ -179,7 +179,7 @@ class _NagradiScreenState extends State<NagradiScreen> {
                               if (user.isNagrada!) {
                                 var success = await _korisnikProvider
                                     .cancelUserAward(user.id!.toInt());
-                                if (success) {
+                                if (success!) {
                                   setState(() {
                                     user.isNagrada = false;
                                   });
@@ -187,7 +187,7 @@ class _NagradiScreenState extends State<NagradiScreen> {
                               } else {
                                 var success = await _korisnikProvider
                                     .awardUser(user.id!.toInt());
-                                if (success) {
+                                if (success!) {
                                   setState(() {
                                     user.isNagrada = true;
                                   });

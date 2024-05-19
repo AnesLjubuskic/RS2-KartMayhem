@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kartmayhem_desktop/Helpers/error_dialog.dart';
 import 'package:kartmayhem_desktop/Models/korisnik.dart';
 import 'package:kartmayhem_desktop/Models/search_result.dart';
 import 'package:kartmayhem_desktop/Providers/korisnik_provider.dart';
@@ -6,6 +7,7 @@ import 'package:kartmayhem_desktop/Screens/nagradi_screen.dart';
 import 'package:kartmayhem_desktop/Screens/sidebar_navigation.dart';
 import 'package:kartmayhem_desktop/Screens/rezervacije_screen.dart';
 import 'package:kartmayhem_desktop/Screens/staze_screen.dart';
+import 'package:kartmayhem_desktop/Widgets/Modals/Korisnici/edit_korisnici.dart';
 import 'package:provider/provider.dart';
 
 class KorisniciScreen extends StatefulWidget {
@@ -36,6 +38,47 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
     setState(() {
       result = data;
     });
+  }
+
+  void handleEdit(
+    int id,
+    String? ime,
+    String? prezime,
+    String? email,
+  ) async {
+    try {
+      await _korisnikProvider.editUser(id, {
+        'ime': ime,
+        'prezime': prezime,
+        'email': email,
+      });
+      if (context.mounted) {
+        Navigator.pop(context);
+        _initializeData();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            content: const Text('Uspješno ste editovali korisnika!'),
+          ),
+        );
+      }
+    } on Exception catch (e) {
+      String errorMessage = e.toString().replaceFirst('Exception: ', '');
+      showErrorDialog(context, errorMessage);
+      // ignore: use_build_context_synchronously
+    }
+  }
+
+  void openEditModal(Korisnik korisnik) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return EditKorisniciModal(
+          korisnik: korisnik,
+          handleEdit: handleEdit,
+        );
+      },
+    );
   }
 
   @override
@@ -239,8 +282,14 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                   return DataRow(cells: [
                     DataCell(
                         Text('${user.punoIme}')), // Combine ime and prezime
-                    DataCell(Text('${user.brojRezervacija}')), // Display email
-                    DataCell(Icon(Icons.edit)),
+                    DataCell(Text('${user.email}')), // Display email
+                    DataCell(IconButton(
+                      icon: const Icon(Icons.edit, color: Colors.black),
+                      onPressed: () {
+                        print(user);
+                        openEditModal(user);
+                      },
+                    )),
                     DataCell(IconButton(
                       icon:
                           const Icon(Icons.dangerous, color: Color(0xFF870000)),
@@ -284,16 +333,11 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                     Navigator.pop(context);
                     _initializeData();
                   }
-                } catch (e) {
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text('Ne možete obrisati ovog korisnika!'),
-                      ),
-                    );
-                  }
+                } on Exception catch (e) {
+                  String errorMessage =
+                      e.toString().replaceFirst('Exception: ', '');
+                  showErrorDialog(context, errorMessage);
+                  // ignore: use_build_context_synchronously
                 }
               },
               child: const Text(

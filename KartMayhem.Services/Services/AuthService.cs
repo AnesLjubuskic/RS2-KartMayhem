@@ -31,14 +31,14 @@ namespace KartMayhem.Services.Services
 
             if (entity == null)
             {
-                throw new UserException("Kredencijali nisu ispravni", "Netacan email ili lozinka!");
+                throw new UserException("Netačan email ili lozinka!");
             }
 
             var hash = GenerateHash(entity.LozinkaSalt, request.Lozinka);
 
             if (hash != entity.LozinkaHash)
             {
-                throw new UserException("Kredencijali nisu ispravni", "Netacan email ili lozinka!");
+                throw new UserException("Netačan email ili lozinka!");
             }
             return _mapper.Map<Model.Korisnici>(entity);
         }
@@ -50,7 +50,7 @@ namespace KartMayhem.Services.Services
 
             if (entity == null)
             {
-                throw new UserException("Kredencijali nisu ispravni", "Netacan email ili lozinka!");
+                throw new UserException("Netačan email ili lozinka!");
             }
 
             var uloge = _context.KorisniciUloges.Include(x => x.Uloga).Where(x => x.KorisnikId == entity.Id).ToList();
@@ -71,7 +71,7 @@ namespace KartMayhem.Services.Services
                     return _mapper.Map<Model.Korisnici>(entity);
             }
 
-            throw new UserException("Kredencijali nisu ispravni", "Netacan email ili lozinka!");
+            throw new UserException("Netačan email ili lozinka!");
         }
 
         public async Task<Model.Korisnici> Register(KorisniciInsertRequest request)
@@ -80,7 +80,7 @@ namespace KartMayhem.Services.Services
 
             if (korisnici.Any(x => x.Email == request.Email))
             {
-                throw new UserException("Email u upotrebi", "Email je u upotrebi!");
+                throw new UserException("Email je u upotrebi!");
             }
 
             var korisniciDb = _mapper.Map<Database.Korisnici>(request);

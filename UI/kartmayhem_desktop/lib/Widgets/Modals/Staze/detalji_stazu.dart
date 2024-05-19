@@ -4,21 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kartmayhem_desktop/Models/staze.dart';
 
-class EditStazeModal extends StatefulWidget {
+class DetailStazeModal extends StatefulWidget {
   final Staze staze;
-  final Function handleEdit;
 
-  const EditStazeModal({
+  const DetailStazeModal({
     super.key,
     required this.staze,
-    required this.handleEdit,
   });
 
   @override
-  State<EditStazeModal> createState() => _EditStazeModalState();
+  State<DetailStazeModal> createState() => _DetailStazeModalState();
 }
 
-class _EditStazeModalState extends State<EditStazeModal> {
+class _DetailStazeModalState extends State<DetailStazeModal> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late TextEditingController _nazivStazeController;
   late TextEditingController _opisStazeController;
@@ -26,7 +24,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
   late TextEditingController _duzinaStazeController;
   late TextEditingController _brojKrugovaController;
   late TextEditingController _maxBrojOsobaController;
-
+  String initialText = '';
   int? _selectedTezinaId;
 
   final List<Map<String, dynamic>> tezine = [
@@ -49,6 +47,8 @@ class _EditStazeModalState extends State<EditStazeModal> {
     _maxBrojOsobaController =
         TextEditingController(text: widget.staze.maxBrojOsoba?.toString());
     _selectedTezinaId = widget.staze.tezina?.id;
+    initialText =
+        tezine.firstWhere((item) => item['id'] == _selectedTezinaId)['naziv'];
   }
 
   @override
@@ -75,7 +75,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
             children: [
               const Center(
                 child: Text(
-                  "Uređivanje staze",
+                  "Detalji staze",
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
@@ -103,6 +103,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                   border: Border.all(color: Colors.grey),
                 ),
                 child: TextFormField(
+                  enabled: false,
                   controller: _nazivStazeController,
                   decoration: InputDecoration(
                     contentPadding:
@@ -139,6 +140,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                   border: Border.all(color: Colors.grey),
                 ),
                 child: TextFormField(
+                  enabled: false,
                   controller: _opisStazeController,
                   maxLines: 3,
                   decoration: InputDecoration(
@@ -182,6 +184,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             border: Border.all(color: Colors.grey),
                           ),
                           child: TextFormField(
+                            enabled: false,
                             controller: _duzinaStazeController,
                             keyboardType:
                                 TextInputType.numberWithOptions(decimal: true),
@@ -225,6 +228,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             border: Border.all(color: Colors.grey),
                           ),
                           child: TextFormField(
+                            enabled: false,
                             controller: _maxBrojOsobaController,
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
@@ -264,14 +268,9 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             borderRadius: BorderRadius.circular(5.0),
                             border: Border.all(color: Colors.grey),
                           ),
-                          child: DropdownButtonFormField<int>(
-                            value: _selectedTezinaId,
-                            items: tezine.map((staze) {
-                              return DropdownMenuItem<int>(
-                                value: staze['id'],
-                                child: Text(staze['naziv']),
-                              );
-                            }).toList(),
+                          child: TextFormField(
+                            enabled: false,
+                            initialValue: initialText,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
                                   bottom: 10, right: 10, left: 10),
@@ -279,11 +278,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedTezinaId = value;
-                              });
-                            },
+                            onChanged: (value) {},
                             validator: (value) {
                               if (value == null) {
                                 return 'Ovo polje je obavezno';
@@ -318,6 +313,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             border: Border.all(color: Colors.grey),
                           ),
                           child: TextFormField(
+                            enabled: false,
                             controller: _brojKrugovaController,
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
@@ -358,6 +354,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             border: Border.all(color: Colors.grey),
                           ),
                           child: TextFormField(
+                            enabled: false,
                             controller: _cijenaPoOsobiController,
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[
@@ -415,37 +412,9 @@ class _EditStazeModalState extends State<EditStazeModal> {
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
           child: const Text(
-            'Otkaži',
+            'Zatvori',
             style: TextStyle(
               color: Colors.white,
-            ),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            if (formKey.currentState!.validate()) {
-              widget.handleEdit(
-                  widget.staze.id!,
-                  _nazivStazeController.text,
-                  _opisStazeController.text,
-                  int.tryParse(_cijenaPoOsobiController.text),
-                  double.tryParse(_duzinaStazeController.text),
-                  int.tryParse(_brojKrugovaController.text),
-                  int.tryParse(_maxBrojOsobaController.text),
-                  _selectedTezinaId);
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFD7D2DC),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          ),
-          child: const Text(
-            'Spasi',
-            style: TextStyle(
-              color: Colors.black,
             ),
           ),
         ),

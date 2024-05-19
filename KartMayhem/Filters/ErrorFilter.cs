@@ -11,7 +11,7 @@ namespace KartMayhem.Filters
         {
             if (context.Exception is UserException)
             {
-                context.ModelState.AddModelError(((UserException)context.Exception).Title, context.Exception.Message);
+                context.ModelState.AddModelError("userError", context.Exception.Message);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
 
