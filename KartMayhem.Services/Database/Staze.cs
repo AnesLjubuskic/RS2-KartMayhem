@@ -20,7 +20,7 @@
 
         public Tezine Tezina { get; set; }
 
-        public byte[]? Slika { get; set; }
+        public string? Slika { get; set; }
 
         public bool IsActive { get; set; }
 

@@ -6,6 +6,7 @@ import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
 import 'package:kartmayhem_desktop/Screens/nagradi_screen.dart';
 import 'package:kartmayhem_desktop/Screens/rezervacije_screen.dart';
 import 'package:kartmayhem_desktop/Screens/sidebar_navigation.dart';
+import 'package:kartmayhem_desktop/Widgets/Modals/Staze/dodaj_stazu.dart';
 
 class StazeScreen extends StatefulWidget {
   static const String routeName = '/staze';
@@ -31,20 +32,65 @@ class _StazeScreenState extends State<StazeScreen> {
   }
 
   Future<void> _initializeData() async {
-    _stazeProvider = StazeProvider(); // Initialize your provider
+    _stazeProvider = StazeProvider();
     List<int> tezineId = [];
 
     if (pocetnik) tezineId.add(1);
     if (amater) tezineId.add(2);
     if (pro) tezineId.add(3);
 
-    var data = await _stazeProvider.get(search: {
-      'nazivStaze': _searchController.text,
-      'tezineId': tezineId
-    }); // Call your method to get data
+    var data = await _stazeProvider.get(
+        search: {'nazivStaze': _searchController.text, 'tezineId': tezineId});
     setState(() {
       result = data;
     });
+  }
+
+  void resetSearch() {
+    _searchController.text = '';
+    pocetnik = false;
+    amater = false;
+    pro = false;
+  }
+
+  void handleAdd(
+      String? nazivStaze,
+      String? opisStaze,
+      int? cijenaPoOsobi,
+      double? duzinaStaze,
+      int? brojKrugova,
+      int? maxBrojOsoba,
+      int? tezinaId) async {
+    await _stazeProvider.insert({
+      'nazivStaze': nazivStaze,
+      'opisStaze': opisStaze,
+      'cijenaPoOsobi': cijenaPoOsobi,
+      'duzinaStaze': duzinaStaze,
+      'brojKrugova': brojKrugova,
+      'maxBrojOsoba': maxBrojOsoba,
+      'tezinaId': tezinaId
+    });
+
+    if (context.mounted) {
+      Navigator.pop(context);
+      resetSearch();
+      _initializeData();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          content: const Text('Dodali ste novu stazu!'),
+        ),
+      );
+    }
+  }
+
+  void openAddModal() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AddStazeModal(handleAdd: handleAdd);
+      },
+    );
   }
 
   @override
@@ -107,7 +153,7 @@ class _StazeScreenState extends State<StazeScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20), // Adjust spacing as needed
+                    const SizedBox(height: 20),
                     Row(
                       children: [
                         Column(
@@ -141,15 +187,14 @@ class _StazeScreenState extends State<StazeScreen> {
                             ),
                             SizedBox(
                                 height: MediaQuery.of(context).size.height *
-                                    0.000001), // Adjust spacing as needed
-
+                                    0.000001),
                             Container(
                               width: MediaQuery.of(context).size.width * 0.25,
                               child: const Text(
                                 "Filtriraj staze po težini:",
                               ),
                             ),
-                            SizedBox(height: 10), // Adjust spacing as needed
+                            SizedBox(height: 10),
                             Container(
                               padding: const EdgeInsets.all(10.0),
                               height: MediaQuery.of(context).size.width * 0.05,
@@ -230,33 +275,40 @@ class _StazeScreenState extends State<StazeScreen> {
                         Expanded(
                           child: SizedBox(),
                         ),
-                        Container(
-                          height: MediaQuery.of(context).size.width * 0.1,
-                          color: Colors.black,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width * 0.2,
-                            height: 70,
-                            padding: const EdgeInsets.all(10.0),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF870000),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10))),
-                              onPressed: () {
-                                //implement loggic
-                              },
-                              child: Text(
-                                'Dodaj stazu',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 25),
+                        //Dodaj Stazu
+                        Column(
+                          children: [
+                            Container(
+                              height: MediaQuery.of(context).size.width * 0.05,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.15,
+                                height: 50,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFF870000),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10))),
+                                  onPressed: () {
+                                    openAddModal();
+                                  },
+                                  child: const Text(
+                                    'Dodaj stazu',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 25),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            SizedBox(
+                              height: 100,
+                            )
+                          ],
                         ),
                       ],
                     ),
-                    const SizedBox(height: 50), // Adjust spacing as needed
-                    _buildDataListView(), // Adding the table here
+                    const SizedBox(height: 50),
+                    _buildDataListView(),
                   ],
                 ),
               ),
@@ -270,14 +322,12 @@ class _StazeScreenState extends State<StazeScreen> {
   Widget _buildDataListView() {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0), // Border radius of 10
-        border: Border.all(
-            color: const Color(0xFFD7D2DC),
-            width: 1.0), // Border color and width
+        borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(color: const Color(0xFFD7D2DC), width: 1.0),
       ),
       child: Center(
         child: SizedBox(
-          width: double.infinity, // Expand to maximum width
+          width: double.infinity,
           child: DataTable(
             columns: const [
               DataColumn(

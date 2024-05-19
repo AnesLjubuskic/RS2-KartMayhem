@@ -87,6 +87,7 @@ namespace KartMayhem.Services.Services
 
             korisniciDb.LozinkaSalt = GenerateSalt();
             korisniciDb.LozinkaHash = GenerateHash(korisniciDb.LozinkaSalt, request.Lozinka);
+            korisniciDb.IsActive = true;
 
             _context.Add(korisniciDb);
             _context.SaveChanges();

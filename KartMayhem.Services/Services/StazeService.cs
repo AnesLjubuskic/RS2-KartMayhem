@@ -22,6 +22,16 @@ namespace KartMayhem.Services.Services
         public override Task BeforeInsert(Staze entity, StazeUpsertRequest insert)
         {
             entity.IsActive = true;
+
+            //var pictureValue = _context.Tezines.Find(insert.TezinaId);
+            //
+            //if (pictureValue == null)
+            //{
+            //    throw new StazeException("Podaci nisu validni", "Tezina id nije validna!");
+            //}
+            //
+            //entity.Slika = pictureValue.Slika;
+            
             return base.BeforeInsert(entity, insert);
         }
 

@@ -6,6 +6,8 @@
 
         public string Naziv { get; set; }
 
+        public string? Slika { get; set; }
+
         public ICollection<Staze> Staze { get; } = new List<Staze>();
 
     }
