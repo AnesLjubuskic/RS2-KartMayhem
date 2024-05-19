@@ -399,7 +399,8 @@ class _StazeScreenState extends State<StazeScreen> {
                       icon:
                           const Icon(Icons.dangerous, color: Color(0xFF870000)),
                       onPressed: () {
-                        //openDeleteModal(user.id!);
+                        print(staze.id);
+                        openDeleteModal(staze.id!);
                       },
                     )),
                   ]);
@@ -408,6 +409,56 @@ class _StazeScreenState extends State<StazeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void openDeleteModal(int id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Obriši'),
+          content: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Da li ste sigurni da želite da izbrišete ovu stazu?'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Poništi'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  await _stazeProvider.deactivateTrack(id);
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    _initializeData();
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text('Ne možete obrisati ovu stazu!'),
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text(
+                'Obriši',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
