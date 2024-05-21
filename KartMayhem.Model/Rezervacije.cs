@@ -10,11 +10,12 @@ namespace KartMayhem.Model
 
         public int BrojOsoba { get; set; }
 
+        public string ImeStaze { get; set; }
+
         public DateTime DayOfReservation { get; set; } // Povuci sve rezervacije po ovom danu pa izvlaci time slotove iz start time-a
 
         public DateTime TimeSlot { get; set; }
 
-        public int KorisnikId { get; set; }
         public Korisnici Korisnik { get; set; }
 
         public StazeForRezervacije Staza { get; set; }

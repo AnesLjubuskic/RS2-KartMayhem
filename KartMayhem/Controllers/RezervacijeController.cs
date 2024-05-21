@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace KartMayhem.Controllers
 {
     [Route("[controller]")]
-    public class RezervacijeController : BaseCRUDController<Rezervacije, BaseSearchObject, RezervacijeUpsertRequest, RezervacijeUpsertRequest>
+    public class RezervacijeController : BaseCRUDController<Rezervacije, RezervacijeSearchRequest, RezervacijeUpsertRequest, RezervacijeUpsertRequest>
     {
         protected IRezervacijeService _rezervacijeService { get; set; }
 
-        public RezervacijeController(ILogger<BaseController<Rezervacije, BaseSearchObject>> logger, IRezervacijeService service) : base(logger, service)
+        public RezervacijeController(ILogger<BaseController<Rezervacije, RezervacijeSearchRequest>> logger, IRezervacijeService service) : base(logger, service)
         {
             _rezervacijeService = service;
         }

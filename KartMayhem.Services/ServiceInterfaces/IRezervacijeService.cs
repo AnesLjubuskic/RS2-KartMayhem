@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace KartMayhem.Services.ServiceInterfaces
 {
-    public interface IRezervacijeService : IBaseCRUDService<Rezervacije, BaseSearchObject, RezervacijeUpsertRequest, RezervacijeUpsertRequest>
+    public interface IRezervacijeService : IBaseCRUDService<Rezervacije, RezervacijeSearchRequest, RezervacijeUpsertRequest, RezervacijeUpsertRequest>
     {
         Task<bool> CancelReservation(int id);
     }

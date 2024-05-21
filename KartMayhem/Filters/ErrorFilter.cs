@@ -17,7 +17,7 @@ namespace KartMayhem.Filters
 
             else if (context.Exception is RezervacijeException) 
             {
-                context.ModelState.AddModelError(((RezervacijeException)context.Exception).Title, context.Exception.Message);
+                context.ModelState.AddModelError("rezervacijeError", context.Exception.Message);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
             

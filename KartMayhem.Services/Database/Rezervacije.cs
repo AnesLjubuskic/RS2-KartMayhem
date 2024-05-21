@@ -6,6 +6,8 @@
 
         public int CijenaRezervacije { get; set; }
 
+        public string ImeStaze { get; set; }
+
         public int BrojOsoba { get; set; }
 
         public DateTime DayOfReservation { get; set; } // Povuci sve rezervacije po ovom danu pa izvlaci time slotove iz start time-a

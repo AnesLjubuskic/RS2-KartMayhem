@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kartmayhem_desktop/Providers/auth_provider.dart';
 import 'package:kartmayhem_desktop/Providers/korisnik_provider.dart';
+import 'package:kartmayhem_desktop/Providers/rezervacije_provider.dart';
 import 'package:kartmayhem_desktop/Providers/staze_provider.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
 import 'package:kartmayhem_desktop/Screens/login_screen.dart';
@@ -15,7 +16,8 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => KorisnikProvider()),
-        ChangeNotifierProvider(create: (_) => StazeProvider())
+        ChangeNotifierProvider(create: (_) => StazeProvider()),
+        ChangeNotifierProvider(create: (_) => RezervacijeProvider())
       ],
       child: const MyApp(),
     ),

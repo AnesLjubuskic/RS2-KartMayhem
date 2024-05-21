@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace KartMayhem.Services.Services
 {
-    public class RezervacijeService : BaseCRUDService<Model.Rezervacije, Database.Rezervacije, BaseSearchObject, RezervacijeUpsertRequest, RezervacijeUpsertRequest>, IRezervacijeService
+    public class RezervacijeService : BaseCRUDService<Model.Rezervacije, Database.Rezervacije, RezervacijeSearchRequest, RezervacijeUpsertRequest, RezervacijeUpsertRequest>, IRezervacijeService
     {
         public RezervacijeService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
@@ -21,31 +21,58 @@ namespace KartMayhem.Services.Services
 
         public override Task BeforeInsert(Rezervacije entity, RezervacijeUpsertRequest insert)
         {
+            if (insert == null)
+            {
+                throw new RezervacijeException("Rezervacija ne posjeduje vrijednost!");
+            }
+
             if (insert.BrojOsoba < 1 || insert.BrojOsoba > 10)
             {
-                throw new RezervacijeException(problem, "Broj osoba nije validan!");
+                throw new RezervacijeException("Broj osoba nije validan!");
+            }
+
+            if (insert.CijenaRezervacije < 1 || insert.CijenaRezervacije > 9999)
+            {
+                throw new RezervacijeException("Cijena rezervacije nije validna!");
             }
 
             var user = _context.Korisnicis.Find(insert.KorisnikId);
             if (user == null)
             {
-                throw new RezervacijeException(problem, "Osoba nije pronadjena!");
+                throw new RezervacijeException("Osoba nije pronadjena!");
             }
 
             var staza = _context.Stazes.Find(insert.StazaId);
+
             if (staza == null)
             {
-                throw new RezervacijeException(problem, "Staza nije pronadjena!");
+                throw new RezervacijeException("Staza nije pronadjena!");
             }
+            else if (!staza.IsActive)
+            {
+                throw new RezervacijeException("Staza nije aktivna!");
+            }
+
+            entity.ImeStaze = staza.NazivStaze;
 
             return base.BeforeInsert(entity, insert);
         }
 
-        public override IQueryable<Rezervacije> AddFilter(IQueryable<Rezervacije> query, BaseSearchObject? search = null)
+        public override IQueryable<Rezervacije> AddFilter(IQueryable<Rezervacije> query, RezervacijeSearchRequest? search = null)
         {
             var filter = base.AddFilter(query, search);
 
             filter = filter.Where(x => !x.isCancelled);
+
+            if (search != null && !string.IsNullOrEmpty(search.NazivStaze))
+            {
+                filter = filter.Where(x => x.ImeStaze.ToLower() ==  search.NazivStaze.ToLower());
+            }
+
+            if (search != null && search.IdStaze != null)
+            {
+                filter = filter.Where(x => x.StazaId == search.IdStaze);
+            }
 
             return filter;
         }
@@ -55,7 +82,7 @@ namespace KartMayhem.Services.Services
             var rezervacija = _context.Rezervacijes.Find(id);
             if (rezervacija == null)
             {
-                throw new RezervacijeException(problem, "Rezervacija ne postoji!");
+                throw new RezervacijeException("Rezervacija ne postoji!");
             }
 
             rezervacija.isCancelled = true;
