@@ -55,14 +55,14 @@ abstract class BaseProvider<T> with ChangeNotifier {
     var uri = Uri.parse(url);
 
     var headers = createHeaders();
-    print("get me");
     var response = await http!.get(uri, headers: headers);
-    print("done $response");
     if (isValidResponseCode(response)) {
       var data = jsonDecode(response.body);
       var result = SearchResult<T>();
       result.count = data['count'];
-      print("data decode korisnici" + result.count.toString());
+      result.totalCount = data['totalCount'];
+      result.reservationProfit = data['reservationProfit'];
+      result.totalReservationProfit = data['totalReservationProfit'];
 
       for (var item in data['result']) {
         result.result.add(fromJson(item));

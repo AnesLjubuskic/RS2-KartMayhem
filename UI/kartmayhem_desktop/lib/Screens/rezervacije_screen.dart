@@ -24,6 +24,9 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
   late StazeProvider _stazeProvider;
   SearchResult<Rezervacije>? result;
   SearchResult<Staze>? resultStaze;
+  int currentPage = 1;
+  int pageSize = 6;
+
   int? _selectedStazaId;
 
   @override
@@ -44,13 +47,17 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
     }
 
     if (_selectedStazaId == -1) {
-      var data = await _rezervacijeProvider.get(search: {});
+      var data = await _rezervacijeProvider
+          .get(search: {'page': currentPage - 1, 'pageSize': pageSize});
       setState(() {
         result = data;
       });
     } else {
-      var data =
-          await _rezervacijeProvider.get(search: {'idStaze': _selectedStazaId});
+      var data = await _rezervacijeProvider.get(search: {
+        'idStaze': _selectedStazaId,
+        'page': currentPage - 1,
+        'pageSize': pageSize
+      });
       {
         setState(() {
           result = data;
@@ -126,11 +133,17 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20), // Adjust spacing as needed
+                    const SizedBox(height: 20),
                     Row(
                       children: [
                         Column(
                           children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              child: const Text(
+                                "Odaberite stazu:",
+                              ),
+                            ),
                             Container(
                               padding: const EdgeInsets.fromLTRB(
                                   10.0, 10.0, 0.0, 10.0),
@@ -157,6 +170,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                                   onChanged: (value) {
                                     setState(() {
                                       _selectedStazaId = value;
+                                      _resetPage();
                                       _initializeData();
                                     });
                                   },
@@ -194,7 +208,11 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                                   ),
                                 ),
                                 Text(
-                                  result?.count.toString() ?? 'Učitavanje...',
+                                  _selectedStazaId == -1
+                                      ? result?.totalCount.toString() ??
+                                          'Učitavanje...'
+                                      : result?.count.toString() ??
+                                          'Učitavanje...',
                                   style: const TextStyle(
                                       fontSize: 35,
                                       color: Colors.black,
@@ -225,7 +243,12 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                                   ),
                                 ),
                                 Text(
-                                  result?.count.toString() ?? 'Učitavanje...',
+                                  _selectedStazaId == -1
+                                      ? result?.totalReservationProfit
+                                              .toString() ??
+                                          'Učitavanje...'
+                                      : result?.reservationProfit.toString() ??
+                                          'Učitavanje...',
                                   style: const TextStyle(
                                       fontSize: 35,
                                       color: Colors.black,
@@ -237,8 +260,10 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 50), // Adjust spacing as needed
-                    _buildDataListView(), // Adding the table here
+                    const SizedBox(height: 50),
+                    _buildDataListView(),
+                    const SizedBox(height: 50),
+                    _buildPaginationControls()
                   ],
                 ),
               ),
@@ -299,5 +324,78 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildPaginationControls() {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_left),
+            onPressed: _canGoToPreviousPage() ? _previousPage : null,
+          ),
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFF870000),
+            ),
+            child: Text(
+              '$currentPage',
+              style: TextStyle(fontSize: 24, color: Colors.white),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.arrow_right),
+            onPressed: _canGoToNextPage() ? _nextPage : null,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _previousPage() {
+    setState(() {
+      currentPage--;
+      _initializeData();
+    });
+  }
+
+  bool _canGoToPreviousPage() {
+    if (currentPage > 1) {
+      return true;
+    }
+    return false;
+  }
+
+  bool _canGoToNextPage() {
+    if (result != null) {
+      int totalResults = 0;
+
+      if (_selectedStazaId == -1) {
+        totalResults = result!.totalCount ?? 0;
+      } else {
+        totalResults = result!.count ?? 0;
+      }
+
+      int totalPages = (totalResults / pageSize).ceil();
+      return currentPage < totalPages;
+    }
+    return false;
+  }
+
+  void _nextPage() {
+    setState(() {
+      currentPage++;
+      _initializeData();
+    });
+  }
+
+  void _resetPage() {
+    setState(() {
+      currentPage = 1;
+      _initializeData();
+    });
   }
 }

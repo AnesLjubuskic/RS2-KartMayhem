@@ -23,15 +23,48 @@ namespace KartMayhem.Services.Services
 
             PagedResult<T> result = new PagedResult<T>();
 
+            result.TotalCount = await query.CountAsync();
+
+            if (typeof(TDb) == typeof(Database.Rezervacije))
+            {
+                var queryReservation = query as IQueryable<Database.Rezervacije>;
+
+                if (queryReservation != null)
+                {
+                    result.TotalCount = await queryReservation.Where(x => !x.isCancelled).CountAsync();
+
+                    result.TotalReservationProfit = await queryReservation.Where(x => !x.isCancelled).SumAsync(x => x.CijenaRezervacije);
+                }
+            }
+            else
+            {
+                result.TotalReservationProfit = 0;
+            }
+
             query = AddFilter(query, search);
 
             query = AddInclude(query, search);
 
             result.Count = await query.CountAsync();
 
+            if (typeof(TDb) == typeof(Database.Rezervacije))
+            {
+                var queryReservation = query as IQueryable<Database.Rezervacije>;
+
+                if (queryReservation != null) 
+                { 
+                    result.ReservationProfit = await queryReservation.Where(x => !x.isCancelled).SumAsync(x => x.CijenaRezervacije);
+                }
+
+            }
+            else
+            {
+                result.ReservationProfit = 0;
+            }
+
             if (search?.Page.HasValue == true && search?.PageSize.HasValue == true)
             {
-                query = query.Take(search.PageSize.Value).Skip(search.Page.Value * search.PageSize.Value);
+                query = query.Skip(search.Page.Value * search.PageSize.Value).Take(search.PageSize.Value);
             }
 
             var list = await query.ToListAsync();
