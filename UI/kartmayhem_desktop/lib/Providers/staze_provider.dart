@@ -24,7 +24,6 @@ class StazeProvider extends BaseProvider<Staze> {
     Map<String, String> headers = createHeaders();
 
     return http!.put(uri, headers: headers).then((response) {
-      print(response.toString());
       if (isValidResponseCode(response)) {
         var data = jsonDecode(response.body);
         return data;

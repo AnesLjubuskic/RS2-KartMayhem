@@ -131,7 +131,8 @@ namespace KartMayhem.Services.Services
 
         public async Task<bool> EditUserByAdmin(int userId, KorisniciUpdateByAdminRequest request)
         {
-            var korisnici = _context.Set<Database.Korisnici>().Find(userId);
+            var korisniciAll = _context.Set<Database.Korisnici>();
+            var korisnici = korisniciAll.Find(userId);
 
             if (korisnici == null)
             {
@@ -156,6 +157,13 @@ namespace KartMayhem.Services.Services
             if (string.IsNullOrEmpty(korisnici.Ime) || string.IsNullOrEmpty(korisnici.Prezime) || string.IsNullOrEmpty(korisnici.Email))
             {
                 throw new UserException("Invalidni podaci!");
+            }
+
+            var emailInUse = korisniciAll.FirstOrDefault(x => x.Email.ToLower() == request.Email.ToLower());
+
+            if (emailInUse != null)
+            {
+                throw new UserException("Email u upotrebi!");
             }
 
             korisnici.Ime = request.Ime;

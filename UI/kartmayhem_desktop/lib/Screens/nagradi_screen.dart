@@ -33,7 +33,6 @@ class _NagradiScreenState extends State<NagradiScreen> {
     setState(() {
       result = data;
     });
-    print("GLAVNI SCREEN" + result!.toString());
   }
 
   @override

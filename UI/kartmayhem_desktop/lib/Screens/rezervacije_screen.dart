@@ -25,7 +25,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
   SearchResult<Rezervacije>? result;
   SearchResult<Staze>? resultStaze;
   int currentPage = 1;
-  int pageSize = 6;
+  int pageSize = 5;
 
   int? _selectedStazaId;
 
@@ -243,14 +243,16 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                                   ),
                                 ),
                                 Text(
-                                  _selectedStazaId == -1
-                                      ? result?.totalReservationProfit
-                                              .toString() ??
-                                          'Učitavanje...'
-                                      : result?.reservationProfit.toString() ??
-                                          'Učitavanje...',
+                                  (_selectedStazaId == -1
+                                          ? result?.totalReservationProfit
+                                                  .toString() ??
+                                              '0'
+                                          : result?.reservationProfit
+                                                  .toString() ??
+                                              '0') +
+                                      "KM",
                                   style: const TextStyle(
-                                      fontSize: 35,
+                                      fontSize: 30,
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -260,9 +262,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 50),
                     _buildDataListView(),
-                    const SizedBox(height: 50),
                     _buildPaginationControls()
                   ],
                 ),
@@ -374,9 +374,9 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
       int totalResults = 0;
 
       if (_selectedStazaId == -1) {
-        totalResults = result!.totalCount ?? 0;
+        totalResults = result!.totalCount;
       } else {
-        totalResults = result!.count ?? 0;
+        totalResults = result!.count;
       }
 
       int totalPages = (totalResults / pageSize).ceil();

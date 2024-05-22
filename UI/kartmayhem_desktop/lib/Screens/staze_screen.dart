@@ -449,16 +449,14 @@ class _StazeScreenState extends State<StazeScreen> {
                     DataCell(Text('${staze.duzinaStaze}')),
                     DataCell(Text('${staze.cijenaPoOsobi}')),
                     DataCell(IconButton(
-                      icon: const Icon(Icons.details, color: Colors.black),
+                      icon: const Icon(Icons.info, color: Colors.black),
                       onPressed: () {
-                        print(staze);
                         openDetailModal(staze);
                       },
                     )),
                     DataCell(IconButton(
                       icon: const Icon(Icons.edit, color: Colors.black),
                       onPressed: () {
-                        print(staze);
                         openEditModal(staze);
                       },
                     )),
@@ -466,7 +464,6 @@ class _StazeScreenState extends State<StazeScreen> {
                       icon:
                           const Icon(Icons.dangerous, color: Color(0xFF870000)),
                       onPressed: () {
-                        print(staze.id);
                         openDeleteModal(staze.id!);
                       },
                     )),

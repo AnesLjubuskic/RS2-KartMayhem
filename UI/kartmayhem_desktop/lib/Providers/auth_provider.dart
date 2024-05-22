@@ -14,7 +14,6 @@ class AuthProvider extends BaseProvider<Korisnik> {
   AuthProvider() : super("Auth") {
     _baseUrl = const String.fromEnvironment("baseUrl",
         defaultValue: "https://localhost:44338/");
-    print("baseurl: $_baseUrl");
 
     if (_baseUrl!.endsWith("/") == false) {
       _baseUrl = "${_baseUrl!}/";
@@ -70,7 +69,6 @@ class AuthProvider extends BaseProvider<Korisnik> {
           var errorData = data["errors"] as Map<dynamic, dynamic>;
           var firstKey = errorData.keys.toList().first;
           var errorString = data['errors'][firstKey];
-          print("Error string is $errorString");
           throw Exception("Bad request $errorString");
         }
         throw Exception('Bad request');

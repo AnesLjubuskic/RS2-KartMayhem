@@ -23,6 +23,8 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   late KorisnikProvider _korisnikProvider;
   SearchResult<Korisnik>? result;
   TextEditingController _searchController = new TextEditingController();
+  int currentPage = 1;
+  int pageSize = 5;
 
   @override
   void initState() {
@@ -31,10 +33,12 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   }
 
   Future<void> _initializeData() async {
-    _korisnikProvider = KorisnikProvider(); // Initialize your provider
+    _korisnikProvider = KorisnikProvider();
     var data = await _korisnikProvider.get(search: {
-      'ime': _searchController.text
-    }); // Call your method to get data
+      'ime': _searchController.text,
+      'page': currentPage - 1,
+      'pageSize': pageSize
+    });
     setState(() {
       result = data;
     });
@@ -162,15 +166,15 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                 height: 50,
                                 child: TextField(
                                   onSubmitted: (value) {
+                                    _resetPage();
                                     _initializeData();
-                                    print('Enter tapped!');
                                   },
                                   controller: _searchController,
                                   decoration: InputDecoration(
                                     prefixIcon: IconButton(
                                       onPressed: () {
+                                        _resetPage();
                                         _initializeData();
-                                        print('Prefix icon tapped!');
                                       },
                                       icon: Icon(Icons.search),
                                     ),
@@ -220,8 +224,8 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 50), // Adjust spacing as needed
-                    _buildDataListView(), // Adding the table here
+                    _buildDataListView(),
+                    _buildPaginationControls()
                   ],
                 ),
               ),
@@ -286,7 +290,6 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                     DataCell(IconButton(
                       icon: const Icon(Icons.edit, color: Colors.black),
                       onPressed: () {
-                        print(user);
                         openEditModal(user);
                       },
                     )),
@@ -349,5 +352,78 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
         );
       },
     );
+  }
+
+  Widget _buildPaginationControls() {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_left),
+            onPressed: _canGoToPreviousPage() ? _previousPage : null,
+          ),
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFF870000),
+            ),
+            child: Text(
+              '$currentPage',
+              style: TextStyle(fontSize: 24, color: Colors.white),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.arrow_right),
+            onPressed: _canGoToNextPage() ? _nextPage : null,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _previousPage() {
+    setState(() {
+      currentPage--;
+      _initializeData();
+    });
+  }
+
+  bool _canGoToPreviousPage() {
+    if (currentPage > 1) {
+      return true;
+    }
+    return false;
+  }
+
+  bool _canGoToNextPage() {
+    if (result != null) {
+      int totalResults = 0;
+
+      if (_searchController.text.isEmpty) {
+        totalResults = result!.totalCount;
+      } else {
+        totalResults = result!.count;
+      }
+
+      int totalPages = (totalResults / pageSize).ceil();
+      return currentPage < totalPages;
+    }
+    return false;
+  }
+
+  void _nextPage() {
+    setState(() {
+      currentPage++;
+      _initializeData();
+    });
+  }
+
+  void _resetPage() {
+    setState(() {
+      currentPage = 1;
+      _initializeData();
+    });
   }
 }
