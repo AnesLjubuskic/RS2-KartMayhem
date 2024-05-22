@@ -25,6 +25,26 @@ namespace KartMayhem.Services.Services
 
             result.TotalCount = await query.CountAsync();
 
+            if (typeof(TDb) == typeof(Database.Staze))
+            {
+                var queryReservation = query as IQueryable<Database.Staze>;
+
+                if (queryReservation != null)
+                {
+                    result.TotalCount = await queryReservation.Where(x => x.IsActive).CountAsync();
+                }
+            }
+
+            if (typeof(TDb) == typeof(Database.Korisnici))
+            {
+                var queryReservation = query as IQueryable<Database.Korisnici>;
+
+                if (queryReservation != null)
+                {
+                    result.TotalCount = await queryReservation.Where(x => x.IsActive).CountAsync();
+                }
+            }
+
             if (typeof(TDb) == typeof(Database.Rezervacije))
             {
                 var queryReservation = query as IQueryable<Database.Rezervacije>;

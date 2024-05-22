@@ -27,6 +27,9 @@ class _StazeScreenState extends State<StazeScreen> {
   bool pocetnik = false;
   bool pro = false;
 
+  int currentPage = 1;
+  int pageSize = 5;
+
   @override
   void initState() {
     super.initState();
@@ -41,8 +44,12 @@ class _StazeScreenState extends State<StazeScreen> {
     if (amater) tezineId.add(2);
     if (pro) tezineId.add(3);
 
-    var data = await _stazeProvider.get(
-        search: {'nazivStaze': _searchController.text, 'tezineId': tezineId});
+    var data = await _stazeProvider.get(search: {
+      'nazivStaze': _searchController.text,
+      'tezineId': tezineId,
+      'page': currentPage - 1,
+      'pageSize': pageSize
+    });
     setState(() {
       result = data;
     });
@@ -78,9 +85,9 @@ class _StazeScreenState extends State<StazeScreen> {
       resetSearch();
       _initializeData();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          content: const Text('Dodali ste novu stazu!'),
+        const SnackBar(
+          backgroundColor: Color(0xFF870000),
+          content: Text('Dodali ste novu stazu!'),
         ),
       );
     }
@@ -222,12 +229,14 @@ class _StazeScreenState extends State<StazeScreen> {
                                 height: 50,
                                 child: TextField(
                                   onSubmitted: (value) {
+                                    _resetPage();
                                     _initializeData();
                                   },
                                   controller: _searchController,
                                   decoration: InputDecoration(
                                     prefixIcon: IconButton(
                                       onPressed: () {
+                                        _resetPage();
                                         _initializeData();
                                       },
                                       icon: Icon(Icons.search),
@@ -272,6 +281,7 @@ class _StazeScreenState extends State<StazeScreen> {
                                                     BorderRadius.circular(10))),
                                         onPressed: () {
                                           pocetnik = !pocetnik;
+                                          _resetPage();
                                           _initializeData();
                                         },
                                         child: Text(
@@ -292,6 +302,7 @@ class _StazeScreenState extends State<StazeScreen> {
                                                     BorderRadius.circular(10))),
                                         onPressed: () {
                                           amater = !amater;
+                                          _resetPage();
                                           _initializeData();
                                         },
                                         child: Text(
@@ -312,6 +323,7 @@ class _StazeScreenState extends State<StazeScreen> {
                                                     BorderRadius.circular(10))),
                                         onPressed: () {
                                           pro = !pro;
+                                          _resetPage();
                                           _initializeData();
                                         },
                                         child: Text(
@@ -362,8 +374,8 @@ class _StazeScreenState extends State<StazeScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 50),
                     _buildDataListView(),
+                    _buildPaginationControls()
                   ],
                 ),
               ),
@@ -524,5 +536,78 @@ class _StazeScreenState extends State<StazeScreen> {
         );
       },
     );
+  }
+
+  Widget _buildPaginationControls() {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.arrow_left),
+            onPressed: _canGoToPreviousPage() ? _previousPage : null,
+          ),
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFF870000),
+            ),
+            child: Text(
+              '$currentPage',
+              style: TextStyle(fontSize: 24, color: Colors.white),
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.arrow_right),
+            onPressed: _canGoToNextPage() ? _nextPage : null,
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _previousPage() {
+    setState(() {
+      currentPage--;
+      _initializeData();
+    });
+  }
+
+  bool _canGoToPreviousPage() {
+    if (currentPage > 1) {
+      return true;
+    }
+    return false;
+  }
+
+  bool _canGoToNextPage() {
+    if (result != null) {
+      int totalResults = 0;
+
+      if (_searchController.text.isEmpty && !pro && !amater && !pocetnik) {
+        totalResults = result!.totalCount;
+      } else {
+        totalResults = result!.count;
+      }
+
+      int totalPages = (totalResults / pageSize).ceil();
+      return currentPage < totalPages;
+    }
+    return false;
+  }
+
+  void _nextPage() {
+    setState(() {
+      currentPage++;
+      _initializeData();
+    });
+  }
+
+  void _resetPage() {
+    setState(() {
+      currentPage = 1;
+      _initializeData();
+    });
   }
 }
