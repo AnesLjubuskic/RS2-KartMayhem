@@ -8,11 +8,9 @@ namespace KartMayhem.Model.Exception
 {
     public class StazeException : System.Exception
     {
-        public string Title { get; set; }
-        public StazeException(string title, string message)
+        public StazeException(string message)
             : base(message)
         {
-            Title = title;
         }
     }
 }

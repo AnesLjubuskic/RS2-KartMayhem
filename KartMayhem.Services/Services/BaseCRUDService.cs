@@ -11,6 +11,17 @@ namespace KartMayhem.Services.Services
         public BaseCRUDService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
         }
+
+        public virtual async Task ValidationInsert(TInsert insert)
+        {
+
+        }
+
+        public virtual async Task ValidationUpdate(TUpdate update)
+        {
+
+        }
+
         public virtual async Task BeforeInsert(TDb entity, TInsert insert)
         {
 
@@ -18,6 +29,8 @@ namespace KartMayhem.Services.Services
 
         public virtual async Task<T> Insert(TInsert insert)
         {
+            await ValidationInsert(insert);
+            
             var set = _context.Set<TDb>();
 
             TDb entity = _mapper.Map<TDb>(insert);
@@ -32,6 +45,8 @@ namespace KartMayhem.Services.Services
 
         public virtual async Task<T> Update(int id, TUpdate update)
         {
+            await ValidationUpdate(update);
+
             var set = _context.Set<TDb>();
 
             var entity = await set.FindAsync(id);

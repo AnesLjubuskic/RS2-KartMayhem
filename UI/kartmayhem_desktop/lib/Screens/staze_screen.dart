@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kartmayhem_desktop/Helpers/error_dialog.dart';
 import 'package:kartmayhem_desktop/Models/search_result.dart';
 import 'package:kartmayhem_desktop/Models/staze.dart';
 import 'package:kartmayhem_desktop/Providers/staze_provider.dart';
@@ -70,26 +71,32 @@ class _StazeScreenState extends State<StazeScreen> {
       int? brojKrugova,
       int? maxBrojOsoba,
       int? tezinaId) async {
-    await _stazeProvider.insert({
-      'nazivStaze': nazivStaze,
-      'opisStaze': opisStaze,
-      'cijenaPoOsobi': cijenaPoOsobi,
-      'duzinaStaze': duzinaStaze,
-      'brojKrugova': brojKrugova,
-      'maxBrojOsoba': maxBrojOsoba,
-      'tezinaId': tezinaId
-    });
+    try {
+      await _stazeProvider.insert({
+        'nazivStaze': nazivStaze,
+        'opisStaze': opisStaze,
+        'cijenaPoOsobi': cijenaPoOsobi,
+        'duzinaStaze': duzinaStaze,
+        'brojKrugova': brojKrugova,
+        'maxBrojOsoba': maxBrojOsoba,
+        'tezinaId': tezinaId
+      });
 
-    if (context.mounted) {
-      Navigator.pop(context);
-      resetSearch();
-      _initializeData();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Color(0xFF870000),
-          content: Text('Dodali ste novu stazu!'),
-        ),
-      );
+      if (context.mounted) {
+        Navigator.pop(context);
+        resetSearch();
+        _initializeData();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Color(0xFF870000),
+            content: Text('Dodali ste novu stazu!'),
+          ),
+        );
+      }
+    } on Exception catch (e) {
+      String errorMessage = e.toString().replaceFirst('Exception: ', '');
+      // ignore: use_build_context_synchronously
+      showErrorDialog(context, errorMessage);
     }
   }
 
@@ -102,24 +109,30 @@ class _StazeScreenState extends State<StazeScreen> {
       int? brojKrugova,
       int? maxBrojOsoba,
       int? tezinaId) async {
-    await _stazeProvider.update(id, {
-      'nazivStaze': nazivStaze,
-      'opisStaze': opisStaze,
-      'cijenaPoOsobi': cijenaPoOsobi,
-      'duzinaStaze': duzinaStaze,
-      'brojKrugova': brojKrugova,
-      'maxBrojOsoba': maxBrojOsoba,
-      'tezinaId': tezinaId
-    });
-    if (context.mounted) {
-      Navigator.pop(context);
-      _initializeData();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          content: const Text('Uspješno ste editovali stazu!'),
-        ),
-      );
+    try {
+      await _stazeProvider.update(id, {
+        'nazivStaze': nazivStaze,
+        'opisStaze': opisStaze,
+        'cijenaPoOsobi': cijenaPoOsobi,
+        'duzinaStaze': duzinaStaze,
+        'brojKrugova': brojKrugova,
+        'maxBrojOsoba': maxBrojOsoba,
+        'tezinaId': tezinaId
+      });
+      if (context.mounted) {
+        Navigator.pop(context);
+        _initializeData();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            content: const Text('Uspješno ste editovali stazu!'),
+          ),
+        );
+      }
+    } on Exception catch (e) {
+      String errorMessage = e.toString().replaceFirst('Exception: ', '');
+      // ignore: use_build_context_synchronously
+      showErrorDialog(context, errorMessage);
     }
   }
 

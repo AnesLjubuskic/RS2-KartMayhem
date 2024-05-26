@@ -117,6 +117,9 @@ class _EditStazeModalState extends State<EditStazeModal> {
                     }
                     return null;
                   },
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(40),
+                  ],
                 ),
               ),
               const SizedBox(height: 10),
@@ -154,6 +157,9 @@ class _EditStazeModalState extends State<EditStazeModal> {
                     }
                     return null;
                   },
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(200),
+                  ],
                 ),
               ),
               const SizedBox(height: 20),
@@ -201,6 +207,13 @@ class _EditStazeModalState extends State<EditStazeModal> {
                               if (value == null || value.isEmpty) {
                                 return 'Ovo polje je obavezno';
                               }
+                              double? duzina = double.tryParse(value);
+                              if (duzina == null) {
+                                return 'Unesite ispravnu vrijednost';
+                              }
+                              if (duzina < 0.5 || duzina > 10.0) {
+                                return 'Vrijednost mora biti između 0.5 i 10.0';
+                              }
                               return null;
                             },
                           ),
@@ -240,6 +253,13 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Ovo polje je obavezno';
+                              }
+                              int? broj = int.tryParse(value);
+                              if (broj == null) {
+                                return 'Unesite ispravnu vrijednost';
+                              }
+                              if (broj < 1 || broj > 8) {
+                                return 'Vrijednost mora biti između 1 i 8';
                               }
                               return null;
                             },
@@ -334,6 +354,13 @@ class _EditStazeModalState extends State<EditStazeModal> {
                               if (value == null || value.isEmpty) {
                                 return 'Ovo polje je obavezno';
                               }
+                              int? broj = int.tryParse(value);
+                              if (broj == null) {
+                                return 'Unesite ispravnu vrijednost';
+                              }
+                              if (broj < 1 || broj > 5) {
+                                return 'Vrijednost mora biti između 1 i 5';
+                              }
                               return null;
                             },
                           ),
@@ -373,6 +400,13 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Ovo polje je obavezno';
+                              }
+                              int? cijena = int.tryParse(value);
+                              if (cijena == null) {
+                                return 'Unesite ispravnu vrijednost';
+                              }
+                              if (cijena < 1 || cijena > 999) {
+                                return 'Vrijednost mora biti između 1 i 999';
                               }
                               return null;
                             },
