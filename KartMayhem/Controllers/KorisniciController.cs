@@ -10,11 +10,11 @@ namespace KartMayhem.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-    public class KorisniciController : BaseController<Model.Korisnici, Model.SearchObject.KorisniciSearchObject>
+    public class KorisniciController : BaseCRUDController<Model.Korisnici, Model.SearchObject.KorisniciSearchObject, object, object>
     {
 
         private readonly IKorisniciService _korisniciService;
-        public KorisniciController(ILogger<BaseController<Korisnici, KorisniciSearchObject>> logger,IKorisniciService service) 
+        public KorisniciController(ILogger<BaseCRUDController<Korisnici, KorisniciSearchObject, object, object>> logger,IKorisniciService service) 
             : base(logger, service)
         {            
             _korisniciService = service;

@@ -9,10 +9,8 @@ namespace KartMayhem.Model.UserRequestObjects
 {
     public class KorisniciUpdateByAdminRequest
     {
-        [Required(AllowEmptyStrings = false)]
         public string Ime { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
         public string Prezime { get; set; }
 
         [Required(AllowEmptyStrings = false)]

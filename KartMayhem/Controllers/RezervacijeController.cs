@@ -19,7 +19,7 @@ namespace KartMayhem.Controllers
         }
 
         [HttpPut("cancel")]
-        public async Task<bool> Login(int Id)
+        public async Task<bool> CancelReservation(int Id)
         {
             return await _rezervacijeService.CancelReservation(Id);
         }

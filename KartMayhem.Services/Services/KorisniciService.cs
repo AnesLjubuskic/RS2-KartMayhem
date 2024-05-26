@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace KartMayhem.Services.Services
 {
-    public class KorisniciService : BaseService<Model.Korisnici, Database.Korisnici, Model.SearchObject.KorisniciSearchObject>, IKorisniciService
+    public class KorisniciService : BaseCRUDService<Model.Korisnici, Database.Korisnici, Model.SearchObject.KorisniciSearchObject, object, object>, IKorisniciService
     {
         public KorisniciService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
@@ -70,13 +70,27 @@ namespace KartMayhem.Services.Services
 
         public async Task<List<Model.Korisnici>> TopUsers()
         {
-            var korisnici = _context.Set<Database.Korisnici>()
-                .Include(x => x.Nagrada)
-                .Where(x => x.IsActive)
-                .OrderByDescending(x => x.BrojRezervacija)
-                .Take(5);
+            var korisnici = _context.Set<Database.Korisnici>();
+            var rezervacije = _context.Set<Database.Rezervacije>();
 
-            var korisniciDto = _mapper.Map<List<Model.Korisnici>>(korisnici);
+            var listaKorisnika = new List<Database.Korisnici>();
+
+            foreach(var korisnik in korisnici)
+            {
+                var korisnikCount = 0;
+                foreach(var rezervacija in rezervacije)
+                {
+                    if(rezervacija.KorisnikId == korisnik.Id)
+                    {
+                        korisnikCount++;
+                    }
+                }
+                korisnik.BrojRezervacija = korisnikCount;
+                listaKorisnika.Add(korisnik);
+            }
+
+            var listaKorisnikaDto = listaKorisnika.OrderByDescending(x => x.BrojRezervacija).Take(5);
+            var korisniciDto = _mapper.Map<List<Model.Korisnici>>(listaKorisnikaDto);
 
             foreach (var korisnik in korisniciDto)
             {
@@ -161,7 +175,7 @@ namespace KartMayhem.Services.Services
 
             var emailInUse = korisniciAll.FirstOrDefault(x => x.Email.ToLower() == request.Email.ToLower());
 
-            if (emailInUse != null)
+            if (emailInUse != null && korisnici.Email.ToLower() != request.Email.ToLower())
             {
                 throw new UserException("Email u upotrebi!");
             }

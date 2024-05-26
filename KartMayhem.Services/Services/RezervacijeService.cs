@@ -19,7 +19,7 @@ namespace KartMayhem.Services.Services
         {
         }
 
-        public override Task BeforeInsert(Rezervacije entity, RezervacijeUpsertRequest insert)
+        public override Task ValidationInsert(RezervacijeUpsertRequest insert)
         {
             if (insert == null)
             {
@@ -37,11 +37,17 @@ namespace KartMayhem.Services.Services
             }
 
             var user = _context.Korisnicis.Find(insert.KorisnikId);
+
             if (user == null)
             {
                 throw new RezervacijeException("Osoba nije pronadjena!");
             }
 
+            return base.ValidationInsert(insert);
+        }
+
+        public override Task BeforeInsert(Rezervacije entity, RezervacijeUpsertRequest insert)
+        {
             var staza = _context.Stazes.Find(insert.StazaId);
 
             if (staza == null)
