@@ -3,6 +3,7 @@ using KartMayhem.Model.RequestObjects;
 using KartMayhem.Model.SearchObject;
 using KartMayhem.Services.ServiceInterfaces;
 using KartMayhem.Services.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KartMayhem.Controllers
@@ -18,10 +19,23 @@ namespace KartMayhem.Controllers
             _stazeService = service;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("deactivateTrack/{id}")]
-        public async Task<bool> DeactivateUser(int id)
+        public async Task<bool> DeactivateTrack(int id)
         {
             return await _stazeService.DeactivateTrack(id);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public override Task<Staze> Insert([FromBody] StazeUpsertRequest insert)
+        {
+            return base.Insert(insert);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public override Task<Staze> Update(int id, [FromBody] StazeUpsertRequest update)
+        {
+            return base.Update(id, update);
         }
     }
 }

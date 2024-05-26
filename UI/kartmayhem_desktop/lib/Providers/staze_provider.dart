@@ -28,7 +28,12 @@ class StazeProvider extends BaseProvider<Staze> {
         var data = jsonDecode(response.body);
         return data;
       } else {
-        throw Exception("Exception... handle this gracefully");
+        if (response.body.isNotEmpty) {
+          var data = jsonDecode(response.body);
+          throw Exception("${data["errors"]["stazeError"][0].toString()}");
+        }
+
+        throw Exception('Something went wrong!');
       }
     });
   }

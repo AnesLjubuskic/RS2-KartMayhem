@@ -20,30 +20,35 @@ namespace KartMayhem.Controllers
             _korisniciService = service;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("topUsers")]
         public async Task<List<Model.Korisnici>> TopUsers()
         {
             return await _korisniciService.TopUsers();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("rewardUser/{id}")]
         public async Task<bool> RewardUser(int id)
         {
             return await _korisniciService.RewardUser(id);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("cancelUserReward/{id}")]
         public async Task<bool> CancelUserReward(int id)
         {
             return await _korisniciService.CancelRewardUser(id);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("deactivateUser/{id}")]
         public async Task<bool> DeactivateUser(int id)
         {
             return await _korisniciService.DeactivateUser(id);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("editUserByAdmin/{id}")]
         public async Task<bool> EditUserByAdmin(int id, [FromBody] KorisniciUpdateByAdminRequest request)
         {
