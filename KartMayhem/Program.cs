@@ -38,7 +38,7 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "basic"
     });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
