@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kartmayhem_mobile/Providers/auth_provider.dart';
 import 'package:kartmayhem_mobile/Screens/register_screen.dart';
+import 'package:kartmayhem_mobile/Screens/staze_screen.dart';
 import 'package:kartmayhem_mobile/Utils/util.dart';
 import 'package:provider/provider.dart';
 
@@ -133,14 +134,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         Map user = {'email': email, 'lozinka': password};
                         try {
                           var data = await _authProvider!.login(user);
-                          print(data);
                           if (context.mounted) {
                             _authProvider!.setParameters(data!.id!.toInt());
                             Authorization.email = email;
                             Authorization.password = password;
                             Authorization.id = data.id!.toInt();
-                            //Navigator.pushReplacementNamed(
-                            //    context, StazeScreen.routeName);
+                            Navigator.pushNamed(context, StazeScreen.routeName);
                           }
                         } on Exception catch (error) {
                           if (error.toString().contains("Bad request")) {

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kartmayhem_mobile/Helpers/error_dialog.dart';
+import 'package:kartmayhem_mobile/Helpers/success_dialog.dart';
+import 'package:kartmayhem_mobile/Providers/auth_provider.dart';
+import 'package:kartmayhem_mobile/Utils/util.dart';
 import 'dart:io';
+
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const routeName = '/register';
@@ -13,14 +19,22 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  AuthProvider? _authProvider;
 
   String? _ime;
   String? _prezime;
   String? _email;
   String? _lozinka;
+  String? _pictureBase64;
   File? _picture;
 
   final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+    _authProvider = context.read<AuthProvider>();
+  }
 
   Future<void> _pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -28,6 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (pickedFile != null) {
       setState(() {
         _picture = File(pickedFile.path);
+        _pictureBase64 = imageToBase64(_picture!.readAsBytesSync());
       });
     }
   }
@@ -132,18 +147,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 if (_picture != null)
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: Image.file(
-                      _picture!,
-                      height: 200,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.file(
+                        _picture!,
+                        height: 200,
+                      ),
                     ),
                   ),
                 Row(
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState?.validate() ?? false) {
                             _formKey.currentState?.save();
+                            Map user = {
+                              'ime': _ime,
+                              'prezime': _prezime,
+                              'email': _email,
+                              'lozinka': _lozinka,
+                              'slika': _pictureBase64
+                            };
+                            try {
+                              // ignore: unused_local_variable
+                              var data = await _authProvider!.register(user);
+                              if (context.mounted) {
+                                showSuccessDialog(context,
+                                    "Uspješna registracija, prijavite se da bi ste pristupili aplikaciji!");
+                              }
+                            } on Exception catch (e) {
+                              String errorMessage =
+                                  e.toString().replaceFirst('Exception: ', '');
+                              // ignore: use_build_context_synchronously
+                              showErrorDialog(context, errorMessage);
+                            }
                           } else {
                             print('Validation failed');
                           }

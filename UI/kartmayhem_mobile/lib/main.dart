@@ -4,6 +4,7 @@ import 'package:kartmayhem_mobile/Providers/korisnik_provider.dart';
 import 'package:kartmayhem_mobile/Providers/staze_provider.dart';
 import 'package:kartmayhem_mobile/Screens/login_screen.dart';
 import 'package:kartmayhem_mobile/Screens/register_screen.dart';
+import 'package:kartmayhem_mobile/Screens/staze_screen.dart';
 
 import 'package:provider/provider.dart';
 
@@ -27,14 +28,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Kart Mayhem',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
       initialRoute: LoginScreen.routeName,
       routes: {
-        '/': (context) => const LoginScreen(),
+        LoginScreen.routeName: (context) => const LoginScreen(),
         RegisterScreen.routeName: (context) => const RegisterScreen(),
-        //StazeScreen.routeName: (context) => const StazeScreen(),
+        StazeScreen.routeName: (context) => const StazeScreen(),
         //RezervacijeScreen.routeName: (context) => const RezervacijeScreen(),
         //KorisniciScreen.routeName: (context) => const KorisniciScreen(),
         //NagradiScreen.routeName: (context) => const NagradiScreen()

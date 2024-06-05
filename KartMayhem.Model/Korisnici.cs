@@ -18,6 +18,8 @@
 
         public bool IsNagrada { get; set; }
 
+        public string? Slika { get; set; }
+
         public virtual ICollection<KorisniciUloge> KorisniciUloges { get; } = new List<KorisniciUloge>();
 
         public virtual Nagrade? Nagrada { get; set; }

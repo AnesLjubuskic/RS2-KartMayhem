@@ -6,7 +6,9 @@ using KartMayhem.Services.ServiceInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,6 +78,8 @@ namespace KartMayhem.Services.Services
 
         public async Task<Model.Korisnici> Register(KorisniciInsertRequest request)
         {
+            await Validate(request);
+
             var korisnici = _context.Set<Database.Korisnici>().AsQueryable();
 
             if (korisnici.Any(x => x.Email == request.Email))
@@ -98,6 +102,16 @@ namespace KartMayhem.Services.Services
                 {
                     KorisnikId = korisniciDb.Id,
                     UlogaId = role
+                };
+                _context.KorisniciUloges.Add(korisnikUloge);
+            }
+
+            if (request.Uloge == null || !request.Uloge.Any())
+            {
+                Database.KorisniciUloge korisnikUloge = new Database.KorisniciUloge
+                {
+                    KorisnikId = korisniciDb.Id,
+                    UlogaId = 1
                 };
                 _context.KorisniciUloges.Add(korisnikUloge);
             }
@@ -128,6 +142,44 @@ namespace KartMayhem.Services.Services
             HashAlgorithm algorithm = HashAlgorithm.Create("SHA1");
             byte[] inArray = algorithm.ComputeHash(dst);
             return Convert.ToBase64String(inArray);
+        }
+
+        private Task Validate(KorisniciInsertRequest request)
+        {
+            if(string.IsNullOrWhiteSpace(request.Ime))
+            {
+                throw new UserException("Polje za ime je obavezno");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Prezime))
+            {
+                throw new UserException("Polje za prezime je obavezno");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Email) || !IsValidEmail(request.Email))
+            {
+                throw new UserException("Email nije u ispravnom formatu ili je obavezno polje");
+            }
+
+            if(string.IsNullOrWhiteSpace(request.Lozinka) || request.Lozinka.Length < 6)
+            {
+                throw new UserException("Lozinka zahtijeva dužinu od 6anese karaktera ili više");
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var mailAddress = new MailAddress(email);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
         }
     }
 }

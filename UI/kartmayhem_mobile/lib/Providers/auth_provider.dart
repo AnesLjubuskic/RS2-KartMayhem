@@ -40,18 +40,31 @@ class AuthProvider extends BaseProvider<Korisnik> {
     var headers = createHeaders();
     var uri = Uri.parse(url);
     var jsonRequest = jsonEncode(request);
-    print(jsonRequest);
     var response = await http!.post(uri, headers: headers, body: jsonRequest);
-    print(response.statusCode);
-    print(response.body);
     if (isValidResponseCode(response)) {
       var data = jsonDecode(response.body);
-      print("error");
-
       return fromJson(data);
     } else {
-      print("error");
       return null;
+    }
+  }
+
+  Future<Korisnik?> register(dynamic request) async {
+    var url = "$_baseUrl" "Auth/register";
+    var headers = createHeaders();
+    var uri = Uri.parse(url);
+    var jsonRequest = jsonEncode(request);
+    var response = await http!.post(uri, headers: headers, body: jsonRequest);
+    if (isValidResponseCodeRegister(response)) {
+      var data = jsonDecode(response.body);
+      return fromJson(data);
+    } else {
+      if (response.body.isNotEmpty) {
+        var data = jsonDecode(response.body);
+        throw Exception("${data["errors"]["userError"][0].toString()}");
+      }
+
+      throw Exception('Something went wrong!');
     }
   }
 
@@ -81,6 +94,30 @@ class AuthProvider extends BaseProvider<Korisnik> {
         throw Exception('Bad request');
       }
       throw Exception('Empty 400 response');
+    } else if (response.statusCode == 401) {
+      throw Exception("Unauthorized");
+    } else if (response.statusCode == 403) {
+      throw Exception("Forbidden");
+    } else if (response.statusCode == 404) {
+      throw Exception("Not found");
+    } else if (response.statusCode == 500) {
+      throw Exception("Internal server error");
+    } else {
+      throw Exception("Exception... handle this gracefully");
+    }
+  }
+
+  bool isValidResponseCodeRegister(Response response) {
+    if (response.statusCode == 200) {
+      if (response.body != "") {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (response.statusCode == 204) {
+      return true;
+    } else if (response.statusCode == 400) {
+      return false;
     } else if (response.statusCode == 401) {
       throw Exception("Unauthorized");
     } else if (response.statusCode == 403) {
