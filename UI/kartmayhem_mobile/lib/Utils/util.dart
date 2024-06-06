@@ -10,8 +10,19 @@ class Authorization {
   static int? id;
 }
 
-Image imageFromBase64String(String base64Image) {
-  return Image.memory(base64Decode(base64Image));
+Image imageFromBase64String(
+  String base64Image, {
+  double? width,
+  double? height,
+  BoxFit? fit,
+}) {
+  return Image.memory(
+    base64Decode(base64Image),
+    fit: fit,
+    width: width?.toDouble(),
+    height: height?.toDouble(),
+    alignment: Alignment.topCenter,
+  );
 }
 
 String imageToBase64(Uint8List imageBytes) {
