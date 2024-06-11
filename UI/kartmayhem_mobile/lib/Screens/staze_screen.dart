@@ -15,7 +15,7 @@ class StazeScreen extends StatefulWidget {
 class _StazeScreenState extends State<StazeScreen> {
   late StazeProvider _stazeProvider;
   SearchResult<Staze>? result;
-  TextEditingController _searchController = new TextEditingController();
+  final TextEditingController _searchController = new TextEditingController();
 
   bool amater = false;
   bool pocetnik = false;

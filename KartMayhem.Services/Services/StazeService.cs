@@ -157,5 +157,11 @@ namespace KartMayhem.Services.Services
 
             return includeQuery;
         }
+
+        public async override Task<Model.Staze> GetById(int id)
+        {
+            var staza = _context.Set<Database.Staze>().Include(x => x.Tezina).FirstOrDefault(x => x.Id == id);
+            return _mapper.Map<Model.Staze>(staza);
+        }
     }
 }

@@ -4,6 +4,7 @@ using KartMayhem.Model.SearchObject;
 using KartMayhem.Services.Database;
 using KartMayhem.Services.ServiceInterfaces;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace KartMayhem.Services.Services
 {

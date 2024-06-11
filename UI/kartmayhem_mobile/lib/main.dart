@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kartmayhem_mobile/Providers/auth_provider.dart';
 import 'package:kartmayhem_mobile/Providers/korisnik_provider.dart';
 import 'package:kartmayhem_mobile/Providers/staze_provider.dart';
+import 'package:kartmayhem_mobile/Screens/bottom_navigation.dart';
 import 'package:kartmayhem_mobile/Screens/login_screen.dart';
 import 'package:kartmayhem_mobile/Screens/register_screen.dart';
-import 'package:kartmayhem_mobile/Screens/staze_screen.dart';
 
 import 'package:provider/provider.dart';
 
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       routes: {
         LoginScreen.routeName: (context) => const LoginScreen(),
         RegisterScreen.routeName: (context) => const RegisterScreen(),
-        StazeScreen.routeName: (context) => const StazeScreen(),
+        BottomNavigation.routeName: ((context) => const BottomNavigation()),
         //RezervacijeScreen.routeName: (context) => const RezervacijeScreen(),
         //KorisniciScreen.routeName: (context) => const KorisniciScreen(),
         //NagradiScreen.routeName: (context) => const NagradiScreen()
