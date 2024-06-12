@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:kartmayhem_mobile/Models/staze.dart';
+import 'package:kartmayhem_mobile/Providers/reservation_provider.dart';
 import 'package:kartmayhem_mobile/Providers/staze_provider.dart';
 import 'package:kartmayhem_mobile/Utils/util.dart';
 
@@ -17,15 +19,21 @@ class ReservationScreen extends StatefulWidget {
 
 class _ReservationScreenState extends State<ReservationScreen> {
   late StazeProvider _stazeProvider;
+  late RezervacijeProvider _rezervacijeProvider;
   Staze? staza;
+  late List<String> timeSlots;
+  late List<bool> isSelected;
   int? brojOsoba = 1;
   bool kartica = false;
   bool gotovina = false;
+  DateTime selectedDate = DateTime.now().add(Duration(days: 1));
+  final DateFormat dateFormat = DateFormat('yyyy-MM-dd');
 
   @override
   void initState() {
     super.initState();
     _initializeData();
+    _timeSlotsUpdate();
   }
 
   Future<void> _initializeData() async {
@@ -33,6 +41,16 @@ class _ReservationScreenState extends State<ReservationScreen> {
     var data = await _stazeProvider.getById(widget.stazeId);
     setState(() {
       staza = data;
+      isSelected = List.generate(timeSlots.length, (index) => false);
+    });
+  }
+
+  Future<void> _timeSlotsUpdate() async {
+    _rezervacijeProvider = RezervacijeProvider();
+    var data = await _rezervacijeProvider.getReservationTimeSlots(
+        widget.stazeId, dateFormat.format(selectedDate));
+    setState(() {
+      timeSlots = data;
     });
   }
 
@@ -158,16 +176,50 @@ class _ReservationScreenState extends State<ReservationScreen> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 10.0),
+              padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 5.0),
               child: Text(
-                "Datum",
+                "Datum ${dateFormat.format(selectedDate)}",
                 textAlign: TextAlign.start,
                 style: const TextStyle(
                     fontWeight: FontWeight.normal, fontSize: 18),
               ),
             ),
-            SizedBox(
-              height: 30, //placeholder for datepicker
+            InkWell(
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now().add(Duration(days: 1)),
+                  firstDate: DateTime.now().add(Duration(days: 1)),
+                  lastDate: DateTime(2101),
+                );
+                if (pickedDate != null) {
+                  setState(() {
+                    selectedDate = pickedDate;
+                    _timeSlotsUpdate();
+                  });
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 8.0),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF870000),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Izaberite datum",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 10.0),
@@ -178,9 +230,40 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     fontWeight: FontWeight.normal, fontSize: 18),
               ),
             ),
-            SizedBox(
-              height: 30, //placeholder for dynamic termin
+            //dodaj dugmad
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: timeSlots.map((timeSlot) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 4.0, horizontal: 8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Handle button tap
+                      print('Selected slot: $timeSlot');
+                      // You can add further logic here if needed
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xFF870000),
+                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    child: Text(
+                      timeSlot,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
+
+            //
             Padding(
               padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 5.0),
               child: Text(
@@ -221,61 +304,69 @@ class _ReservationScreenState extends State<ReservationScreen> {
               ),
             ),
             paymentButtons(),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 0.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            gotovina = false;
-                            kartica = !kartica;
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF870000),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          "Otkaži",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      ),
-                    ),
-                  ],
+            otkaziButton(),
+            spremiButton(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Center spremiButton() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 10.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    gotovina = false;
+                    kartica = !kartica;
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFE8E8E8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Text(
+                  "Spremi",
+                  style: TextStyle(color: Colors.black, fontSize: 18),
                 ),
               ),
             ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 10.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            gotovina = false;
-                            kartica = !kartica;
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFE8E8E8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text(
-                          "Spremi",
-                          style: TextStyle(color: Colors.black, fontSize: 18),
-                        ),
-                      ),
-                    ),
-                  ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Center otkaziButton() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 0.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    gotovina = false;
+                    kartica = !kartica;
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF870000),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Text(
+                  "Otkaži",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
             ),

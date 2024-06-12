@@ -23,5 +23,11 @@ namespace KartMayhem.Controllers
         {
             return await _rezervacijeService.CancelReservation(Id);
         }
+
+        [HttpGet("timeSlots")]
+        public List<string> GetReservationTimeSlots(int stazaId, string datumRezervacije)
+        {
+            return _rezervacijeService.GetReservationTimeSlots(stazaId, datumRezervacije);
+        }
     }
 }

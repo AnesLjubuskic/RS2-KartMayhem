@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using KartMayhem.Model;
 using KartMayhem.Model.Exception;
 using KartMayhem.Model.RequestObjects;
 using KartMayhem.Model.SearchObject;
@@ -46,7 +47,7 @@ namespace KartMayhem.Services.Services
             return base.ValidationInsert(insert);
         }
 
-        public override Task BeforeInsert(Rezervacije entity, RezervacijeUpsertRequest insert)
+        public override Task BeforeInsert(Database.Rezervacije entity, RezervacijeUpsertRequest insert)
         {
             var staza = _context.Stazes.Find(insert.StazaId);
 
@@ -64,7 +65,7 @@ namespace KartMayhem.Services.Services
             return base.BeforeInsert(entity, insert);
         }
 
-        public override IQueryable<Rezervacije> AddFilter(IQueryable<Rezervacije> query, RezervacijeSearchRequest? search = null)
+        public override IQueryable<Database.Rezervacije> AddFilter(IQueryable<Database.Rezervacije> query, RezervacijeSearchRequest? search = null)
         {
             var filter = base.AddFilter(query, search);
 
@@ -95,6 +96,23 @@ namespace KartMayhem.Services.Services
             await _context.SaveChangesAsync();
 
             return true;
+        }
+        public List<string> GetReservationTimeSlots(int stazaId, string datumRezervacije)
+        {
+            var reservations = _context.Rezervacijes
+                .Where(x => x.DayOfReservation == datumRezervacije
+                       && x.StazaId == stazaId);
+
+            List<string> allTimeSlots = ReservationSlots.getReservationSlots();
+            List<string> returnSlots = new List<string> { };
+
+            foreach (var timeSlot in allTimeSlots)
+            {
+                if (!reservations.Any(x => x.TimeSlot == timeSlot && !x.isCancelled))
+                    returnSlots.Add(timeSlot);
+            };
+
+            return returnSlots;
         }
     }
 }
