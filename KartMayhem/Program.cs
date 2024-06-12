@@ -17,6 +17,7 @@ builder.Services.AddTransient<IKorisniciService, KorisniciService>();
 builder.Services.AddTransient<IStazeService, StazeService>();
 builder.Services.AddTransient<IRezencijeService, RezencijeService>();
 builder.Services.AddTransient<IRezervacijeService, RezervacijeService>();
+builder.Services.AddTransient<StripeService>();
 builder.Services.AddTransient<IBaseService<KartMayhem.Model.Tezine, BaseSearchObject>, BaseService<KartMayhem.Model.Tezine
     , KartMayhem.Services.Database.Tezine, BaseSearchObject>>();
 
