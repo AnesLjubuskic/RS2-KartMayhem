@@ -21,8 +21,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
   late StazeProvider _stazeProvider;
   late RezervacijeProvider _rezervacijeProvider;
   Staze? staza;
-  late List<String> timeSlots;
-  late List<bool> isSelected;
+  late List<String> timeSlots = [];
+  int selectedSlot = -1;
   int? brojOsoba = 1;
   bool kartica = false;
   bool gotovina = false;
@@ -41,7 +41,6 @@ class _ReservationScreenState extends State<ReservationScreen> {
     var data = await _stazeProvider.getById(widget.stazeId);
     setState(() {
       staza = data;
-      isSelected = List.generate(timeSlots.length, (index) => false);
     });
   }
 
@@ -51,6 +50,12 @@ class _ReservationScreenState extends State<ReservationScreen> {
         widget.stazeId, dateFormat.format(selectedDate));
     setState(() {
       timeSlots = data;
+    });
+  }
+
+  void setSlotIndex(int index) {
+    setState(() {
+      selectedSlot = index;
     });
   }
 
@@ -230,39 +235,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     fontWeight: FontWeight.normal, fontSize: 18),
               ),
             ),
-            //dodaj dugmad
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: timeSlots.map((timeSlot) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 4.0, horizontal: 8.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Handle button tap
-                      print('Selected slot: $timeSlot');
-                      // You can add further logic here if needed
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: const Color(0xFF870000),
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    child: Text(
-                      timeSlot,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
 
+            //amar
+            listTimeSlots(),
             //
             Padding(
               padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 5.0),
@@ -312,6 +287,40 @@ class _ReservationScreenState extends State<ReservationScreen> {
     );
   }
 
+  Padding listTimeSlots() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        children: List.generate(timeSlots.length, (index) {
+          return GestureDetector(
+            onTap: () {
+              setSlotIndex(index);
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: selectedSlot == index
+                    ? const Color(0xFF870000)
+                    : const Color(0xFFE8E8E8),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Center(
+                child: Text(
+                  timeSlots[index],
+                  style: TextStyle(
+                    color: selectedSlot == index ? Colors.white : Colors.black,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
   Center spremiButton() {
     return Center(
       child: Padding(
@@ -320,12 +329,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    gotovina = false;
-                    kartica = !kartica;
-                  });
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFE8E8E8),
                   shape: RoundedRectangleBorder(
