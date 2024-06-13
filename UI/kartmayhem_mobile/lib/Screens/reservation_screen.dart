@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:kartmayhem_mobile/Helpers/error_dialog.dart';
+import 'package:kartmayhem_mobile/Helpers/success_dialog.dart';
 import 'package:kartmayhem_mobile/Models/rezervacijeUpsert.dart';
 import 'package:kartmayhem_mobile/Models/staze.dart';
 import 'package:kartmayhem_mobile/Providers/reservationUpsert_provider.dart';
@@ -269,7 +270,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
               padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 10.0),
               child: staza != null
                   ? Text(
-                      "${staza!.cijenaPoOsobi! * brojOsoba!}KM ",
+                      "${staza!.cijenaPoOsobi! * (brojOsoba ?? 1)}KM ",
                       textAlign: TextAlign.start,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 30),
@@ -337,28 +338,42 @@ class _ReservationScreenState extends State<ReservationScreen> {
             Expanded(
               child: ElevatedButton(
                 onPressed: () async {
-                  // if (gotovina) {
-                  RezervacijeUpsert rezervacijeUpsertRequest =
-                      RezervacijeUpsert(
-                          cijenaPoOsobi: staza!.cijenaPoOsobi,
-                          brojOsoba: brojOsoba,
-                          dayOfReservation: dateFormat.format(selectedDate),
-                          timeSlot: timeSlots[selectedSlot],
-                          korisnikId: Authorization.id,
-                          stazaId: staza!.id);
-                  try {
-                    _rezervacijeUpsertProvider = RezervacijeUpsertProvider();
-                    await _rezervacijeUpsertProvider
-                        .insert(rezervacijeUpsertRequest);
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
-                  } catch (e) {
-                    // String errorMessage =
-                    //     e.toString().replaceFirst('Exception: ', '');
-                    // ignore: use_build_context_synchronously
-                    // showErrorDialog(context, errorMessage);
+                  if (brojOsoba == null) {
+                    showErrorDialog(context, "Unesite broj osoba!");
+                    return;
                   }
-                  // }
+
+                  if (selectedSlot == -1) {
+                    showErrorDialog(context, "Odaberite termin!");
+                  }
+
+                  if (!kartica && !gotovina) {
+                    showErrorDialog(context, "Odaberite način plaćanja!");
+                  }
+
+                  if (gotovina) {
+                    RezervacijeUpsert rezervacijeUpsertRequest =
+                        RezervacijeUpsert(
+                            cijenaPoOsobi: staza!.cijenaPoOsobi,
+                            brojOsoba: brojOsoba,
+                            dayOfReservation: dateFormat.format(selectedDate),
+                            timeSlot: timeSlots[selectedSlot],
+                            korisnikId: Authorization.id,
+                            stazaId: staza!.id);
+                    try {
+                      _rezervacijeUpsertProvider = RezervacijeUpsertProvider();
+                      await _rezervacijeUpsertProvider
+                          .insert(rezervacijeUpsertRequest);
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
+                      showSuccessDialog(context, "Uspješno rezervisan termin!");
+                    } catch (e) {
+                      // String errorMessage =
+                      //     e.toString().replaceFirst('Exception: ', '');
+                      // ignore: use_build_context_synchronously
+                      // showErrorDialog(context, errorMessage);
+                    }
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFE8E8E8),
