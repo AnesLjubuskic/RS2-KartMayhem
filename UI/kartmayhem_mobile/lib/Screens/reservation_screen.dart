@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:kartmayhem_mobile/Helpers/error_dialog.dart';
+import 'package:kartmayhem_mobile/Models/rezervacijeUpsert.dart';
 import 'package:kartmayhem_mobile/Models/staze.dart';
+import 'package:kartmayhem_mobile/Providers/reservationUpsert_provider.dart';
 import 'package:kartmayhem_mobile/Providers/reservation_provider.dart';
 import 'package:kartmayhem_mobile/Providers/staze_provider.dart';
 import 'package:kartmayhem_mobile/Utils/util.dart';
@@ -20,6 +23,8 @@ class ReservationScreen extends StatefulWidget {
 class _ReservationScreenState extends State<ReservationScreen> {
   late StazeProvider _stazeProvider;
   late RezervacijeProvider _rezervacijeProvider;
+  late RezervacijeUpsertProvider _rezervacijeUpsertProvider;
+
   Staze? staza;
   late List<String> timeSlots = [];
   int selectedSlot = -1;
@@ -58,6 +63,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
       selectedSlot = index;
     });
   }
+
+  void submitReservation() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -329,7 +336,30 @@ class _ReservationScreenState extends State<ReservationScreen> {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  // if (gotovina) {
+                  RezervacijeUpsert rezervacijeUpsertRequest =
+                      RezervacijeUpsert(
+                          cijenaPoOsobi: staza!.cijenaPoOsobi,
+                          brojOsoba: brojOsoba,
+                          dayOfReservation: dateFormat.format(selectedDate),
+                          timeSlot: timeSlots[selectedSlot],
+                          korisnikId: Authorization.id,
+                          stazaId: staza!.id);
+                  try {
+                    _rezervacijeUpsertProvider = RezervacijeUpsertProvider();
+                    await _rezervacijeUpsertProvider
+                        .insert(rezervacijeUpsertRequest);
+                    // ignore: use_build_context_synchronously
+                    Navigator.pop(context);
+                  } catch (e) {
+                    // String errorMessage =
+                    //     e.toString().replaceFirst('Exception: ', '');
+                    // ignore: use_build_context_synchronously
+                    // showErrorDialog(context, errorMessage);
+                  }
+                  // }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFE8E8E8),
                   shape: RoundedRectangleBorder(

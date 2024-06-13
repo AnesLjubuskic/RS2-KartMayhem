@@ -32,9 +32,19 @@ namespace KartMayhem.Services.Services
                 throw new RezervacijeException("Broj osoba nije validan!");
             }
 
-            if (insert.CijenaRezervacije < 1 || insert.CijenaRezervacije > 9999)
+            if (insert.CijenaPoOsobi < 1 || insert.CijenaPoOsobi > 1000)
             {
-                throw new RezervacijeException("Cijena rezervacije nije validna!");
+                throw new RezervacijeException("Broj osoba nije validan!");
+            }
+
+            if (string.IsNullOrWhiteSpace(insert.DayOfReservation))
+            {
+                throw new RezervacijeException("Datum rezervacije nije primljen!");
+            }
+
+            if (string.IsNullOrWhiteSpace(insert.TimeSlot))
+            {
+                throw new RezervacijeException("Termin nije primljen!");
             }
 
             var user = _context.Korisnicis.Find(insert.KorisnikId);
@@ -60,7 +70,16 @@ namespace KartMayhem.Services.Services
                 throw new RezervacijeException("Staza nije aktivna!");
             }
 
+            var timeSlots = GetReservationTimeSlots(insert.StazaId, insert.DayOfReservation);
+
+            if (timeSlots.Count == 0 || !timeSlots.Contains(insert.TimeSlot))
+            {
+                throw new RezervacijeException("Termin nije dostupan!");
+            }
+
             entity.ImeStaze = staza.NazivStaze;
+
+            entity.CijenaRezervacije = insert.BrojOsoba * insert.CijenaPoOsobi;
 
             return base.BeforeInsert(entity, insert);
         }

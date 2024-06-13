@@ -84,9 +84,9 @@ abstract class BaseProvider<T> with ChangeNotifier {
       var data = jsonDecode(response.body);
       return fromJson(data);
     } else {
-      if (response.body.isNotEmpty && _endpoint == "Staze") {
+      if (response.body.isNotEmpty && _endpoint == "Rezervacije") {
         var data = jsonDecode(response.body);
-        throw Exception("${data["errors"]["stazeError"][0].toString()}");
+        throw Exception("${data["errors"]["rezervacijeError"][0].toString()}");
       }
 
       throw Exception('Something went wrong!');

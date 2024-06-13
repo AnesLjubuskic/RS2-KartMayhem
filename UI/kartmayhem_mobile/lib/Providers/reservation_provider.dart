@@ -5,7 +5,7 @@ import 'package:kartmayhem_mobile/Providers/base_provided.dart';
 
 class RezervacijeProvider extends BaseProvider<Rezervacije> {
   static String? _baseUrl;
-  RezervacijeProvider() : super("Staze") {
+  RezervacijeProvider() : super("Rezervacije") {
     _baseUrl = const String.fromEnvironment("baseUrl",
         defaultValue: "http://10.0.2.2:5258/");
     if (_baseUrl!.endsWith("/") == false) {
