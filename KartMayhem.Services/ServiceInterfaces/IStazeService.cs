@@ -9,5 +9,7 @@ namespace KartMayhem.Services.ServiceInterfaces
         Task<bool> DeactivateTrack(int trackId);
 
         Task<PagedResult<Model.Staze>> FavouriteTracks(int userId);
+
+        Task<bool> MarkFavouriteTrack(int id, int userId);
     }
 }

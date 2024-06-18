@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kartmayhem_mobile/Models/search_result.dart';
 import 'package:kartmayhem_mobile/Models/staze.dart';
 import 'package:kartmayhem_mobile/Providers/staze_provider.dart';
+import 'package:kartmayhem_mobile/Utils/util.dart';
 import 'package:kartmayhem_mobile/Widgets/KartingCards/kartingCardButton1.dart';
 
 class SavedStazeScreen extends StatefulWidget {
@@ -24,7 +25,8 @@ class _SavedStazeScreenState extends State<SavedStazeScreen> {
 
   Future<void> _initializeData() async {
     _stazeProvider = StazeProvider();
-    var data = await _stazeProvider.get(search: {});
+    var data =
+        await _stazeProvider.getFavourite(search: {'userId': Authorization.id});
     setState(() {
       result = data;
     });
@@ -63,7 +65,10 @@ class _SavedStazeScreenState extends State<SavedStazeScreen> {
                         itemCount: result!.count,
                         itemBuilder: (context, index) {
                           final staza = result!.result[index];
-                          return KartingCardButton1(staze: staza);
+                          return KartingCardButton1(
+                            staze: staza,
+                            onFavouriteMarked: _initializeData,
+                          );
                         },
                       ),
                     ),

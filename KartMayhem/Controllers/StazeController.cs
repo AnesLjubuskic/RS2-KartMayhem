@@ -43,5 +43,11 @@ namespace KartMayhem.Controllers
         {
             return await _stazeService.FavouriteTracks(userId);
         }
+
+        [HttpPut("markFavouriteTrack")]
+        public async Task<bool> MarkFavouriteTrack(int id, int userId)
+        {
+            return await _stazeService.MarkFavouriteTrack(id, userId);
+        }
     }
 }

@@ -148,7 +148,7 @@ namespace KartMayhem.Services.Services
                 {
                     foreach(var querySingle in filter)
                     {
-                        if (querySingle.Id == korisniciStaze.Id)
+                        if (querySingle.Id == korisniciStaze.StazeId)
                         {
                             querySingle.Favourite = true;
                         }
@@ -196,7 +196,7 @@ namespace KartMayhem.Services.Services
             List<Database.Staze> stazeFavoriti = new List<Database.Staze>();
             result.TotalCount = await korisniciStaze.CountAsync();
 
-            var staze = _context.Stazes;
+            var staze = _context.Stazes.Include(x => x.Tezina).Where(x => x.IsActive);
 
             foreach(var korisniciStaza in korisniciStaze)
             {
@@ -218,8 +218,36 @@ namespace KartMayhem.Services.Services
             }
 
             result.Result = mappedStaze;
+            result.Count = mappedStaze.Count();
 
             return result;
+        }
+
+        public async Task<bool> MarkFavouriteTrack(int id, int userId)
+        {
+            var staza = _context.Stazes.Where(x => x.Id == id);
+            var stazaKorisnikDB = _context.KorisniciStazes;
+            var stazeKorisnik = _context.KorisniciStazes.Where(x => x.KorisniciId == userId && x.StazeId == id).FirstOrDefault();
+            
+            if (staza == null || !staza.Any())
+            {
+                throw new StazeException("Staza ne postoji!");
+            }
+
+            if (stazeKorisnik == null)
+            {
+                var korisnik = new KorisniciStaze() { KorisniciId = userId, StazeId = id };
+
+                await stazaKorisnikDB.AddAsync(korisnik);
+            }
+            else
+            {
+                stazaKorisnikDB.Remove(stazeKorisnik);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

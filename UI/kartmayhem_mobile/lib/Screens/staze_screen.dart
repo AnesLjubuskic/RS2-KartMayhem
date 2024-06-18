@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kartmayhem_mobile/Models/search_result.dart';
 import 'package:kartmayhem_mobile/Models/staze.dart';
 import 'package:kartmayhem_mobile/Providers/staze_provider.dart';
+import 'package:kartmayhem_mobile/Utils/util.dart';
 import 'package:kartmayhem_mobile/Widgets/KartingCards/kartingCardButton1.dart';
 
 class StazeScreen extends StatefulWidget {
@@ -38,6 +39,7 @@ class _StazeScreenState extends State<StazeScreen> {
     var data = await _stazeProvider.get(search: {
       'nazivStaze': _searchController.text,
       'tezineId': tezineId,
+      'userId': Authorization.id
     });
     setState(() {
       result = data;
@@ -78,7 +80,10 @@ class _StazeScreenState extends State<StazeScreen> {
                         itemCount: result!.count,
                         itemBuilder: (context, index) {
                           final staza = result!.result[index];
-                          return KartingCardButton1(staze: staza);
+                          return KartingCardButton1(
+                            staze: staza,
+                            onFavouriteMarked: _initializeData,
+                          );
                         },
                       ),
                     ),
