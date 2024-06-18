@@ -37,5 +37,11 @@ namespace KartMayhem.Controllers
         {
             return base.Update(id, update);
         }
+
+        [HttpGet("favouriteTracks")]
+        public async Task<PagedResult<Model.Staze>> FavouriteTracks(int userId)
+        {
+            return await _stazeService.FavouriteTracks(userId);
+        }
     }
 }

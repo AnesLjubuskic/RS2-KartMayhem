@@ -24,6 +24,8 @@
 
         public bool IsActive { get; set; }
 
+        public bool Favourite { get; set; } = false;
+
         public ICollection<Rezencije> Rezencijes { get; } = new List<Rezencije>();
     }
 }

@@ -92,6 +92,9 @@ namespace KartMayhem.Services.Services
 
 
             var tmp = _mapper.Map<List<T>>(list);
+
+            tmp = AddPostMapFilter(tmp, search);
+
             result.Result = tmp;
             return result;
         }
@@ -102,6 +105,11 @@ namespace KartMayhem.Services.Services
         }
 
         public virtual IQueryable<TDb> AddFilter(IQueryable<TDb> query, TSearch? search = null)
+        {
+            return query;
+        }
+
+        public virtual List<T> AddPostMapFilter(List<T> query, TSearch? search = null)
         {
             return query;
         }

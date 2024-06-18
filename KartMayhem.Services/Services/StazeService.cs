@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using KartMayhem.Model;
 using KartMayhem.Model.Exception;
 using KartMayhem.Model.RequestObjects;
 using KartMayhem.Model.SearchObject;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace KartMayhem.Services.Services
 {
@@ -99,7 +101,7 @@ namespace KartMayhem.Services.Services
             return base.ValidationUpdate(update);
         }
 
-        public override Task BeforeInsert(Staze entity, StazeUpsertRequest insert)
+        public override Task BeforeInsert(Database.Staze entity, StazeUpsertRequest insert)
         {
             
 
@@ -117,7 +119,7 @@ namespace KartMayhem.Services.Services
             return base.BeforeInsert(entity, insert);
         }
 
-        public override IQueryable<Staze> AddFilter(IQueryable<Staze> query, StazeSearchObject? search = null)
+        public override IQueryable<Database.Staze> AddFilter(IQueryable<Database.Staze> query, StazeSearchObject? search = null)
         {
             var filter = base.AddFilter(query, search);
 
@@ -129,6 +131,29 @@ namespace KartMayhem.Services.Services
             if (search != null && search.TezineId != null && search.TezineId.Count() > 0)
             {
                 filter = filter.Where(x => search.TezineId.Contains(x.TezinaId));
+            }
+
+            return filter;
+        }
+
+        public override List<Model.Staze> AddPostMapFilter(List<Model.Staze> query, StazeSearchObject? search = null)
+        {
+            var filter = base.AddPostMapFilter(query, search);
+
+            if (search != null && search.UserId != null)
+            {
+                var korisniciStazes = _context.KorisniciStazes.Where(x => x.KorisniciId == search.UserId);
+
+                foreach(var korisniciStaze in korisniciStazes)
+                {
+                    foreach(var querySingle in filter)
+                    {
+                        if (querySingle.Id == korisniciStaze.Id)
+                        {
+                            querySingle.Favourite = true;
+                        }
+                    }
+                }
             }
 
             return filter;
@@ -150,7 +175,7 @@ namespace KartMayhem.Services.Services
             return true;
         }
 
-        public override IQueryable<Staze> AddInclude(IQueryable<Staze> query, StazeSearchObject? search = null)
+        public override IQueryable<Database.Staze> AddInclude(IQueryable<Database.Staze> query, StazeSearchObject? search = null)
         {
             var includeQuery = base.AddInclude(query, search);
             includeQuery = includeQuery.Include(x => x.Tezina);
@@ -162,6 +187,39 @@ namespace KartMayhem.Services.Services
         {
             var staza = _context.Set<Database.Staze>().Include(x => x.Tezina).FirstOrDefault(x => x.Id == id);
             return _mapper.Map<Model.Staze>(staza);
+        }
+
+        public async Task<Model.PagedResult<Model.Staze>> FavouriteTracks(int userId)
+        {
+            var korisniciStaze = _context.KorisniciStazes.Where(x => x.KorisniciId == userId);
+            PagedResult<Model.Staze> result = new PagedResult<Model.Staze>();
+            List<Database.Staze> stazeFavoriti = new List<Database.Staze>();
+            result.TotalCount = await korisniciStaze.CountAsync();
+
+            var staze = _context.Stazes;
+
+            foreach(var korisniciStaza in korisniciStaze)
+            {
+                foreach(var staza in staze)
+                {
+                    if (staza.Id == korisniciStaza.StazeId)
+                    {
+                        stazeFavoriti.Add(staza);
+                        break;
+                    }
+                }
+            }
+
+            var mappedStaze = _mapper.Map<List<Model.Staze>>(stazeFavoriti);
+
+            foreach(var staza in mappedStaze)
+            {
+                staza.Favourite = true;
+            }
+
+            result.Result = mappedStaze;
+
+            return result;
         }
     }
 }

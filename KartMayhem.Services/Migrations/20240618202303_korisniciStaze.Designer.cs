@@ -4,6 +4,7 @@ using KartMayhem.Services.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KartMayhem.Services.Migrations
 {
     [DbContext(typeof(KartMayhemContext))]
-    partial class KartMayhemContextModelSnapshot : ModelSnapshot
+    [Migration("20240618202303_korisniciStaze")]
+    partial class korisniciStaze
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,29 +70,6 @@ namespace KartMayhem.Services.Migrations
                     b.HasIndex("NagradaId");
 
                     b.ToTable("Korisnicis");
-                });
-
-            modelBuilder.Entity("KartMayhem.Services.Database.KorisniciStaze", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("KorisniciId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StazeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("KorisniciId");
-
-                    b.HasIndex("StazeId");
-
-                    b.ToTable("KorisniciStazes");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.KorisniciUloge", b =>
@@ -350,25 +330,6 @@ namespace KartMayhem.Services.Migrations
                         .HasForeignKey("NagradaId");
 
                     b.Navigation("Nagrada");
-                });
-
-            modelBuilder.Entity("KartMayhem.Services.Database.KorisniciStaze", b =>
-                {
-                    b.HasOne("KartMayhem.Services.Database.Korisnici", "Korisnici")
-                        .WithMany()
-                        .HasForeignKey("KorisniciId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("KartMayhem.Services.Database.Staze", "Staze")
-                        .WithMany()
-                        .HasForeignKey("StazeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Korisnici");
-
-                    b.Navigation("Staze");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.KorisniciUloge", b =>
