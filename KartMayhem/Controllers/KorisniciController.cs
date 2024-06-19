@@ -48,7 +48,6 @@ namespace KartMayhem.Controllers
             return await _korisniciService.DeactivateUser(id);
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPut("editUserByAdmin/{id}")]
         public async Task<bool> EditUserByAdmin(int id, [FromBody] KorisniciUpdateByAdminRequest request)
         {

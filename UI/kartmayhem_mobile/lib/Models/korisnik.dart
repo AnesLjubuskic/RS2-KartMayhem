@@ -14,6 +14,7 @@ class Korisnik {
   bool? isNagrada;
   int? brojRezervacija;
   String? punoIme;
+  String? slika;
 
   Korisnik(
       {this.id,
@@ -23,7 +24,8 @@ class Korisnik {
       this.lozinka,
       this.isNagrada,
       this.brojRezervacija,
-      this.punoIme});
+      this.punoIme,
+      this.slika});
 
   factory Korisnik.fromJson(Map<String, dynamic> json) =>
       _$KorisnikFromJson(json);

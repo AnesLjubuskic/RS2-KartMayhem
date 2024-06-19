@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kartmayhem_mobile/Screens/profile_screen.dart';
 import 'package:kartmayhem_mobile/Screens/saved_staze_screen.dart';
 import 'package:kartmayhem_mobile/Screens/staze_screen.dart';
 
@@ -14,6 +15,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   final List<Widget> _screens = [
     const StazeScreen(),
     const SavedStazeScreen(),
+    const ProfileScreen(),
   ];
 
   final List<IconData> _icons = const [
@@ -25,7 +27,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   final List<String> _labels = const [
     'Home',
     'Spremljeno',
-    'Profile',
+    'Profil',
   ];
 
   int _currentIndex = 0;
