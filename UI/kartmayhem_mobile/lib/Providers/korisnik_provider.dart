@@ -17,7 +17,7 @@ class KorisnikProvider extends BaseProvider<Korisnik> {
   }
 
   Future<bool?> editUser(int id, [dynamic request]) {
-    var url = "$_baseUrl" "Korisnici/editUserByAdmin/$id";
+    var url = "$_baseUrl" "Korisnici/editUser/$id";
     var uri = Uri.parse(url);
 
     Map<String, String> headers = createHeaders();

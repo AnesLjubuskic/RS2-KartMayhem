@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace KartMayhem.Services.Services
 {
-    public class KorisniciService : BaseCRUDService<Model.Korisnici, Database.Korisnici, Model.SearchObject.KorisniciSearchObject, object, object>, IKorisniciService
+    public class KorisniciService : BaseCRUDService<Model.Korisnici, Database.Korisnici, Model.SearchObject.KorisniciSearchObject, object, KorisniciUpdateRequest>, IKorisniciService
     {
         public KorisniciService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
@@ -168,7 +168,7 @@ namespace KartMayhem.Services.Services
                 throw new UserException("Admin ne može biti editovan!");
             }
 
-            if (string.IsNullOrEmpty(korisnici.Ime) || string.IsNullOrEmpty(korisnici.Prezime) || string.IsNullOrEmpty(korisnici.Email))
+            if (string.IsNullOrWhiteSpace(request.Ime) || string.IsNullOrWhiteSpace(request.Prezime) || string.IsNullOrWhiteSpace(request.Email))
             {
                 throw new UserException("Invalidni podaci!");
             }
@@ -178,6 +178,35 @@ namespace KartMayhem.Services.Services
             if (emailInUse != null && korisnici.Email.ToLower() != request.Email.ToLower())
             {
                 throw new UserException("Email u upotrebi!");
+            }
+
+            korisnici.Ime = request.Ime;
+            korisnici.Prezime = request.Prezime;
+            korisnici.Email = request.Email;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> EditUser(int userId, KorisniciUpdateRequest request)
+        {
+            var korisniciAll = _context.Set<Database.Korisnici>();
+            var korisnici = korisniciAll.Find(userId);
+
+            if (korisnici == null)
+            {
+                throw new UserException("Korisnik ne postoji!");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.Ime) || string.IsNullOrWhiteSpace(request.Prezime) || string.IsNullOrWhiteSpace(request.Email))
+            {
+                throw new UserException("Invalidni podaci!");
+            }
+
+            if (!string.IsNullOrWhiteSpace(request.Slika))
+            {
+                korisnici.Slika = request.Slika;
             }
 
             korisnici.Ime = request.Ime;

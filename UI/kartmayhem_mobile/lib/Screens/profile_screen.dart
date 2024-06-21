@@ -55,13 +55,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ? imageFromBase64String(
                           korisnik!.slika!,
                           fit: BoxFit.cover,
-                          height: 180,
-                          width: 180,
+                          height: 150,
+                          width: 150,
                         )
                       : Container(
                           color: Colors.grey,
-                          height: 180,
-                          width: 180,
+                          height: 150,
+                          width: 150,
                         ),
                 ),
               ),
@@ -94,17 +94,123 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(15.0, 8.0, 15.0, 8.0),
+                child: Text(
+                  "Email",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE8E8E8),
+                    borderRadius: BorderRadius.circular(5.0),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: TextFormField(
+                    enabled: false,
+                    decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.only(
+                            bottom: 10, right: 8, left: 8),
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        hintText: korisnik?.email),
+                  ),
+                ),
+              ),
+              ponistiRezervaciju(),
+              preporuceneStaze(),
+              historija(),
             ],
           ),
         ));
   }
 
-  Center editButton() {
+  Center ponistiRezervaciju() {
     return Center(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 0.0),
         child: SizedBox(
-          width: 180,
+          width: 280,
+          height: 45,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF870000),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text(
+              "Poništi rezervaciju",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Center preporuceneStaze() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 0.0),
+        child: SizedBox(
+          width: 280,
+          height: 45,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF870000),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text(
+              "Preporučene staze",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Center historija() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 0.0),
+        child: SizedBox(
+          width: 280,
+          height: 45,
+          child: ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF870000),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text(
+              "Historija",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Center editButton() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 0.0),
+        child: SizedBox(
+          width: 150,
           child: ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -114,7 +220,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     korisnik: korisnik!,
                   ),
                 ),
-              );
+              ).then((value) => _initializeData());
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF870000),

@@ -10,11 +10,11 @@ namespace KartMayhem.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-    public class KorisniciController : BaseCRUDController<Model.Korisnici, Model.SearchObject.KorisniciSearchObject, object, object>
+    public class KorisniciController : BaseCRUDController<Model.Korisnici, Model.SearchObject.KorisniciSearchObject, object, KorisniciUpdateRequest>
     {
 
         private readonly IKorisniciService _korisniciService;
-        public KorisniciController(ILogger<BaseCRUDController<Korisnici, KorisniciSearchObject, object, object>> logger,IKorisniciService service) 
+        public KorisniciController(ILogger<BaseCRUDController<Korisnici, KorisniciSearchObject, object, KorisniciUpdateRequest>> logger,IKorisniciService service) 
             : base(logger, service)
         {            
             _korisniciService = service;
@@ -48,10 +48,17 @@ namespace KartMayhem.Controllers
             return await _korisniciService.DeactivateUser(id);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("editUserByAdmin/{id}")]
         public async Task<bool> EditUserByAdmin(int id, [FromBody] KorisniciUpdateByAdminRequest request)
         {
             return await _korisniciService.EditUserByAdmin(id, request);
+        }
+
+        [HttpPut("editUser/{id}")]
+        public async Task<bool> EditUser(int id, [FromBody] KorisniciUpdateRequest request)
+        {
+            return await _korisniciService.EditUser(id, request);
         }
     }
 }

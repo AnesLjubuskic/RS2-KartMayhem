@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kartmayhem_mobile/Helpers/error_dialog.dart';
+import 'package:kartmayhem_mobile/Helpers/success_dialog.dart';
 import 'package:kartmayhem_mobile/Models/korisnik.dart';
 import 'package:kartmayhem_mobile/Providers/korisnik_provider.dart';
 import 'package:kartmayhem_mobile/Utils/util.dart';
@@ -284,14 +285,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         });
                       }
                       if (context.mounted) {
+                        Authorization.email = _emailController.text;
                         Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            content:
-                                const Text('Uspješno ste editovali korisnika!'),
-                          ),
-                        );
+                        showSuccessDialog(
+                            context, 'Uspješno ste editovali korisnika!');
                       }
                     } on Exception catch (e) {
                       String errorMessage =
