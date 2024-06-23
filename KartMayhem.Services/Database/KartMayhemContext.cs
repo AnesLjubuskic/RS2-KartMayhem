@@ -11,6 +11,8 @@ namespace KartMayhem.Services.Database
 
         public virtual DbSet<Korisnici> Korisnicis { get; set; }
 
+        public virtual DbSet<Kupovina> Kupovinas { get; set; }
+
         public virtual DbSet<KorisniciUloge> KorisniciUloges { get; set; }
 
         public virtual DbSet<KorisniciStaze> KorisniciStazes { get; set; }

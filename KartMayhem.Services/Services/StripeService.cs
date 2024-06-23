@@ -13,18 +13,24 @@ namespace KartMayhem.Services.Services
 
         public string PlatiRezervaciju(int iznos, string opis)
         {
-            StripeConfiguration.ApiKey = apiKey;
-            var options = new PaymentIntentCreateOptions
+            try
             {
-                Amount = iznos * 100,
-                Currency = "EUR",
-                Description = opis,
-                //PaymentMethod = "pm_card_visa",
-            };
-            var service = new PaymentIntentService();
-            var paymentIntent = service.Create(options);
+                StripeConfiguration.ApiKey = apiKey;
+                var options = new PaymentIntentCreateOptions
+                {
+                    Amount = iznos * 100,
+                    Currency = "EUR",
+                    Description = opis,
+                };
+                var service = new PaymentIntentService();
+                var paymentIntent = service.Create(options);
 
-            return paymentIntent.ClientSecret;
+                return paymentIntent.ClientSecret;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }
