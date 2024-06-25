@@ -6,6 +6,9 @@ using KartMayhem.Model.SearchObject;
 using KartMayhem.Services.Database;
 using KartMayhem.Services.ServiceInterfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.ML;
+using Microsoft.ML.Data;
+using Microsoft.ML.Trainers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -248,6 +251,134 @@ namespace KartMayhem.Services.Services
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        static object lockObj = new object();
+        static MLContext? mlContextInstance = null;
+        static ITransformer? trainedModel = null;
+
+        public PagedResult<Model.Staze> StazeRecommenderSystem(int userId)
+        {
+            if (userId == null)
+            {
+                throw new StazeException("Potreban je userId!");
+            }
+
+            var rezervacijeList = _context.Rezervacijes
+                .Include(r => r.Staza)
+                .ToList();
+
+            if (rezervacijeList.Count < 3)
+            {
+                throw new StazeException("Potrebno je najmanje 3 rezervacije za preporuku staza!");
+            }
+
+            lock (lockObj)
+            {
+                if (mlContextInstance == null)
+                {
+                    mlContextInstance = new MLContext();
+
+                    var trainingData = new List<StazeEntry>();
+
+                    var stazeBrojOsoba = rezervacijeList
+                        .GroupBy(r => r.StazaId)
+                        .Select(group => new
+                        {
+                            StazaId = group.Key,
+                            TotalPeople = group.Sum(r => r.BrojOsoba)
+                        }).ToList();
+
+                    foreach (var staza in stazeBrojOsoba)
+                    {
+                        trainingData.Add(new StazeEntry
+                        {
+                            StazaId = (uint)staza.StazaId,
+                            TotalPeople = (float)staza.TotalPeople
+                        });
+                    }
+
+                    if (!trainingData.Any())
+                    {
+                        throw new StazeException("Podaci za trening su prazni!");
+                    }
+
+                    var mlTrainData = mlContextInstance.Data.LoadFromEnumerable(trainingData);
+                    var dataSplit = mlContextInstance.Data.TrainTestSplit(mlTrainData, testFraction: 0.2);
+
+                    var options = new MatrixFactorizationTrainer.Options
+                    {
+                        MatrixColumnIndexColumnName = nameof(StazeEntry.StazaId),
+                        MatrixRowIndexColumnName = nameof(StazeEntry.StazaId),
+                        LabelColumnName = "TotalPeople",
+                        LossFunction = MatrixFactorizationTrainer.LossFunctionType.SquareLossOneClass,
+                        Alpha = 0.01,
+                        Lambda = 0.025
+                    };
+
+                    var trainer = mlContextInstance.Recommendation().Trainers.MatrixFactorization(options);
+                    trainedModel = trainer.Fit(dataSplit.TrainSet);
+                    if (trainedModel == null)
+                    {
+                        throw new InvalidOperationException("Model nije uspješno treniran.");
+                    }
+                }
+            }
+
+            var predictionResults = new List<Tuple<Database.Staze, float>>();
+            var allStaze = _context.Stazes.Include(x => x.Tezina).ToList();
+
+            foreach (var staza in allStaze)
+            {
+                var predictionEngine = mlContextInstance.Model.CreatePredictionEngine<StazeEntry, StazePrediction>(trainedModel);
+                var prediction = predictionEngine.Predict(new StazeEntry
+                {
+                    StazaId = (uint)staza.Id,
+                    TotalPeople = staza.Rezervacijes.Sum(r => r.BrojOsoba)
+                });
+
+                predictionResults.Add(new Tuple<Database.Staze, float>(staza, prediction.Score));
+            }
+
+            var top3Recommendations = predictionResults.OrderByDescending(x => x.Item2)
+                .Select(x => x.Item1)
+                .Take(3)
+                .ToList();
+
+            var korisniciStazes = _context.KorisniciStazes.Where(x => x.KorisniciId == userId);
+
+            var top3Staze = _mapper.Map<List<Model.Staze>>(top3Recommendations);
+
+            foreach (var korisniciStaze in korisniciStazes)
+            {
+                foreach (var staza in top3Staze)
+                {
+                    if (staza.Id == korisniciStaze.StazeId)
+                    {
+                        staza.Favourite = true;
+                    }
+                }
+            }
+
+            var result = new PagedResult<Model.Staze>
+            {
+                Result = top3Staze,
+                Count = top3Staze.Count,
+            };
+
+            return result;
+        }
+
+        public class StazeEntry
+        {
+            [KeyType(count: 10)]
+            public uint StazaId { get; set; }
+            public float TotalPeople { get; set; }
+        }
+
+        public class StazePrediction
+        {
+            public float Score { get; set; }
         }
     }
 }

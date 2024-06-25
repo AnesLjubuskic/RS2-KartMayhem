@@ -49,5 +49,11 @@ namespace KartMayhem.Controllers
         {
             return await _stazeService.MarkFavouriteTrack(id, userId);
         }
+
+        [HttpGet("recommendedTracks")]
+        public PagedResult<Model.Staze> RecommendedTracks(int userId)
+        {
+            return  _stazeService.StazeRecommenderSystem(userId);
+        }
     }
 }

@@ -11,5 +11,7 @@ namespace KartMayhem.Services.ServiceInterfaces
         Task<PagedResult<Model.Staze>> FavouriteTracks(int userId);
 
         Task<bool> MarkFavouriteTrack(int id, int userId);
+
+        PagedResult<Model.Staze> StazeRecommenderSystem(int userId);
     }
 }
