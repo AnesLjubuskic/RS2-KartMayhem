@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KartMayhem.Model", "..\Kart
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KartMayhem.Services", "..\KartMayhem.Services\KartMayhem.Services.csproj", "{D9A98BD7-3DE9-4EB0-A327-4DAFB7E7C59B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KartMayhem.Subscriber", "..\KartMayhem.Subscriber\KartMayhem.Subscriber.csproj", "{9C0B2890-7FBE-4593-BFD8-F9E720923281}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D9A98BD7-3DE9-4EB0-A327-4DAFB7E7C59B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9A98BD7-3DE9-4EB0-A327-4DAFB7E7C59B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9A98BD7-3DE9-4EB0-A327-4DAFB7E7C59B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C0B2890-7FBE-4593-BFD8-F9E720923281}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C0B2890-7FBE-4593-BFD8-F9E720923281}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C0B2890-7FBE-4593-BFD8-F9E720923281}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C0B2890-7FBE-4593-BFD8-F9E720923281}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

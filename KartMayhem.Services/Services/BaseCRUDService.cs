@@ -27,6 +27,11 @@ namespace KartMayhem.Services.Services
 
         }
 
+        public virtual async Task AfterInsert(TDb entity, TInsert insert)
+        {
+
+        }
+
         public virtual async Task<T> Insert(TInsert insert)
         {
             await ValidationInsert(insert);
@@ -39,6 +44,7 @@ namespace KartMayhem.Services.Services
             await BeforeInsert(entity, insert);
 
             await _context.SaveChangesAsync();
+            await AfterInsert(entity, insert);
             return _mapper.Map<T>(entity);
         }
 

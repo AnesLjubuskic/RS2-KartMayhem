@@ -15,9 +15,11 @@
         public string TimeSlot { get; set; }
 
         public int KorisnikId { get; set; }
+
         public Korisnici Korisnik { get; set; }
 
         public int StazaId { get; set; }
+
         public Staze Staza { get; set; }
 
         public bool isCancelled { get; set; } = false;

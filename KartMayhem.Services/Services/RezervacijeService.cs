@@ -16,8 +16,11 @@ namespace KartMayhem.Services.Services
 {
     public class RezervacijeService : BaseCRUDService<Model.Rezervacije, Database.Rezervacije, RezervacijeSearchRequest, RezervacijeUpsertRequest, RezervacijeUpsertRequest>, IRezervacijeService
     {
-        public RezervacijeService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
+        private readonly IEmailSenderService _emailSenderService;
+
+        public RezervacijeService(KartMayhemContext context, IMapper mapper, IEmailSenderService emailSenderService) : base(context, mapper)
         {
+            _emailSenderService = emailSenderService;
         }
 
         public override Task ValidationInsert(RezervacijeUpsertRequest insert)
@@ -82,6 +85,24 @@ namespace KartMayhem.Services.Services
             entity.CijenaRezervacije = insert.BrojOsoba * insert.CijenaPoOsobi;
 
             return base.BeforeInsert(entity, insert);
+        }
+
+        public override Task AfterInsert(Database.Rezervacije entity, RezervacijeUpsertRequest insert)
+        {
+            var user = _context.Korisnicis.Find(insert.KorisnikId);
+
+            if (user != null) 
+            { 
+                Model.RezervacijeMail rezervacijeMail = new Model.RezervacijeMail
+                {
+                    Email = user.Email,
+                    ImeStaze = entity.ImeStaze,
+                };
+
+                _emailSenderService.SendingObject(rezervacijeMail);
+            }
+
+            return base.AfterInsert(entity, insert);
         }
 
         public override IQueryable<Database.Rezervacije> AddFilter(IQueryable<Database.Rezervacije> query, RezervacijeSearchRequest? search = null)
