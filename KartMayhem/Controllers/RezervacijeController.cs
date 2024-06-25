@@ -29,5 +29,11 @@ namespace KartMayhem.Controllers
         {
             return _rezervacijeService.GetReservationTimeSlots(stazaId, datumRezervacije);
         }
+
+        [HttpGet("history")]
+        public async Task<PagedResult<Rezervacije>> History(int userId)
+        {
+            return await _rezervacijeService.History(userId);
+        }
     }
 }

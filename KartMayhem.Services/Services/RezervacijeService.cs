@@ -180,5 +180,39 @@ namespace KartMayhem.Services.Services
 
             return returnSlots;
         }
+
+        public async Task<PagedResult<Model.Rezervacije>> History(int userId)
+        {
+            var rezervacije = _context.Rezervacijes.Where(x => x.KorisnikId == userId && !x.isCancelled).Include(x => x.Staza).ThenInclude(x => x.Tezina);
+
+            if (rezervacije == null || !rezervacije.Any())
+            {
+                var pagedResult2 = new PagedResult<Model.Rezervacije>()
+                {
+                    Count = 0,
+                    Result = []
+                };
+                return pagedResult2;
+            }
+
+            var rezervacijeModel = new List<Model.Rezervacije>();
+
+            foreach (var rezervacija in rezervacije)
+            {
+                var datum = DateTime.Parse(rezervacija.DayOfReservation);
+                if (datum.Date < DateTime.Now.Date)
+                {
+                    rezervacijeModel.Add(_mapper.Map<Model.Rezervacije>(rezervacija));
+                }
+            }
+
+            var pagedResult = new PagedResult<Model.Rezervacije>()
+            {
+                Count = 0,
+                Result = rezervacijeModel
+            };
+
+            return pagedResult;
+        }
     }
 }

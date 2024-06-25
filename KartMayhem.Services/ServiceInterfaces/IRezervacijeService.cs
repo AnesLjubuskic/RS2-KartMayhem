@@ -8,5 +8,6 @@ namespace KartMayhem.Services.ServiceInterfaces
     {
         Task<bool> CancelReservation(int id);
         List<string> GetReservationTimeSlots(int stazaId, string datumRezervacije);
+        Task<PagedResult<Rezervacije>> History(int userId); 
     }
 }
