@@ -82,7 +82,33 @@ namespace KartMayhem.Services.Services
 
             entity.ImeStaze = staza.NazivStaze;
 
-            entity.CijenaRezervacije = insert.BrojOsoba * insert.CijenaPoOsobi;
+
+            if (insert.IsNagrada)
+            {
+                var rezervacija = insert.BrojOsoba * insert.CijenaPoOsobi * 0.5;
+
+                entity.CijenaRezervacije = (int)Math.Ceiling(rezervacija);
+            }
+            else
+            {
+                entity.CijenaRezervacije = insert.BrojOsoba * insert.CijenaPoOsobi;
+            }
+
+            if (insert.IsGotovina)
+            {
+                entity.IsGotovina = true;
+            }
+            else
+            {
+                entity.IsGotovina = false;
+            }
+
+            var user = _context.Korisnicis.Find(insert.KorisnikId);
+
+            if (user!= null && user.Nagrada != null)
+            {
+                user.Nagrada = null;
+            }
 
             return base.BeforeInsert(entity, insert);
         }

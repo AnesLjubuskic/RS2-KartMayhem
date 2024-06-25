@@ -21,6 +21,10 @@ namespace KartMayhem.Model.RequestObjects
 
         public int StazaId { get; set; }
 
+        public bool IsNagrada { get; set; }
+
+        public bool IsGotovina { get; set; }
+
         public virtual ICollection<RezervacijeOpreme> RezervacijeOpremes { get; } = new List<RezervacijeOpreme>();
     }
 }

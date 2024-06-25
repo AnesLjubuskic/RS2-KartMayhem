@@ -8,7 +8,7 @@ class Authorization {
   static String? email;
   static String? password;
   static int? id;
-  static bool? isNagrada;
+  static bool isNagrada = false;
   static bool? popupShown;
 }
 

@@ -12,6 +12,8 @@ class RezervacijeUpsert {
   String? timeSlot;
   int? korisnikId;
   int? stazaId;
+  bool? isNagrada;
+  bool? isGotovina;
 
   RezervacijeUpsert(
       {this.cijenaPoOsobi,
@@ -19,7 +21,9 @@ class RezervacijeUpsert {
       this.dayOfReservation,
       this.timeSlot,
       this.korisnikId,
-      this.stazaId});
+      this.stazaId,
+      this.isGotovina,
+      this.isNagrada});
 
   factory RezervacijeUpsert.fromJson(Map<String, dynamic> json) =>
       _$RezervacijeUpsertFromJson(json);

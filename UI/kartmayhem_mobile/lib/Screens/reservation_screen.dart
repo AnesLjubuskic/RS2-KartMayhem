@@ -29,6 +29,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
   late RezervacijeProvider _rezervacijeProvider;
   late RezervacijeUpsertProvider _rezervacijeUpsertProvider;
 
+  int? ukupnaCijena = 0;
   Staze? staza;
   late List<String> timeSlots = [];
   int selectedSlot = -1;
@@ -50,6 +51,11 @@ class _ReservationScreenState extends State<ReservationScreen> {
     var data = await _stazeProvider.getById(widget.stazeId);
     setState(() {
       staza = data;
+      if (Authorization.isNagrada) {
+        ukupnaCijena = (staza!.cijenaPoOsobi! / 2).ceil();
+      } else {
+        ukupnaCijena = staza!.cijenaPoOsobi;
+      }
     });
   }
 
@@ -263,7 +269,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 0.0),
               child: Text(
-                "Ukupna cijena",
+                Authorization.isNagrada
+                    ? "Ukupna cijena (50% popusta)"
+                    : "Ukupna cijena",
                 textAlign: TextAlign.start,
                 style: const TextStyle(
                     fontWeight: FontWeight.normal, fontSize: 18),
@@ -273,7 +281,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
               padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 10.0),
               child: staza != null
                   ? Text(
-                      "${staza!.cijenaPoOsobi! * (brojOsoba ?? 1)}KM ",
+                      "$ukupnaCijena KM ",
                       textAlign: TextAlign.start,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 30),
@@ -362,13 +370,16 @@ class _ReservationScreenState extends State<ReservationScreen> {
                             dayOfReservation: dateFormat.format(selectedDate),
                             timeSlot: timeSlots[selectedSlot],
                             korisnikId: Authorization.id,
-                            stazaId: staza!.id);
+                            stazaId: staza!.id,
+                            isGotovina: true,
+                            isNagrada: Authorization.isNagrada);
                     try {
                       _rezervacijeUpsertProvider = RezervacijeUpsertProvider();
                       await _rezervacijeUpsertProvider
                           .insert(rezervacijeUpsertRequest);
                       // ignore: use_build_context_synchronously
                       Navigator.pop(context);
+                      Authorization.isNagrada = false;
                       // ignore: use_build_context_synchronously
                       showSuccessDialog(context, "Uspješno rezervisan termin!");
                     } catch (e) {
@@ -385,11 +396,13 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           dayOfReservation: dateFormat.format(selectedDate),
                           timeSlot: timeSlots[selectedSlot],
                           korisnikId: Authorization.id,
-                          stazaId: staza!.id);
+                          stazaId: staza!.id,
+                          isGotovina: false,
+                          isNagrada: Authorization.isNagrada);
                   if (kartica) {
                     try {
                       Map kupovina = {
-                        'cijena': (brojOsoba ?? 1) * staza!.cijenaPoOsobi!,
+                        'cijena': ukupnaCijena,
                         'korisnikId': Authorization.id,
                         'stazaId': staza!.id
                       };
@@ -407,6 +420,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       await _rezervacijeUpsertProvider
                           .insert(rezervacijeUpsertRequest);
                       Navigator.pop(context);
+                      Authorization.isNagrada = false;
+
                       // ignore: use_build_context_synchronously
                       showSuccessDialog(context, "Uspješno rezervisan termin!");
                     } catch (e) {
@@ -492,6 +507,12 @@ class _ReservationScreenState extends State<ReservationScreen> {
           onChanged: (value) {
             setState(() {
               brojOsoba = int.tryParse(value);
+              if (Authorization.isNagrada) {
+                ukupnaCijena =
+                    (((brojOsoba ?? 1) * staza!.cijenaPoOsobi!) / 2).ceil();
+              } else {
+                ukupnaCijena = (brojOsoba ?? 1) * staza!.cijenaPoOsobi!;
+              }
             });
           },
           validator: (value) {

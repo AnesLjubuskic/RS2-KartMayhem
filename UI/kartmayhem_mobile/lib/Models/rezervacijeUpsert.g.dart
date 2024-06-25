@@ -14,6 +14,8 @@ RezervacijeUpsert _$RezervacijeUpsertFromJson(Map<String, dynamic> json) =>
       timeSlot: json['timeSlot'] as String?,
       korisnikId: (json['korisnikId'] as num?)?.toInt(),
       stazaId: (json['stazaId'] as num?)?.toInt(),
+      isGotovina: json['isGotovina'] as bool?,
+      isNagrada: json['isNagrada'] as bool?,
     );
 
 Map<String, dynamic> _$RezervacijeUpsertToJson(RezervacijeUpsert instance) =>
@@ -24,4 +26,6 @@ Map<String, dynamic> _$RezervacijeUpsertToJson(RezervacijeUpsert instance) =>
       'timeSlot': instance.timeSlot,
       'korisnikId': instance.korisnikId,
       'stazaId': instance.stazaId,
+      'isNagrada': instance.isNagrada,
+      'isGotovina': instance.isGotovina,
     };
