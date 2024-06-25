@@ -139,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Authorization.email = email;
                             Authorization.password = password;
                             Authorization.id = data.id!.toInt();
+                            Authorization.isNagrada = data.isNagrada ?? false;
                             Navigator.pushNamed(
                                 context, BottomNavigation.routeName);
                           }

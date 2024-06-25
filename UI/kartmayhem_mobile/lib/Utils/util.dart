@@ -8,6 +8,7 @@ class Authorization {
   static String? email;
   static String? password;
   static int? id;
+  static bool? isNagrada;
 }
 
 Image imageFromBase64String(
