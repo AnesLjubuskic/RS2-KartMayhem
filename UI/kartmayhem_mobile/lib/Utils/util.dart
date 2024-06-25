@@ -9,6 +9,7 @@ class Authorization {
   static String? password;
   static int? id;
   static bool? isNagrada;
+  static bool? popupShown;
 }
 
 Image imageFromBase64String(

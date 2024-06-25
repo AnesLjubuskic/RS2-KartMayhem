@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kartmayhem_mobile/Helpers/success_dialog.dart';
 import 'package:kartmayhem_mobile/Models/search_result.dart';
 import 'package:kartmayhem_mobile/Models/staze.dart';
 import 'package:kartmayhem_mobile/Providers/staze_provider.dart';
@@ -44,6 +45,11 @@ class _StazeScreenState extends State<StazeScreen> {
     setState(() {
       result = data;
     });
+
+    if (Authorization.isNagrada == true && Authorization.popupShown == false) {
+      _showPopup();
+      Authorization.popupShown = true;
+    }
   }
 
   void resetSearch() {
@@ -51,6 +57,10 @@ class _StazeScreenState extends State<StazeScreen> {
     pocetnik = false;
     amater = false;
     pro = false;
+  }
+
+  void _showPopup() {
+    showSuccessDialog(context, "Uspjeh popust");
   }
 
   @override

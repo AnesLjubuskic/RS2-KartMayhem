@@ -28,7 +28,7 @@ namespace KartMayhem.Services.Services
 
         public async Task<Model.Korisnici> Login(KorisniciLoginRequest request)
         {
-            var entity = await _context.Korisnicis.Include("KorisniciUloges.Uloga")
+            var entity = await _context.Korisnicis.Include("KorisniciUloges.Uloga").Include(x => x.Nagrada)
                 .FirstOrDefaultAsync(x => x.Email == request.Email);
 
             if (entity == null)
@@ -42,7 +42,15 @@ namespace KartMayhem.Services.Services
             {
                 throw new UserException("Netačan email ili lozinka!");
             }
-            return _mapper.Map<Model.Korisnici>(entity);
+
+            var loginEntitet = _mapper.Map<Model.Korisnici>(entity);
+
+            if (loginEntitet.Nagrada != null)
+            {
+                loginEntitet.IsNagrada = true;
+            }
+
+            return loginEntitet;
         }
 
         public async Task<Model.Korisnici> LoginAdmin(KorisniciLoginRequest request)
