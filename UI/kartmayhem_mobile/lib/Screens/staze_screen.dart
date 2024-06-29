@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kartmayhem_mobile/Helpers/nagrada_dialog.dart';
-import 'package:kartmayhem_mobile/Helpers/success_dialog.dart';
 import 'package:kartmayhem_mobile/Models/search_result.dart';
 import 'package:kartmayhem_mobile/Models/staze.dart';
 import 'package:kartmayhem_mobile/Providers/staze_provider.dart';

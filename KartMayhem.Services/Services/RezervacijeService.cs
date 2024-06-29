@@ -208,7 +208,7 @@ namespace KartMayhem.Services.Services
 
             var pagedResult = new PagedResult<Model.Rezervacije>()
             {
-                Count = 0,
+                Count = rezervacijeModel.Count(),
                 Result = rezervacijeModel
             };
 

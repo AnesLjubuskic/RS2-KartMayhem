@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:kartmayhem_mobile/Models/rezervacije.dart';
+import 'package:kartmayhem_mobile/Models/search_result.dart';
 import 'package:kartmayhem_mobile/Providers/base_provided.dart';
 
 class RezervacijeProvider extends BaseProvider<Rezervacije> {
@@ -41,6 +42,30 @@ class RezervacijeProvider extends BaseProvider<Rezervacije> {
       }
     } catch (e) {
       throw Exception('Failed to load data: $e');
+    }
+  }
+
+  Future<SearchResult<Rezervacije>> getHistory({dynamic search}) async {
+    var url = "$_baseUrl" "Rezervacije/history";
+
+    if (search != null) {
+      String queryString = getQueryString(search);
+      url = "$url?$queryString";
+    }
+    var uri = Uri.parse(url);
+
+    var headers = createHeaders();
+    var response = await http!.get(uri, headers: headers);
+    if (isValidResponseCode(response)) {
+      var data = jsonDecode(response.body);
+      var result = SearchResult<Rezervacije>();
+      result.count = data['count'];
+      for (var item in data['result']) {
+        result.result.add(fromJson(item));
+      }
+      return result;
+    } else {
+      throw Exception("Exception... handle this gracefully");
     }
   }
 }

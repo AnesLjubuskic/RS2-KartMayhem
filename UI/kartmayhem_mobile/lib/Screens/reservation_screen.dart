@@ -415,6 +415,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                           merchantDisplayName: "kartMayhem",
                         ),
                       );
+                      // ignore: unused_local_variable
                       var result = await Stripe.instance.presentPaymentSheet();
                       _rezervacijeUpsertProvider = RezervacijeUpsertProvider();
                       await _rezervacijeUpsertProvider
