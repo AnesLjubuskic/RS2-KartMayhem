@@ -25,7 +25,5 @@
         public bool isCancelled { get; set; } = false;
 
         public bool IsGotovina { get; set; } = true;
-
-        public virtual ICollection<RezervacijeOpreme> RezervacijeOpremes { get; } = new List<RezervacijeOpreme>();
     }
 }

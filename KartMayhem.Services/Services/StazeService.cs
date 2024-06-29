@@ -158,7 +158,6 @@ namespace KartMayhem.Services.Services
                     }
                 }
             }
-
             return filter;
         }
 
@@ -188,8 +187,31 @@ namespace KartMayhem.Services.Services
 
         public async override Task<Model.Staze> GetById(int id)
         {
-            var staza = _context.Set<Database.Staze>().Include(x => x.Tezina).FirstOrDefault(x => x.Id == id);
-            return _mapper.Map<Model.Staze>(staza);
+            var staza = _context.Set<Database.Staze>().Include(x => x.Tezina).Include(x => x.Rezencijes).FirstOrDefault(x => x.Id == id);
+
+            if (staza == null)
+            {
+                throw new StazeException("Staza ne postoji!");
+            }
+
+            var mappedStaza = _mapper.Map<Model.Staze>(staza);
+
+            if (staza.Rezencijes == null)
+            {
+                mappedStaza.Ocjena = 0;
+            }
+            else
+            {
+                var ocjena = 0.0;
+                foreach (var rezencija in staza.Rezencijes)
+                {
+                    ocjena = ocjena + rezencija.Ocjena;
+                }
+                ocjena /= staza.Rezencijes.Count();
+                mappedStaza.Ocjena = (int)Math.Ceiling(ocjena);
+            }
+
+            return mappedStaza;
         }
 
         public async Task<Model.PagedResult<Model.Staze>> FavouriteTracks(int userId)

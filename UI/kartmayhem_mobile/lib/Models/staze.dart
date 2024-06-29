@@ -18,6 +18,7 @@ class Staze {
   String? slika;
   Tezine? tezina;
   bool? favourite;
+  int? ocjena;
 
   Staze(
       {this.id,
@@ -30,6 +31,7 @@ class Staze {
       this.brojRezervacija,
       this.slika,
       this.tezina,
+      this.ocjena,
       this.favourite});
 
   factory Staze.fromJson(Map<String, dynamic> json) => _$StazeFromJson(json);

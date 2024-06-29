@@ -88,7 +88,10 @@ abstract class BaseProvider<T> with ChangeNotifier {
         var data = jsonDecode(response.body);
         throw Exception("${data["errors"]["rezervacijeError"][0].toString()}");
       }
-
+      if (response.body.isNotEmpty && _endpoint == "Rezencije") {
+        var data = jsonDecode(response.body);
+        throw Exception("${data["errors"]["rezencijeError"][0].toString()}");
+      }
       throw Exception('Something went wrong!');
     }
   }

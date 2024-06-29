@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public string Komentar { get; set; }
+        public int Ocjena { get; set; }
 
         public int StazaId { get; set; }
 

@@ -19,7 +19,5 @@ namespace KartMayhem.Model
         public Korisnici Korisnik { get; set; }
 
         public Staze Staza { get; set; }
-
-        public virtual ICollection<RezervacijeOpreme> RezervacijeOpremes { get; } = new List<RezervacijeOpreme>();
     }
 }

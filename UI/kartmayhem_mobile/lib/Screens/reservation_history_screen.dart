@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kartmayhem_mobile/Helpers/rezencija_dialog.dart';
 import 'package:kartmayhem_mobile/Models/rezervacije.dart';
 import 'package:kartmayhem_mobile/Providers/reservation_provider.dart';
 import 'package:kartmayhem_mobile/Utils/util.dart';
@@ -198,9 +199,39 @@ class _ReservationHistoryScreenState extends State<ReservationHistoryScreen> {
                           fontWeight: FontWeight.bold, fontSize: 30),
                     ),
                   ),
+                  ocijeniteStazuButton()
                 ],
               ),
             ),
+    );
+  }
+
+  Center ocijeniteStazuButton() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 10.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  showRecenzijeDialog(context, rezervacije!.staza!.id!);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF870000),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Text(
+                  "Ocijenite stazu",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

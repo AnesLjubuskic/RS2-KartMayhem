@@ -26,6 +26,8 @@
 
         public bool Favourite { get; set; } = false;
 
+        public int? Ocjena { get; set; }
+
         public ICollection<Rezencije> Rezencijes { get; } = new List<Rezencije>();
     }
 }
