@@ -44,9 +44,9 @@ class _SavedStazeScreenState extends State<SavedStazeScreen> {
         ),
         body: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: const Text(
+            const Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text(
                 "Spremljene staze",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
               ),
