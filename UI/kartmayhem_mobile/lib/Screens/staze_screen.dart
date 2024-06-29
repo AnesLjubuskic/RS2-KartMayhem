@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kartmayhem_mobile/Helpers/nagrada_dialog.dart';
 import 'package:kartmayhem_mobile/Helpers/success_dialog.dart';
 import 'package:kartmayhem_mobile/Models/search_result.dart';
 import 'package:kartmayhem_mobile/Models/staze.dart';
@@ -60,7 +61,8 @@ class _StazeScreenState extends State<StazeScreen> {
   }
 
   void _showPopup() {
-    showSuccessDialog(context, "Uspjeh popust");
+    showCustomDialog(
+        context, "Dobili ste 50% popusta na sljedeću rezervaciju!");
   }
 
   @override
