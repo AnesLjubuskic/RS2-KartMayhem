@@ -181,6 +181,18 @@ namespace KartMayhem.Services.Services
             return returnSlots;
         }
 
+        public override Database.Rezervacije AddFilterById(Database.Rezervacije entity, int id)
+        {
+            var entityNew = _context.Rezervacijes.Include(x => x.Korisnik).Include(x => x.Staza).ThenInclude(x => x.Tezina).FirstOrDefault(x => x.Id == id);
+
+            if (entityNew == null)
+            {
+                throw new RezervacijeException("Rezervacija nije pronadjena!");
+            }
+
+            return entityNew;
+        }
+
         public async Task<PagedResult<Model.Rezervacije>> History(int userId)
         {
             var rezervacije = _context.Rezervacijes.Where(x => x.KorisnikId == userId && !x.isCancelled).Include(x => x.Staza).ThenInclude(x => x.Tezina);

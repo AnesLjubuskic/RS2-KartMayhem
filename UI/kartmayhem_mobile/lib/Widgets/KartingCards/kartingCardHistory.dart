@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kartmayhem_mobile/Models/rezervacije.dart';
 import 'package:kartmayhem_mobile/Providers/reservation_provider.dart';
+import 'package:kartmayhem_mobile/Screens/reservation_history_screen.dart';
 import 'package:kartmayhem_mobile/Utils/util.dart';
 import 'package:provider/provider.dart';
 
@@ -13,14 +14,14 @@ class KartingCardHistory extends StatelessWidget {
   });
 
   void navigateToReservationScreen(BuildContext context) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => ReservationScreen(
-    //       stazeId: staze.id!,
-    //     ),
-    //   ),
-    // );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ReservationHistoryScreen(
+          reservationId: rezervacije.id!,
+        ),
+      ),
+    );
   }
 
   @override

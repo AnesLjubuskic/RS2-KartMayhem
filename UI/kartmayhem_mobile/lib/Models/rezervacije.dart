@@ -11,6 +11,8 @@ class Rezervacije {
   int? cijenaRezervacije;
   int? brojOsoba;
   Staze? staza;
+  String? timeSlot;
+  String? dayOfReservation;
   String? imeStaze;
 
   Rezervacije(
@@ -18,6 +20,8 @@ class Rezervacije {
       this.cijenaRezervacije,
       this.brojOsoba,
       this.staza,
+      this.timeSlot,
+      this.dayOfReservation,
       this.imeStaze});
 
   factory Rezervacije.fromJson(Map<String, dynamic> json) =>

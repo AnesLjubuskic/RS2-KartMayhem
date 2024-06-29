@@ -114,9 +114,16 @@ namespace KartMayhem.Services.Services
             return query;
         }
 
+        public virtual TDb AddFilterById(TDb entity, int id)
+        {
+            return entity;
+        }
+
         public virtual async Task<T> GetById(int id)
         {
             var entity = await _context.Set<TDb>().FindAsync(id);
+
+            entity = AddFilterById(entity, id);
 
             return _mapper.Map<T>(entity);
         }

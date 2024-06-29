@@ -252,10 +252,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                     fontWeight: FontWeight.normal, fontSize: 18),
               ),
             ),
-
-            //amar
             listTimeSlots(),
-            //
             Padding(
               padding: const EdgeInsets.fromLTRB(8.0, 10.0, 8.0, 5.0),
               child: Text(
