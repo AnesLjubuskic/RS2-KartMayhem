@@ -181,10 +181,12 @@ class _ReservationScreenState extends State<ReservationScreen> {
             Padding(
               padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 20.0),
               child: Text(
-                "Ocjena: ${staza?.ocjena ?? "Nema recenzija za ovu stazu"}",
+                "Ocjena: ${staza != null && staza!.ocjena != null ? (staza!.ocjena == 0 ? "Nema recenzija za ovu stazu" : staza!.ocjena) : "Nema recenzija za ovu stazu"}",
                 textAlign: TextAlign.start,
                 style: const TextStyle(
-                    fontWeight: FontWeight.normal, fontSize: 18),
+                  fontWeight: FontWeight.normal,
+                  fontSize: 18,
+                ),
               ),
             ),
             Row(

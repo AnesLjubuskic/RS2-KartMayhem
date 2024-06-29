@@ -196,7 +196,7 @@ namespace KartMayhem.Services.Services
 
             var mappedStaza = _mapper.Map<Model.Staze>(staza);
 
-            if (staza.Rezencijes == null)
+            if (staza.Rezencijes == null || !staza.Rezencijes.Any())
             {
                 mappedStaza.Ocjena = 0;
             }

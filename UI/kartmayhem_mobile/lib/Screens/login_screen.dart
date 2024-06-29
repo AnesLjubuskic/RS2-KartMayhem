@@ -141,8 +141,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             Authorization.id = data.id!.toInt();
                             Authorization.isNagrada = data.isNagrada ?? false;
                             Authorization.popupShown = false;
-                            Navigator.pushNamed(
-                                context, BottomNavigation.routeName);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BottomNavigation()),
+                            );
                           }
                         } on Exception catch (error) {
                           if (error.toString().contains("Bad request")) {
