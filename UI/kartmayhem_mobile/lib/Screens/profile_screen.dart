@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kartmayhem_mobile/Models/korisnik.dart';
+import 'package:kartmayhem_mobile/Providers/auth_provider.dart';
 import 'package:kartmayhem_mobile/Providers/korisnik_provider.dart';
 import 'package:kartmayhem_mobile/Screens/cancel_reservation_screen.dart';
 import 'package:kartmayhem_mobile/Screens/editprofile_screen.dart';
 import 'package:kartmayhem_mobile/Screens/feedback_screen.dart';
 import 'package:kartmayhem_mobile/Screens/history_screen.dart';
+import 'package:kartmayhem_mobile/Screens/login_screen.dart';
 import 'package:kartmayhem_mobile/Screens/preporuke_screen.dart';
 import 'package:kartmayhem_mobile/Utils/util.dart';
 
@@ -19,6 +21,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late KorisnikProvider _korisnikProvider;
+  late AuthProvider _authProvider;
 
   Korisnik? korisnik;
 
@@ -130,6 +133,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               preporuceneStaze(),
               historija(),
               feedback(),
+              logoutButton(),
               const SizedBox(
                 height: 10,
               )
@@ -258,6 +262,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: const Text(
               "Feedback",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Center logoutButton() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8.0, 20.0, 8.0, 0.0),
+        child: SizedBox(
+          width: 280,
+          height: 45,
+          child: ElevatedButton(
+            onPressed: () {
+              _authProvider = AuthProvider();
+              _authProvider.logout();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginScreen(),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF870000),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text(
+              "Logout",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
           ),
