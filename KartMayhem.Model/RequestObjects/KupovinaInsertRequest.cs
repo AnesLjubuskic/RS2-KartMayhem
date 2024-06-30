@@ -9,13 +9,10 @@ namespace KartMayhem.Model.RequestObjects
 {
     public class KupovinaInsertRequest
     {
-        [Required]
-        public int Cijena { get; set; }
+        public int? Cijena { get; set; }
 
-        [Required]
         public int? KorisnikId { get; set; }
 
-        [Required]
         public int? StazaId { get; set; }
     }
 }

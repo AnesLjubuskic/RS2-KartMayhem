@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using KartMayhem.Model;
+using KartMayhem.Model.Exception;
 using KartMayhem.Model.RequestObjects;
 using KartMayhem.Model.SearchObject;
 using KartMayhem.Services.Database;
@@ -27,12 +28,20 @@ namespace KartMayhem.Services.Services
         {
             var staza = _context.Stazes.First(x => x.Id == request.StazaId);
             if (staza == null)
-                throw new Exception("Staza nije pronađena");
+                throw new KupovinaException("Staza nije pronađena");
+
+            var korisnik = _context.Korisnicis.FirstOrDefault(x => x.Id == request.KorisnikId);
+
+            if (korisnik == null)
+                throw new KupovinaException("Korisnik nije pronađen");
+
+            if (request.Cijena == null)
+                throw new KupovinaException("Cijena nije pronađena");
 
             Database.Kupovina kupovina = new Database.Kupovina();
             kupovina.KorisnikId = (int)request.KorisnikId;
             kupovina.DatumKupovine = DateTime.Now;
-            kupovina.Cijena = request.Cijena;
+            kupovina.Cijena = request.Cijena.Value;
             kupovina.StazeId = request.StazaId;
             kupovina.Placena = true;
             _context.Add(kupovina);

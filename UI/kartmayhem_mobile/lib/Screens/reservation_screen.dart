@@ -390,11 +390,11 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       Authorization.isNagrada = false;
                       // ignore: use_build_context_synchronously
                       showSuccessDialog(context, "Uspješno rezervisan termin!");
-                    } catch (e) {
-                      // String errorMessage =
-                      //     e.toString().replaceFirst('Exception: ', '');
+                    } on Exception catch (e) {
+                      String errorMessage =
+                          e.toString().replaceFirst('Exception: ', '');
                       // ignore: use_build_context_synchronously
-                      // showErrorDialog(context, errorMessage);
+                      showErrorDialog(context, errorMessage);
                     }
                   }
                   RezervacijeUpsert rezervacijeUpsertRequest =
@@ -428,16 +428,17 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       _rezervacijeUpsertProvider = RezervacijeUpsertProvider();
                       await _rezervacijeUpsertProvider
                           .insert(rezervacijeUpsertRequest);
+                      // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                       Authorization.isNagrada = false;
 
                       // ignore: use_build_context_synchronously
                       showSuccessDialog(context, "Uspješno rezervisan termin!");
-                    } catch (e) {
-                      // String errorMessage =
-                      //     e.toString().replaceFirst('Exception: ', '');
+                    } on Exception catch (e) {
+                      String errorMessage =
+                          e.toString().replaceFirst('Exception: ', '');
                       // ignore: use_build_context_synchronously
-                      // showErrorDialog(context, errorMessage);
+                      showErrorDialog(context, errorMessage);
                     }
                   }
                 },
