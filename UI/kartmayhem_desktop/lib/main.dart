@@ -4,6 +4,7 @@ import 'package:kartmayhem_desktop/Providers/feedback_provider.dart';
 import 'package:kartmayhem_desktop/Providers/korisnik_provider.dart';
 import 'package:kartmayhem_desktop/Providers/rezervacije_provider.dart';
 import 'package:kartmayhem_desktop/Providers/staze_provider.dart';
+import 'package:kartmayhem_desktop/Providers/tezina_provider.dart';
 import 'package:kartmayhem_desktop/Screens/feedback_screen.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
 import 'package:kartmayhem_desktop/Screens/login_screen.dart';
@@ -20,7 +21,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => KorisnikProvider()),
         ChangeNotifierProvider(create: (_) => StazeProvider()),
         ChangeNotifierProvider(create: (_) => RezervacijeProvider()),
-        ChangeNotifierProvider(create: (_) => FeedbackProvider())
+        ChangeNotifierProvider(create: (_) => FeedbackProvider()),
+        ChangeNotifierProvider(create: (_) => TezinaProvider())
       ],
       child: const MyApp(),
     ),
