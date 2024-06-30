@@ -31,6 +31,8 @@ namespace KartMayhem.Services.Database
 
         public virtual DbSet<Tezine> Tezines { get; set; }
 
+        public virtual DbSet<Feedback> Feedbacks { get; set; }
+
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
     }

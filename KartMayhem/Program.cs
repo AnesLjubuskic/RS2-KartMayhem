@@ -20,6 +20,8 @@ builder.Services.AddTransient<IRezervacijeService, RezervacijeService>();
 builder.Services.AddTransient<StripeService>();
 builder.Services.AddTransient<IKupovinaService, KupovinaService>();
 builder.Services.AddTransient<IEmailSenderService, EmailSenderService>();
+builder.Services.AddTransient<IFeedbackService, FeedbackService>();
+builder.Services.AddTransient<INagradeService, NagradeService>();
 builder.Services.AddTransient<IBaseService<KartMayhem.Model.Tezine, BaseSearchObject>, BaseService<KartMayhem.Model.Tezine
     , KartMayhem.Services.Database.Tezine, BaseSearchObject>>();
 
