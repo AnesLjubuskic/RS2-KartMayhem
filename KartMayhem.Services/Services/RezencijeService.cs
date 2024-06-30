@@ -14,7 +14,7 @@ namespace KartMayhem.Services.Services
 {
     public class RezencijeService : BaseCRUDService<Model.Rezencije, Database.Rezencije, BaseSearchObject, RezencijaInsertRequest, object>, IRezencijeService
     {
-        public RezencijeService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
+        public RezencijeService(IB190060_KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
         }
 

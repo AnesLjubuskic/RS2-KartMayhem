@@ -16,7 +16,7 @@ namespace KartMayhem.Services.Services
 {
     public class KorisniciService : BaseCRUDService<Model.Korisnici, Database.Korisnici, Model.SearchObject.KorisniciSearchObject, object, KorisniciUpdateRequest>, IKorisniciService
     {
-        public KorisniciService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
+        public KorisniciService(IB190060_KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
         }
 

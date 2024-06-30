@@ -18,7 +18,7 @@ namespace KartMayhem.Services.Services
     {
         private readonly IEmailSenderService _emailSenderService;
 
-        public RezervacijeService(KartMayhemContext context, IMapper mapper, IEmailSenderService emailSenderService) : base(context, mapper)
+        public RezervacijeService(IB190060_KartMayhemContext context, IMapper mapper, IEmailSenderService emailSenderService) : base(context, mapper)
         {
             _emailSenderService = emailSenderService;
         }

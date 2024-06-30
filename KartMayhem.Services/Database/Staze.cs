@@ -24,6 +24,10 @@
 
         public bool IsActive { get; set; }
 
+        public int GradoviId { get; set; }
+
+        public Gradovi Gradovi { get; set; }
+
         public ICollection<Rezervacije> Rezervacijes { get; set; } = new List<Rezervacije>();
 
         public ICollection<Rezencije> Rezencijes { get; } = new List<Rezencije>();

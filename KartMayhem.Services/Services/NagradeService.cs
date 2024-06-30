@@ -12,7 +12,7 @@ namespace KartMayhem.Services.Services
 {
     public class NagradeService : BaseService<Model.Nagrade, Database.Nagrade, BaseSearchObject>, INagradeService
     {
-        public NagradeService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
+        public NagradeService(IB190060_KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
         }
     }

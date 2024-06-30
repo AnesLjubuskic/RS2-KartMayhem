@@ -17,10 +17,10 @@ namespace KartMayhem.Services.Services
 {
     public class AuthService : IAuthService
     {
-        protected KartMayhemContext _context;
+        protected IB190060_KartMayhemContext _context;
         protected IMapper _mapper { get; set; }
 
-        public AuthService(KartMayhemContext context, IMapper mapper)
+        public AuthService(IB190060_KartMayhemContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

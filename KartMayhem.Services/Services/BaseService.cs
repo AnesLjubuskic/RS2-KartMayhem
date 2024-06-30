@@ -10,9 +10,9 @@ namespace KartMayhem.Services.Services
 {
     public class BaseService<T, TDb, TSearch> : IBaseService<T, TSearch> where TDb : class where T : class where TSearch : BaseSearchObject
     {
-        protected KartMayhemContext _context;
+        protected IB190060_KartMayhemContext _context;
         protected IMapper _mapper { get; set; }
-        public BaseService(KartMayhemContext context, IMapper mapper)
+        public BaseService(IB190060_KartMayhemContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

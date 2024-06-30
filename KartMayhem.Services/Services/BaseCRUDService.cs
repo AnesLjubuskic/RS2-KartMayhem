@@ -8,7 +8,7 @@ namespace KartMayhem.Services.Services
     {
         public string problem = "Problem u poslanim podacima";
 
-        public BaseCRUDService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
+        public BaseCRUDService(IB190060_KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
         }
 

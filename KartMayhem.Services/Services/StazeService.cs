@@ -20,7 +20,7 @@ namespace KartMayhem.Services.Services
 {
     public class StazeService : BaseCRUDService<Model.Staze, Database.Staze, StazeSearchObject, StazeUpsertRequest, StazeUpsertRequest>, IStazeService
     {
-        public StazeService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
+        public StazeService(IB190060_KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
         }
 

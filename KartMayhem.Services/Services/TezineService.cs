@@ -7,7 +7,7 @@ namespace KartMayhem.Services.Services
 {
     public class TezineService : BaseService<Model.Tezine, Database.Tezine, BaseSearchObject>, ITezinaService
     {
-        public TezineService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
+        public TezineService(IB190060_KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
         }
     }

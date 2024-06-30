@@ -14,7 +14,7 @@ namespace KartMayhem.Services.Services
 {
     public class FeedbackService : BaseCRUDService<Model.Feedback, Database.Feedback, BaseSearchObject, FeedbackInsertRequest, object>, IFeedbackService
     {
-        public FeedbackService(KartMayhemContext context, IMapper mapper) : base(context, mapper)
+        public FeedbackService(IB190060_KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
         }
 

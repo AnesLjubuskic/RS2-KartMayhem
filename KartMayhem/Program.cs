@@ -56,7 +56,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<KartMayhemContext>(options =>
+builder.Services.AddDbContext<IB190060_KartMayhemContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddAutoMapper(typeof(ITezinaService));
@@ -86,7 +86,7 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     string? connection = app.Configuration.GetConnectionString("DefaultConnection");
-    var dataContext = scope.ServiceProvider.GetRequiredService<KartMayhemContext>();
+    var dataContext = scope.ServiceProvider.GetRequiredService<IB190060_KartMayhemContext>();
     dataContext.Database.Migrate();
 }
 

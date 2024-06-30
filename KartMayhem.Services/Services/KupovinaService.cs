@@ -18,7 +18,7 @@ namespace KartMayhem.Services.Services
         private IRezervacijeService _rezervacijeService { get; set; }
         public StripeService _stripeService { get; set; }
 
-        public KupovinaService(KartMayhemContext context, IMapper mapper, StripeService stripeService, IRezervacijeService rezervacijeService) : base(context, mapper)
+        public KupovinaService(IB190060_KartMayhemContext context, IMapper mapper, StripeService stripeService, IRezervacijeService rezervacijeService) : base(context, mapper)
         {
             _stripeService = stripeService;
             _rezervacijeService = rezervacijeService;
