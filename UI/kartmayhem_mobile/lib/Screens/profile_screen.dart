@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kartmayhem_mobile/Models/korisnik.dart';
 import 'package:kartmayhem_mobile/Providers/korisnik_provider.dart';
+import 'package:kartmayhem_mobile/Screens/cancel_reservation_screen.dart';
 import 'package:kartmayhem_mobile/Screens/editprofile_screen.dart';
 import 'package:kartmayhem_mobile/Screens/feedback_screen.dart';
 import 'package:kartmayhem_mobile/Screens/history_screen.dart';
@@ -145,7 +146,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           width: 280,
           height: 45,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CancelReservationScreen(),
+                ),
+              );
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF870000),
               shape: RoundedRectangleBorder(

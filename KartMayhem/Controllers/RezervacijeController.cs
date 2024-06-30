@@ -18,7 +18,7 @@ namespace KartMayhem.Controllers
             _rezervacijeService = service;
         }
 
-        [HttpPut("cancel")]
+        [HttpPut("cancel/{id}")]
         public async Task<bool> CancelReservation(int Id)
         {
             return await _rezervacijeService.CancelReservation(Id);
@@ -36,6 +36,10 @@ namespace KartMayhem.Controllers
             return await _rezervacijeService.History(userId);
         }
 
-
+        [HttpGet("cashReservations")]
+        public async Task<PagedResult<Rezervacije>> CashReservations(int userId)
+        {
+            return await _rezervacijeService.GetCashReservations(userId);
+        }
     }
 }
