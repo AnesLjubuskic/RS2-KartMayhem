@@ -16,6 +16,7 @@ namespace KartMayhem.Services
             CreateMap<Database.Rezencije, Model.Rezencije>();
             CreateMap<Database.Rezervacije, Model.Rezervacije>();
             CreateMap<Database.Feedback, Model.Feedback>();
+            CreateMap<Database.Gradovi, Model.Gradovi>();
             CreateMap<Database.Staze, Model.Staze>()
                 .ForMember(dest => dest.BrojRezervacija, opt => opt.MapFrom(src => src.Rezervacijes.Count));
             CreateMap<Database.Staze, Model.UniqueGetRequests.StazeForRezervacije>();

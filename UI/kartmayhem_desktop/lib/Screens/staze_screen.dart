@@ -3,6 +3,7 @@ import 'package:kartmayhem_desktop/Helpers/error_dialog.dart';
 import 'package:kartmayhem_desktop/Models/search_result.dart';
 import 'package:kartmayhem_desktop/Models/staze.dart';
 import 'package:kartmayhem_desktop/Providers/staze_provider.dart';
+import 'package:kartmayhem_desktop/Screens/feedback_screen.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
 import 'package:kartmayhem_desktop/Screens/nagradi_screen.dart';
 import 'package:kartmayhem_desktop/Screens/rezervacije_screen.dart';
@@ -70,7 +71,8 @@ class _StazeScreenState extends State<StazeScreen> {
       double? duzinaStaze,
       int? brojKrugova,
       int? maxBrojOsoba,
-      int? tezinaId) async {
+      int? tezinaId,
+      int? gradoviId) async {
     try {
       await _stazeProvider.insert({
         'nazivStaze': nazivStaze,
@@ -79,7 +81,8 @@ class _StazeScreenState extends State<StazeScreen> {
         'duzinaStaze': duzinaStaze,
         'brojKrugova': brojKrugova,
         'maxBrojOsoba': maxBrojOsoba,
-        'tezinaId': tezinaId
+        'tezinaId': tezinaId,
+        'gradoviId': gradoviId
       });
 
       if (context.mounted) {
@@ -108,7 +111,8 @@ class _StazeScreenState extends State<StazeScreen> {
       double? duzinaStaze,
       int? brojKrugova,
       int? maxBrojOsoba,
-      int? tezinaId) async {
+      int? tezinaId,
+      int? gradoviId) async {
     try {
       await _stazeProvider.update(id, {
         'nazivStaze': nazivStaze,
@@ -117,14 +121,15 @@ class _StazeScreenState extends State<StazeScreen> {
         'duzinaStaze': duzinaStaze,
         'brojKrugova': brojKrugova,
         'maxBrojOsoba': maxBrojOsoba,
-        'tezinaId': tezinaId
+        'tezinaId': tezinaId,
+        'gradoviId': gradoviId
       });
       if (context.mounted) {
         Navigator.pop(context);
         _initializeData();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: Color(0xFF870000),
             content: const Text('Uspješno ste editovali stazu!'),
           ),
         );
@@ -203,6 +208,13 @@ class _StazeScreenState extends State<StazeScreen> {
                   PageRouteBuilder<void>(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const NagradiScreen(),
+                  ),
+                );
+              } else if (page == 'feedback') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder<void>(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const FeedbackScreen(),
                   ),
                 );
               }
@@ -300,6 +312,7 @@ class _StazeScreenState extends State<StazeScreen> {
                                         child: Text(
                                           'Početnik',
                                           style: TextStyle(
+                                              fontSize: 12,
                                               color: pocetnik
                                                   ? Colors.white
                                                   : Colors.black),
@@ -321,6 +334,7 @@ class _StazeScreenState extends State<StazeScreen> {
                                         child: Text(
                                           'Amater',
                                           style: TextStyle(
+                                              fontSize: 12,
                                               color: amater
                                                   ? Colors.white
                                                   : Colors.black),
@@ -341,6 +355,7 @@ class _StazeScreenState extends State<StazeScreen> {
                                         },
                                         child: Text(
                                           style: TextStyle(
+                                              fontSize: 12,
                                               color: pro
                                                   ? Colors.white
                                                   : Colors.black),

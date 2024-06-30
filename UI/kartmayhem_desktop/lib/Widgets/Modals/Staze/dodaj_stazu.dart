@@ -2,6 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kartmayhem_desktop/Models/gradovi.dart';
+import 'package:kartmayhem_desktop/Models/search_result.dart';
+import 'package:kartmayhem_desktop/Models/tezine.dart';
+import 'package:kartmayhem_desktop/Providers/gradovi_provider.dart';
+import 'package:kartmayhem_desktop/Providers/tezina_provider.dart';
 
 class AddStazeModal extends StatefulWidget {
   final Function handleAdd;
@@ -17,6 +22,10 @@ class AddStazeModal extends StatefulWidget {
 
 class _AddStazeModalState extends State<AddStazeModal> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late GradoviProvider _gradoviProvider;
+  late TezinaProvider _tezinaProvider;
+  SearchResult<Gradovi>? result;
+  SearchResult<Tezine>? resultTezine;
   String? nazivStaze;
   String? opisStaze;
   int? cijenaPoOsobi;
@@ -24,6 +33,26 @@ class _AddStazeModalState extends State<AddStazeModal> {
   int? brojKrugova;
   int? maxBrojOsoba;
   int? tezinaId;
+  int? gradoviId;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeData();
+  }
+
+  Future<void> _initializeData() async {
+    _gradoviProvider = GradoviProvider();
+    _tezinaProvider = TezinaProvider();
+    var data = await _gradoviProvider.get();
+    setState(() {
+      result = data;
+    });
+    var data2 = await _tezinaProvider.get();
+    setState(() {
+      resultTezine = data2;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +69,7 @@ class _AddStazeModalState extends State<AddStazeModal> {
                 child: Text(
                   "Dodavanje staze",
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 35,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -52,14 +81,14 @@ class _AddStazeModalState extends State<AddStazeModal> {
                 child: Text(
                   "Naziv *",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     color: Colors.black,
                   ),
                 ),
               ),
               const SizedBox(height: 10),
               Container(
-                height: 40,
+                height: 30,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(5.0),
@@ -68,7 +97,7 @@ class _AddStazeModalState extends State<AddStazeModal> {
                 child: TextFormField(
                   decoration: InputDecoration(
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, right: 10, left: 10),
+                        EdgeInsets.only(bottom: 20, right: 10, left: 10),
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
@@ -93,7 +122,7 @@ class _AddStazeModalState extends State<AddStazeModal> {
                 child: Text(
                   "Deskripcija *",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     color: Colors.black,
                   ),
                 ),
@@ -141,14 +170,14 @@ class _AddStazeModalState extends State<AddStazeModal> {
                           child: Text(
                             "Dužina staze *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: 40,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -164,7 +193,7 @@ class _AddStazeModalState extends State<AddStazeModal> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: 10, right: 10, left: 10),
+                                  bottom: 20, right: 10, left: 10),
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -195,14 +224,14 @@ class _AddStazeModalState extends State<AddStazeModal> {
                           child: Text(
                             "Max broj osoba *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: 40,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -215,7 +244,7 @@ class _AddStazeModalState extends State<AddStazeModal> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: 10, right: 10, left: 10),
+                                  bottom: 20, right: 10, left: 10),
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -246,7 +275,7 @@ class _AddStazeModalState extends State<AddStazeModal> {
                           child: Text(
                             "Težina *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
@@ -260,21 +289,18 @@ class _AddStazeModalState extends State<AddStazeModal> {
                             border: Border.all(color: Colors.grey),
                           ),
                           child: DropdownButtonFormField<int>(
-                            items: <int>[1, 2, 3]
-                                .map<DropdownMenuItem<int>>((int value) {
-                              String text;
-                              if (value == 1) {
-                                text = 'Početnik';
-                              } else if (value == 2) {
-                                text = 'Amater';
-                              } else {
-                                text = 'Profesionalac';
-                              }
+                            value: tezinaId,
+                            items: resultTezine?.result.map((tezina) {
                               return DropdownMenuItem<int>(
-                                value: value,
-                                child: Text(text),
+                                value: tezina.id,
+                                child: Text(tezina.naziv!),
                               );
                             }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                tezinaId = value;
+                              });
+                            },
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
                                   bottom: 10, right: 10, left: 10),
@@ -282,11 +308,6 @@ class _AddStazeModalState extends State<AddStazeModal> {
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                tezinaId = value;
-                              });
-                            },
                             validator: (value) {
                               if (value == null) {
                                 return 'Ovo polje je obavezno';
@@ -307,14 +328,14 @@ class _AddStazeModalState extends State<AddStazeModal> {
                           child: Text(
                             "Broj krugova *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: 40,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -327,7 +348,7 @@ class _AddStazeModalState extends State<AddStazeModal> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: 10, right: 10, left: 10),
+                                  bottom: 20, right: 10, left: 10),
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -358,14 +379,14 @@ class _AddStazeModalState extends State<AddStazeModal> {
                           child: Text(
                             "Cijena po osobi *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: 40,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -378,7 +399,7 @@ class _AddStazeModalState extends State<AddStazeModal> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: 10, right: 10, left: 10),
+                                  bottom: 20, right: 10, left: 10),
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -407,9 +428,9 @@ class _AddStazeModalState extends State<AddStazeModal> {
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "",
+                            "Grad *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
@@ -417,6 +438,38 @@ class _AddStazeModalState extends State<AddStazeModal> {
                         const SizedBox(height: 10),
                         Container(
                           height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5.0),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: DropdownButtonFormField<int>(
+                            value: gradoviId,
+                            items: result?.result.map((grad) {
+                              return DropdownMenuItem<int>(
+                                value: grad.id,
+                                child: Text(grad.nazivGrada!),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                gradoviId = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  bottom: 10, right: 10, left: 10),
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Ovo polje je obavezno';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -449,15 +502,8 @@ class _AddStazeModalState extends State<AddStazeModal> {
         ElevatedButton(
           onPressed: () {
             if (formKey.currentState!.validate()) {
-              widget.handleAdd(
-                nazivStaze,
-                opisStaze,
-                cijenaPoOsobi,
-                duzinaStaze,
-                brojKrugova,
-                maxBrojOsoba,
-                tezinaId,
-              );
+              widget.handleAdd(nazivStaze, opisStaze, cijenaPoOsobi,
+                  duzinaStaze, brojKrugova, maxBrojOsoba, tezinaId, gradoviId);
             }
           },
           style: ElevatedButton.styleFrom(

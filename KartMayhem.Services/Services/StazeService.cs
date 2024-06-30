@@ -106,20 +106,32 @@ namespace KartMayhem.Services.Services
 
         public override Task BeforeInsert(Database.Staze entity, StazeUpsertRequest insert)
         {
-            
-
             entity.IsActive = true;
 
-            //var pictureValue = _context.Tezines.Find(insert.TezinaId);
-            //
-            //if (pictureValue == null)
-            //{
-            //    throw new StazeException("Tezina id nije validna!");
-            //}
-            //
-            //entity.Slika = pictureValue.Slika;
+            var pictureValue = _context.Tezines.Find(insert.TezinaId);
+            
+            if (pictureValue == null)
+            {
+                throw new StazeException("Tezina id nije validna!");
+            }
+            
+            entity.Slika = pictureValue.Slika;
             
             return base.BeforeInsert(entity, insert);
+        }
+
+        public override Task AfterUpdate(Database.Staze entity)
+        {
+            var pictureValue = _context.Tezines.Find(entity.TezinaId);
+
+            if (pictureValue == null)
+            {
+                throw new StazeException("Tezina id nije validna!");
+            }
+
+            entity.Slika = pictureValue.Slika;
+
+            return base.AfterUpdate(entity);
         }
 
         public override IQueryable<Database.Staze> AddFilter(IQueryable<Database.Staze> query, StazeSearchObject? search = null)
@@ -180,7 +192,7 @@ namespace KartMayhem.Services.Services
         public override IQueryable<Database.Staze> AddInclude(IQueryable<Database.Staze> query, StazeSearchObject? search = null)
         {
             var includeQuery = base.AddInclude(query, search);
-            includeQuery = includeQuery.Include(x => x.Tezina);
+            includeQuery = includeQuery.Include(x => x.Tezina).Include(x => x.Gradovi);
 
             return includeQuery;
         }

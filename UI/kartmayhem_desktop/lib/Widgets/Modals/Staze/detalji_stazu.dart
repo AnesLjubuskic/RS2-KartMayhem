@@ -24,14 +24,10 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
   late TextEditingController _duzinaStazeController;
   late TextEditingController _brojKrugovaController;
   late TextEditingController _maxBrojOsobaController;
-  String initialText = '';
-  int? _selectedTezinaId;
 
-  final List<Map<String, dynamic>> tezine = [
-    {"id": 1, "naziv": "Početnik"},
-    {"id": 2, "naziv": "Amater"},
-    {"id": 3, "naziv": "Profesionalac"}
-  ];
+  String? initialText = '';
+  String? initialGradText = '';
+
   @override
   void initState() {
     super.initState();
@@ -46,9 +42,8 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
         TextEditingController(text: widget.staze.brojKrugova?.toString());
     _maxBrojOsobaController =
         TextEditingController(text: widget.staze.maxBrojOsoba?.toString());
-    _selectedTezinaId = widget.staze.tezina?.id;
-    initialText =
-        tezine.firstWhere((item) => item['id'] == _selectedTezinaId)['naziv'];
+    initialGradText = widget.staze.gradovi?.nazivGrada;
+    initialText = widget.staze.tezina?.naziv;
   }
 
   @override
@@ -77,7 +72,7 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                 child: Text(
                   "Detalji staze",
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 35,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -89,14 +84,14 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                 child: Text(
                   "Naziv *",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     color: Colors.black,
                   ),
                 ),
               ),
               const SizedBox(height: 10),
               Container(
-                height: 40,
+                height: 30,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(5.0),
@@ -107,7 +102,7 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                   controller: _nazivStazeController,
                   decoration: InputDecoration(
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, right: 10, left: 10),
+                        EdgeInsets.only(bottom: 20, right: 10, left: 10),
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
@@ -126,7 +121,7 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                 child: Text(
                   "Deskripcija *",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     color: Colors.black,
                   ),
                 ),
@@ -170,14 +165,14 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                           child: Text(
                             "Dužina staze *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: 40,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -195,7 +190,7 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: 10, right: 10, left: 10),
+                                  bottom: 20, right: 10, left: 10),
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -214,14 +209,14 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                           child: Text(
                             "Max broj osoba *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: 40,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -236,7 +231,7 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: 10, right: 10, left: 10),
+                                  bottom: 20, right: 10, left: 10),
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -255,7 +250,7 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                           child: Text(
                             "Težina *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
@@ -270,7 +265,7 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                           ),
                           child: TextFormField(
                             enabled: false,
-                            initialValue: initialText,
+                            initialValue: initialText ?? "",
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
                                   bottom: 10, right: 10, left: 10),
@@ -299,14 +294,14 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                           child: Text(
                             "Broj krugova *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: 40,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -321,7 +316,7 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: 10, right: 10, left: 10),
+                                  bottom: 20, right: 10, left: 10),
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -340,14 +335,14 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                           child: Text(
                             "Cijena po osobi *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: 40,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -362,7 +357,7 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: 10, right: 10, left: 10),
+                                  bottom: 20, right: 10, left: 10),
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -379,9 +374,9 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "",
+                            "Grad *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
@@ -389,6 +384,29 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                         const SizedBox(height: 10),
                         Container(
                           height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5.0),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: TextFormField(
+                            enabled: false,
+                            initialValue: initialGradText ?? "",
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  bottom: 10, right: 10, left: 10),
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                            ),
+                            onChanged: (value) {},
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Ovo polje je obavezno';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
                       ],
                     ),

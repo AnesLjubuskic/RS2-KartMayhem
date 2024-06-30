@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kartmayhem_desktop/Models/gradovi.dart';
 import 'package:kartmayhem_desktop/Models/tezine.dart';
 
 part 'staze.g.dart';
@@ -17,6 +18,7 @@ class Staze {
   int? brojRezervacija;
   String? slika;
   Tezine? tezina;
+  Gradovi? gradovi;
 
   Staze(
       {this.id,
@@ -28,7 +30,8 @@ class Staze {
       this.maxBrojOsoba,
       this.brojRezervacija,
       this.slika,
-      this.tezina});
+      this.tezina,
+      this.gradovi});
 
   factory Staze.fromJson(Map<String, dynamic> json) => _$StazeFromJson(json);
   Map<String, dynamic> toJson() => _$StazeToJson(this);

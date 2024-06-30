@@ -132,6 +132,15 @@ namespace KartMayhem.Services.Database
                 IsActive = true
             },
             });
+
+            modelBuilder.Entity<Feedback>().HasData(new Feedback[]{
+            new Feedback()
+            {
+                Id = 1,
+                KorisnikId = 1,
+                Komentar = "Odlicna aplikacija!"
+            },
+            });
         }
     }   
 }

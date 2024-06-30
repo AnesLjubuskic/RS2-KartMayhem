@@ -1,9 +1,9 @@
-import 'package:kartmayhem_desktop/Models/rezervacije.dart';
+import 'package:kartmayhem_desktop/Models/gradovi.dart';
 import 'package:kartmayhem_desktop/Providers/base_provided.dart';
 
-class RezervacijeProvider extends BaseProvider<Rezervacije> {
+class GradoviProvider extends BaseProvider<Gradovi> {
   static String? _baseUrl;
-  RezervacijeProvider() : super("Rezervacije") {
+  GradoviProvider() : super("Gradovi") {
     _baseUrl = const String.fromEnvironment("baseUrl",
         defaultValue: "http://localhost:5258/");
     if (_baseUrl!.endsWith("/") == false) {
@@ -11,7 +11,7 @@ class RezervacijeProvider extends BaseProvider<Rezervacije> {
     }
   }
   @override
-  Rezervacije fromJson(data) {
-    return Rezervacije.fromJson(data);
+  Gradovi fromJson(data) {
+    return Gradovi.fromJson(data);
   }
 }

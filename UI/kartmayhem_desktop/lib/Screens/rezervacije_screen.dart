@@ -4,6 +4,7 @@ import 'package:kartmayhem_desktop/Models/search_result.dart';
 import 'package:kartmayhem_desktop/Models/staze.dart';
 import 'package:kartmayhem_desktop/Providers/rezervacije_provider.dart';
 import 'package:kartmayhem_desktop/Providers/staze_provider.dart';
+import 'package:kartmayhem_desktop/Screens/feedback_screen.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
 import 'package:kartmayhem_desktop/Screens/nagradi_screen.dart';
 import 'package:kartmayhem_desktop/Screens/sidebar_navigation.dart';
@@ -108,6 +109,13 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                   PageRouteBuilder<void>(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const NagradiScreen(),
+                  ),
+                );
+              } else if (page == 'feedback') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder<void>(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const FeedbackScreen(),
                   ),
                 );
               }

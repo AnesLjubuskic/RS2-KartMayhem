@@ -28,6 +28,8 @@
 
         public int? Ocjena { get; set; }
 
+        public Gradovi Gradovi { get; set; }
+
         public ICollection<Rezencije> Rezencijes { get; } = new List<Rezencije>();
     }
 }

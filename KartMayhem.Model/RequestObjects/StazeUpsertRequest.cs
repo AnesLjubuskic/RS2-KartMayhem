@@ -20,6 +20,8 @@ namespace KartMayhem.Model.RequestObjects
 
         public int MaxBrojOsoba { get; set; }
 
+        public int GradoviId { get; set; }
+
         public int TezinaId { get; set; }
     }
 }

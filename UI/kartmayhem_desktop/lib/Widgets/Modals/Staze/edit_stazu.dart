@@ -2,7 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kartmayhem_desktop/Models/gradovi.dart';
+import 'package:kartmayhem_desktop/Models/search_result.dart';
 import 'package:kartmayhem_desktop/Models/staze.dart';
+import 'package:kartmayhem_desktop/Models/tezine.dart';
+import 'package:kartmayhem_desktop/Providers/gradovi_provider.dart';
+import 'package:kartmayhem_desktop/Providers/tezina_provider.dart';
 
 class EditStazeModal extends StatefulWidget {
   final Staze staze;
@@ -20,23 +25,24 @@ class EditStazeModal extends StatefulWidget {
 
 class _EditStazeModalState extends State<EditStazeModal> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  late GradoviProvider _gradoviProvider;
+  late TezinaProvider _tezinaProvider;
   late TextEditingController _nazivStazeController;
   late TextEditingController _opisStazeController;
   late TextEditingController _cijenaPoOsobiController;
   late TextEditingController _duzinaStazeController;
   late TextEditingController _brojKrugovaController;
   late TextEditingController _maxBrojOsobaController;
+  SearchResult<Gradovi>? result;
+  SearchResult<Tezine>? resultTezine;
 
   int? _selectedTezinaId;
+  int? _selectedGradId;
 
-  final List<Map<String, dynamic>> tezine = [
-    {"id": 1, "naziv": "Početnik"},
-    {"id": 2, "naziv": "Amater"},
-    {"id": 3, "naziv": "Profesionalac"}
-  ];
   @override
   void initState() {
     super.initState();
+    _initializeData();
     _nazivStazeController =
         TextEditingController(text: widget.staze.nazivStaze);
     _opisStazeController = TextEditingController(text: widget.staze.opisStaze);
@@ -49,6 +55,20 @@ class _EditStazeModalState extends State<EditStazeModal> {
     _maxBrojOsobaController =
         TextEditingController(text: widget.staze.maxBrojOsoba?.toString());
     _selectedTezinaId = widget.staze.tezina?.id;
+    _selectedGradId = widget.staze.gradovi?.id;
+  }
+
+  Future<void> _initializeData() async {
+    _gradoviProvider = GradoviProvider();
+    _tezinaProvider = TezinaProvider();
+    var data = await _gradoviProvider.get();
+    setState(() {
+      result = data;
+    });
+    var data2 = await _tezinaProvider.get();
+    setState(() {
+      resultTezine = data2;
+    });
   }
 
   @override
@@ -77,7 +97,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                 child: Text(
                   "Uređivanje staze",
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 35,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -89,14 +109,14 @@ class _EditStazeModalState extends State<EditStazeModal> {
                 child: Text(
                   "Naziv *",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     color: Colors.black,
                   ),
                 ),
               ),
               const SizedBox(height: 10),
               Container(
-                height: 40,
+                height: 30,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(5.0),
@@ -106,7 +126,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                   controller: _nazivStazeController,
                   decoration: InputDecoration(
                     contentPadding:
-                        EdgeInsets.only(bottom: 10, right: 10, left: 10),
+                        EdgeInsets.only(bottom: 20, right: 10, left: 10),
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
@@ -128,7 +148,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                 child: Text(
                   "Deskripcija *",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 16,
                     color: Colors.black,
                   ),
                 ),
@@ -174,14 +194,14 @@ class _EditStazeModalState extends State<EditStazeModal> {
                           child: Text(
                             "Dužina staze *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: 40,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -198,7 +218,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: 10, right: 10, left: 10),
+                                  bottom: 20, right: 10, left: 10),
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -224,14 +244,14 @@ class _EditStazeModalState extends State<EditStazeModal> {
                           child: Text(
                             "Max broj osoba *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: 40,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -245,7 +265,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: 10, right: 10, left: 10),
+                                  bottom: 20, right: 10, left: 10),
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -271,7 +291,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                           child: Text(
                             "Težina *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
@@ -286,12 +306,17 @@ class _EditStazeModalState extends State<EditStazeModal> {
                           ),
                           child: DropdownButtonFormField<int>(
                             value: _selectedTezinaId,
-                            items: tezine.map((staze) {
+                            items: resultTezine?.result.map((tezina) {
                               return DropdownMenuItem<int>(
-                                value: staze['id'],
-                                child: Text(staze['naziv']),
+                                value: tezina.id,
+                                child: Text(tezina.naziv!),
                               );
                             }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedTezinaId = value;
+                              });
+                            },
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
                                   bottom: 10, right: 10, left: 10),
@@ -299,11 +324,6 @@ class _EditStazeModalState extends State<EditStazeModal> {
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedTezinaId = value;
-                              });
-                            },
                             validator: (value) {
                               if (value == null) {
                                 return 'Ovo polje je obavezno';
@@ -324,14 +344,14 @@ class _EditStazeModalState extends State<EditStazeModal> {
                           child: Text(
                             "Broj krugova *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: 40,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -345,7 +365,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: 10, right: 10, left: 10),
+                                  bottom: 20, right: 10, left: 10),
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -371,14 +391,14 @@ class _EditStazeModalState extends State<EditStazeModal> {
                           child: Text(
                             "Cijena po osobi *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Container(
-                          height: 40,
+                          height: 30,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(5.0),
@@ -392,7 +412,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(
-                                  bottom: 10, right: 10, left: 10),
+                                  bottom: 20, right: 10, left: 10),
                               border: InputBorder.none,
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -416,9 +436,9 @@ class _EditStazeModalState extends State<EditStazeModal> {
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "",
+                            "Grad *",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
@@ -426,6 +446,38 @@ class _EditStazeModalState extends State<EditStazeModal> {
                         const SizedBox(height: 10),
                         Container(
                           height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(5.0),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: DropdownButtonFormField<int>(
+                            value: _selectedGradId,
+                            items: result?.result.map((grad) {
+                              return DropdownMenuItem<int>(
+                                value: grad.id,
+                                child: Text(grad.nazivGrada!),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedGradId = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.only(
+                                  bottom: 10, right: 10, left: 10),
+                              border: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Ovo polje je obavezno';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -466,7 +518,8 @@ class _EditStazeModalState extends State<EditStazeModal> {
                   double.tryParse(_duzinaStazeController.text),
                   int.tryParse(_brojKrugovaController.text),
                   int.tryParse(_maxBrojOsobaController.text),
-                  _selectedTezinaId);
+                  _selectedTezinaId,
+                  _selectedGradId);
             }
           },
           style: ElevatedButton.styleFrom(
