@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kartmayhem_mobile/Providers/auth_provider.dart';
+import 'package:kartmayhem_mobile/Providers/feedback_provider.dart';
 import 'package:kartmayhem_mobile/Providers/korisnik_provider.dart';
 import 'package:kartmayhem_mobile/Providers/kupovina_provider.dart';
+import 'package:kartmayhem_mobile/Providers/reservationUpsert_provider.dart';
 import 'package:kartmayhem_mobile/Providers/reservation_provider.dart';
+import 'package:kartmayhem_mobile/Providers/rezencije_provider.dart';
 import 'package:kartmayhem_mobile/Providers/staze_provider.dart';
 import 'package:kartmayhem_mobile/Screens/bottom_navigation.dart';
 import 'package:kartmayhem_mobile/Screens/login_screen.dart';
@@ -23,8 +26,11 @@ void main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => KorisnikProvider()),
+        ChangeNotifierProvider(create: (_) => FeedbackProvider()),
         ChangeNotifierProvider(create: (_) => StazeProvider()),
         ChangeNotifierProvider(create: (_) => RezervacijeProvider()),
+        ChangeNotifierProvider(create: (_) => RezervacijeUpsertProvider()),
+        ChangeNotifierProvider(create: (_) => RezencijeProvider()),
         ChangeNotifierProvider(create: (_) => KupovinaProvider())
       ],
       child: const MyApp(),

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kartmayhem_mobile/Helpers/error_dialog.dart';
+import 'package:kartmayhem_mobile/Helpers/success_dialog.dart';
+import 'package:kartmayhem_mobile/Providers/feedback_provider.dart';
+import 'package:kartmayhem_mobile/Utils/util.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({super.key});
@@ -9,6 +13,7 @@ class FeedbackScreen extends StatefulWidget {
 
 class _FeedbackScreenState extends State<FeedbackScreen> {
   final _formKey = GlobalKey<FormState>();
+  late FeedbackProvider _feedbackProvider;
   String _feedback = '';
 
   @override
@@ -55,11 +60,28 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  // Process the feedback (e.g., send it to a server)
-                  print('Feedback: $_feedback');
+                  try {
+                    _feedbackProvider = FeedbackProvider();
+                    Map feedback = {
+                      'komentar': _feedback,
+                      'korisnikId': Authorization.id
+                    };
+                    await _feedbackProvider.insert(feedback);
+                    // ignore: use_build_context_synchronously
+                    Navigator.pop(context);
+                    // ignore: use_build_context_synchronously
+                    showSuccessDialog(
+                        context, "Uspješno ste ostavili komentar!");
+                  } on Exception catch (e) {
+                    String errorMessage =
+                        e.toString().replaceFirst('Exception: ', '');
+                    // ignore: use_build_context_synchronously
+                    showErrorDialog(context, errorMessage);
+                    // ignore: use_build_context_synchronously
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(

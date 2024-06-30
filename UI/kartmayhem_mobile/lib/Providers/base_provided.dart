@@ -97,6 +97,11 @@ abstract class BaseProvider<T> with ChangeNotifier {
         var data = jsonDecode(response.body);
         throw Exception("${data["errors"]["kupovinaError"][0].toString()}");
       }
+
+      if (response.body.isNotEmpty && _endpoint == "Feedback") {
+        var data = jsonDecode(response.body);
+        throw Exception("${data["errors"]["feedbackError"][0].toString()}");
+      }
       throw Exception('Something went wrong!');
     }
   }
