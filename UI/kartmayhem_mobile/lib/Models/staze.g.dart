@@ -21,6 +21,9 @@ Staze _$StazeFromJson(Map<String, dynamic> json) => Staze(
           : Tezine.fromJson(json['tezina'] as Map<String, dynamic>),
       ocjena: (json['ocjena'] as num?)?.toInt(),
       favourite: json['favourite'] as bool?,
+      gradovi: json['gradovi'] == null
+          ? null
+          : Gradovi.fromJson(json['gradovi'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$StazeToJson(Staze instance) => <String, dynamic>{
@@ -36,4 +39,5 @@ Map<String, dynamic> _$StazeToJson(Staze instance) => <String, dynamic>{
       'tezina': instance.tezina,
       'favourite': instance.favourite,
       'ocjena': instance.ocjena,
+      'gradovi': instance.gradovi,
     };

@@ -199,7 +199,7 @@ namespace KartMayhem.Services.Services
 
         public async override Task<Model.Staze> GetById(int id)
         {
-            var staza = _context.Set<Database.Staze>().Include(x => x.Tezina).Include(x => x.Rezencijes).FirstOrDefault(x => x.Id == id);
+            var staza = _context.Set<Database.Staze>().Include(x => x.Tezina).Include(x => x.Gradovi).Include(x => x.Rezencijes).FirstOrDefault(x => x.Id == id);
 
             if (staza == null)
             {
