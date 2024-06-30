@@ -12,8 +12,8 @@ namespace KartMayhem.Subscriber
 
         public EmailSendGridService()
         {
-            var encryptedApiKey = Environment.GetEnvironmentVariable("EncryptedApiKey") ?? "Q1vV48KBIqHUaZENVYLno8tOypbKSyUeCEl06219o/0kAZGJapGPnJ37nCqq8prs7qe0GlsDI6Thjc7TT17IG9P9YdVM7NR18JX49XmO/G4=";
-            var encryptionKey = Environment.GetEnvironmentVariable("EncryptionKey") ?? "73Gh30kxP4j7W2nX5Rf8T3vZ20QqM1uY";
+            var encryptedApiKey = Environment.GetEnvironmentVariable("EncryptedApiKey") ?? "BWxWphrKGGW91TgQuoTsA6IwppwN8NpghaKbpFmEYCwhL6rBArX06EwcVTZed4g1fFXLJzVko20q9vI9em62gElM+LB/WFkaqQ8uv76463U=";
+            var encryptionKey = Environment.GetEnvironmentVariable("EncryptionKey") ?? "SSODKAX9832Q01AA";
             _apiKey = EncryptionHelper.DecryptString(encryptedApiKey, encryptionKey);
             _client = new SendGridClient(_apiKey);
             _fromAddress = new EmailAddress("kartingmayhem@outlook.com", "Karting Mayhem");

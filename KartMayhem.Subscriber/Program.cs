@@ -46,7 +46,6 @@ public class RabbitMQHostedService : IHostedService
     public Task StopAsync(CancellationToken cancellationToken)
     {
         _bus.Dispose();
-        //console log "Dispoing"
         Console.WriteLine("Stop async");
         return Task.CompletedTask;
     }
