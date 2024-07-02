@@ -49,8 +49,15 @@ class _CancelReservationScreenState extends State<CancelReservationScreen> {
         body: Column(
           children: [
             Expanded(
-              child: result == null
-                  ? const SizedBox()
+              child: (result == null || result!.result.isEmpty)
+                  ? const Padding(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: Text(
+                        "Ne postoji rezervacija koju možete poništiti!",
+                        style: TextStyle(fontSize: 20),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
                   : Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                       child: ListView.separated(

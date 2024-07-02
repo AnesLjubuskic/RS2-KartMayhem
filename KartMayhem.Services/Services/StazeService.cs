@@ -302,9 +302,15 @@ namespace KartMayhem.Services.Services
                 .Include(r => r.Staza)
                 .ToList();
 
-            if (rezervacijeList.Count < 3)
+            if (rezervacijeList.Count < 3) //Potrebno je najmanje 3 rezervacije za preporuku staza!
             {
-                throw new StazeException("Potrebno je najmanje 3 rezervacije za preporuku staza!");
+                var resulter = new PagedResult<Model.Staze>() 
+                { 
+                    Count = 0,
+                    Result = []
+                };
+
+                return resulter;
             }
 
             lock (lockObj)

@@ -52,8 +52,15 @@ class _PreporukeScreenState extends State<PreporukeScreen> {
               ),
             ),
             Expanded(
-              child: result == null
-                  ? SizedBox()
+              child: (result == null || result!.result.isEmpty)
+                  ? const Padding(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: Text(
+                        "Aplikacija ne posjeduje dovoljno rezervacija da bi iskoristila sistem preporuke!",
+                        style: TextStyle(fontSize: 20),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
                   : Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                       child: ListView.separated(

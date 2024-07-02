@@ -45,8 +45,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
         body: Column(
           children: [
             Expanded(
-              child: result == null
-                  ? const SizedBox()
+              child: (result == null || result!.result.isEmpty)
+                  ? const Padding(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: Text(
+                        "Da bi se rezervacija pojavila u historiji termin mora biti u prošlosti!",
+                        style: TextStyle(fontSize: 25),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
                   : Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                       child: ListView.separated(

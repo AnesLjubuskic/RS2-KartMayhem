@@ -52,8 +52,15 @@ class _SavedStazeScreenState extends State<SavedStazeScreen> {
               ),
             ),
             Expanded(
-              child: result == null
-                  ? const SizedBox()
+              child: (result == null || result!.result.isEmpty)
+                  ? const Padding(
+                      padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: Text(
+                        "Nemate spremljenih staza, označite stazu kao favorit na home ekranu!",
+                        style: TextStyle(fontSize: 25),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
                   : Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                       child: ListView.separated(
