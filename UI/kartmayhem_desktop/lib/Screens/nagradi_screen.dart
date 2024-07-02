@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kartmayhem_desktop/Models/korisnik.dart';
 import 'package:kartmayhem_desktop/Providers/korisnik_provider.dart';
 import 'package:kartmayhem_desktop/Screens/feedback_screen.dart';
+import 'package:kartmayhem_desktop/Screens/izvjestaj_screen.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
 import 'package:kartmayhem_desktop/Screens/sidebar_navigation.dart';
 import 'package:kartmayhem_desktop/Screens/rezervacije_screen.dart';
@@ -85,6 +86,13 @@ class _NagradiScreenState extends State<NagradiScreen> {
                   PageRouteBuilder<void>(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const FeedbackScreen(),
+                  ),
+                );
+              } else if (page == 'izvjestaj') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder<void>(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const IzvjestajScreen(),
                   ),
                 );
               }

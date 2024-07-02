@@ -6,6 +6,7 @@ import 'package:kartmayhem_desktop/Providers/rezervacije_provider.dart';
 import 'package:kartmayhem_desktop/Providers/staze_provider.dart';
 import 'package:kartmayhem_desktop/Providers/tezina_provider.dart';
 import 'package:kartmayhem_desktop/Screens/feedback_screen.dart';
+import 'package:kartmayhem_desktop/Screens/izvjestaj_screen.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
 import 'package:kartmayhem_desktop/Screens/login_screen.dart';
 import 'package:kartmayhem_desktop/Screens/nagradi_screen.dart';
@@ -41,12 +42,13 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: LoginScreen.routeName,
       routes: {
-        '/': (context) => const LoginScreen(),
+        LoginScreen.routeName: (context) => const LoginScreen(),
         StazeScreen.routeName: (context) => const StazeScreen(),
         RezervacijeScreen.routeName: (context) => const RezervacijeScreen(),
         KorisniciScreen.routeName: (context) => const KorisniciScreen(),
         NagradiScreen.routeName: (context) => const NagradiScreen(),
-        FeedbackScreen.routeName: (context) => const FeedbackScreen()
+        FeedbackScreen.routeName: (context) => const FeedbackScreen(),
+        IzvjestajScreen.routeName: (context) => const IzvjestajScreen()
       },
     );
   }

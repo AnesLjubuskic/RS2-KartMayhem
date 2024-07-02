@@ -4,6 +4,7 @@ import 'package:kartmayhem_desktop/Models/search_result.dart';
 import 'package:kartmayhem_desktop/Models/staze.dart';
 import 'package:kartmayhem_desktop/Providers/staze_provider.dart';
 import 'package:kartmayhem_desktop/Screens/feedback_screen.dart';
+import 'package:kartmayhem_desktop/Screens/izvjestaj_screen.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
 import 'package:kartmayhem_desktop/Screens/nagradi_screen.dart';
 import 'package:kartmayhem_desktop/Screens/rezervacije_screen.dart';
@@ -215,6 +216,13 @@ class _StazeScreenState extends State<StazeScreen> {
                   PageRouteBuilder<void>(
                     transitionDuration: Duration.zero,
                     pageBuilder: (_, __, ___) => const FeedbackScreen(),
+                  ),
+                );
+              } else if (page == 'izvjestaj') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder<void>(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const IzvjestajScreen(),
                   ),
                 );
               }

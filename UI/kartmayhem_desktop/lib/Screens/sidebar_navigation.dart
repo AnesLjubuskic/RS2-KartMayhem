@@ -46,7 +46,7 @@ class SidebarNavigation extends StatelessWidget {
             onTap: () => onPageSelected('staze'),
           ),
           const SizedBox(
-            height: 50,
+            height: 38,
           ),
           SidebarButton(
             title: 'Rezervacije',
@@ -54,7 +54,7 @@ class SidebarNavigation extends StatelessWidget {
             onTap: () => onPageSelected('rezervacije'),
           ),
           const SizedBox(
-            height: 50,
+            height: 38,
           ),
           SidebarButton(
             title: 'Korisnici',
@@ -62,7 +62,7 @@ class SidebarNavigation extends StatelessWidget {
             onTap: () => onPageSelected('korisnici'),
           ),
           const SizedBox(
-            height: 50,
+            height: 38,
           ),
           SidebarButton(
             title: 'Nagradi',
@@ -70,12 +70,20 @@ class SidebarNavigation extends StatelessWidget {
             onTap: () => onPageSelected('nagradi'),
           ),
           const SizedBox(
-            height: 50,
+            height: 38,
           ),
           SidebarButton(
             title: 'Feedback',
             isSelected: selectedPage == 'feedback',
             onTap: () => onPageSelected('feedback'),
+          ),
+          const SizedBox(
+            height: 38,
+          ),
+          SidebarButton(
+            title: 'Izvještaj',
+            isSelected: selectedPage == 'izvjestaj',
+            onTap: () => onPageSelected('izvjestaj'),
           ),
         ],
       ),

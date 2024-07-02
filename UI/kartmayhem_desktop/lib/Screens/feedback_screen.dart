@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kartmayhem_desktop/Models/search_result.dart';
 import 'package:kartmayhem_desktop/Providers/feedback_provider.dart';
+import 'package:kartmayhem_desktop/Screens/izvjestaj_screen.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
 import 'package:kartmayhem_desktop/Screens/nagradi_screen.dart';
 import 'package:kartmayhem_desktop/Screens/rezervacije_screen.dart';
@@ -82,6 +83,13 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     pageBuilder: (_, __, ___) => const FeedbackScreen(),
                   ),
                 );
+              } else if (page == 'izvjestaj') {
+                Navigator.of(context).pushReplacement(
+                  PageRouteBuilder<void>(
+                    transitionDuration: Duration.zero,
+                    pageBuilder: (_, __, ___) => const IzvjestajScreen(),
+                  ),
+                );
               }
             },
           ),
@@ -106,7 +114,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    // Feedback list or content here
                     if (result == null)
                       Center(child: CircularProgressIndicator())
                     else
