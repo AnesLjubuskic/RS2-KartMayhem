@@ -29,8 +29,6 @@ namespace KartMayhem.Services.Database
 
         public virtual DbSet<Rezervacije> Rezervacijes { get; set; }
 
-        public virtual DbSet<StatistikeStaze> StatistikeStaze { get; set; }
-
         public virtual DbSet<Staze> Stazes { get; set; }
 
         public virtual DbSet<Tezine> Tezines { get; set; }

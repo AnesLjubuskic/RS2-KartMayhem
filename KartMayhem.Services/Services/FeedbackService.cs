@@ -47,7 +47,7 @@ namespace KartMayhem.Services.Services
                 throw new FeedbackException("Feedback mora imati više od 0, a manje od 150 karaktera!");
             }
 
-            var feedback = _context.Feedbacks.Where(x => x.KorisnikId == insert.KorisnikId);
+            var feedback = _context.Feedbacks.Where(x => x.KorisnikId == insert.KorisnikId).FirstOrDefault();
 
             if (feedback != null)
             {

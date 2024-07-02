@@ -195,7 +195,7 @@ namespace KartMayhem.Services.Services
 
         public async Task<PagedResult<Model.Rezervacije>> History(int userId)
         {
-            var rezervacije = _context.Rezervacijes.Where(x => x.KorisnikId == userId && !x.isCancelled).Include(x => x.Staza).ThenInclude(x => x.Tezina);
+            var rezervacije = _context.Rezervacijes.Where(x => x.KorisnikId == userId && !x.isCancelled).Include(x => x.Staza).ThenInclude(x => x.Tezina).Include(x => x.Staza).ThenInclude(x => x.Gradovi);
 
             if (rezervacije == null || !rezervacije.Any())
             {

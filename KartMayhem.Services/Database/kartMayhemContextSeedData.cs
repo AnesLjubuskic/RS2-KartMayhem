@@ -42,7 +42,7 @@ namespace KartMayhem.Services.Database
             new Tezine()
             {
                 Id = 1,
-                Naziv = "Pocetnik",
+                Naziv = "Početnik",
                 Slika = pocetnikSlika
             },
             new Tezine()
@@ -129,6 +129,89 @@ namespace KartMayhem.Services.Database
                 Slika = amaterSlika,
                 GradoviId = 2,
                 IsActive = true
+            },
+            new Staze()
+            {
+                Id = 3,
+                NazivStaze = "Mega Prix GP",
+                OpisStaze = "Staza koja zahtijeva velike vjestine.",
+                CijenaPoOsobi = 20,
+                DuzinaStaze = 1.3,
+                BrojKrugova = 4,
+                MaxBrojOsoba = 7,
+                TezinaId = 3,
+                Slika = proSlika,
+                GradoviId = 1,
+                IsActive = true
+            },
+            new Staze()
+            {
+                Id = 4,
+                NazivStaze = "Beginner Cup",
+                OpisStaze = "Staza dizajnirana za početnike.",
+                CijenaPoOsobi = 15,
+                DuzinaStaze = 1.2,
+                BrojKrugova = 2,
+                MaxBrojOsoba = 7,
+                TezinaId = 1,
+                Slika = pocetnikSlika,
+                GradoviId = 2,
+                IsActive = true
+            },
+            });
+
+            modelBuilder.Entity<Rezervacije>().HasData(new Rezervacije[]{
+            new Rezervacije()
+            {
+                Id = 1,
+                KorisnikId = 1,
+                StazaId = 4,
+                isCancelled = false,
+                IsGotovina = true,
+                TimeSlot = "15:00",
+                DayOfReservation = "2024-07-01",
+                BrojOsoba = 4,
+                CijenaRezervacije = 60,
+                ImeStaze = "Beginner Cup"
+            },
+            new Rezervacije()
+            {
+                Id = 2,
+                KorisnikId = 1,
+                StazaId = 3,
+                isCancelled = false,
+                IsGotovina = true,
+                TimeSlot = "15:00",
+                DayOfReservation = "2024-11-11",
+                BrojOsoba = 4,
+                CijenaRezervacije = 80,
+                ImeStaze = "Mega Prix GP"
+            },
+            new Rezervacije()
+            {
+                Id = 3,
+                KorisnikId = 1,
+                StazaId = 4,
+                isCancelled = false,
+                IsGotovina = true,
+                TimeSlot = "15:00",
+                DayOfReservation = "2024-10-11",
+                BrojOsoba = 4,
+                CijenaRezervacije = 60,
+                ImeStaze = "Beginner Cup"
+            },
+            new Rezervacije()
+            {
+                Id = 4,
+                KorisnikId = 1,
+                StazaId = 4,
+                isCancelled = false,
+                IsGotovina = true,
+                TimeSlot = "15:00",
+                DayOfReservation = "2024-12-11",
+                BrojOsoba = 4,
+                CijenaRezervacije = 60,
+                ImeStaze = "Beginner Cup"
             },
             });
 
