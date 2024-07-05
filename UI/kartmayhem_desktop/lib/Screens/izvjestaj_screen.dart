@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kartmayhem_desktop/Models/search_result.dart';
+import 'package:kartmayhem_desktop/Models/staze.dart';
 import 'package:kartmayhem_desktop/Providers/staze_provider.dart';
 import 'package:kartmayhem_desktop/Screens/feedback_screen.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
@@ -19,9 +21,29 @@ class IzvjestajScreen extends StatefulWidget {
 class _IzvjestajScreenState extends State<IzvjestajScreen> {
   String _selectedYear = '2024';
   String _selectedStaza = 'Sve';
-  late StazeProvider _stazaProvider;
+  late StazeProvider _stazeProvider;
+  SearchResult<Staze>? result;
 
   final List<String> _years = ['2024', '2025', '2026'];
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeData();
+  }
+
+  Future<void> _initializeData() async {
+    _stazeProvider = StazeProvider();
+    var data = await _stazeProvider.get();
+    setState(() {
+      result = data;
+    });
+  }
+
+  void resetSearch() {
+    _selectedYear = '2024';
+    _selectedStaza = 'Sve';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,14 +138,11 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               )
                             : Text(
-                                "Statistika za $_selectedStaza u $_selectedYear godini:",
+                                "Statistika za ${result!.result.where((x) => x.id.toString() == _selectedStaza).first.nazivStaze} u $_selectedYear godini:",
                                 style: const TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 20,
                     ),
                     Align(
                       alignment: Alignment.topCenter,
@@ -155,7 +174,7 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
                     Align(
                       alignment: Alignment.topCenter,
                       child: Text(
-                        "Broj korisnika aplikacije: ${_selectedYear}",
+                        "Ukupan broj korisnika aplikacije: ${_selectedYear}",
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.normal),
                       ),
@@ -224,24 +243,38 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
             borderRadius: BorderRadius.circular(5.0),
             border: Border.all(color: Colors.grey),
           ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: _selectedYear,
-              items: _years.map((String year) {
-                return DropdownMenuItem<String>(
-                  value: year,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Text(year),
-                  ),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedYear = newValue!;
-                });
-              },
+          child: DropdownButtonFormField<int>(
+            value: _selectedStaza == 'Sve' ? -1 : int.tryParse(_selectedStaza),
+            items: [
+              DropdownMenuItem<int>(
+                value: -1,
+                child: Text('Sve'),
+              ),
+              if (result != null && result!.result.isNotEmpty)
+                ...result!.result.map((staza) {
+                  return DropdownMenuItem<int>(
+                    value: staza.id,
+                    child: Text(staza.nazivStaze!),
+                  );
+                }).toList(),
+            ],
+            onChanged: (value) {
+              setState(() {
+                _selectedStaza = value == -1 ? 'Sve' : value.toString();
+              });
+            },
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.only(bottom: 10, right: 10, left: 10),
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
             ),
+            validator: (value) {
+              if (value == null) {
+                return 'Ovo polje je obavezno';
+              }
+              return null;
+            },
           ),
         ),
       ],
