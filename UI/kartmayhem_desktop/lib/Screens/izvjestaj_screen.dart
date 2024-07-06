@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kartmayhem_desktop/Models/izvjestaji.dart';
 import 'package:kartmayhem_desktop/Models/search_result.dart';
 import 'package:kartmayhem_desktop/Models/staze.dart';
+import 'package:kartmayhem_desktop/Providers/izvjestaji_provider.dart';
 import 'package:kartmayhem_desktop/Providers/staze_provider.dart';
 import 'package:kartmayhem_desktop/Screens/feedback_screen.dart';
 import 'package:kartmayhem_desktop/Screens/korisnici_screen.dart';
@@ -23,7 +25,9 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
   String _selectedStaza = 'Sve';
   int _selectedStazaInt = -1;
   late StazeProvider _stazeProvider;
+  late IzvjestajiProvider _izvjestajProvider;
   SearchResult<Staze>? result;
+  Izvjestaji? izvjestaj;
 
   final List<String> _years = ['2024', '2025', '2026'];
 
@@ -31,6 +35,7 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
   void initState() {
     super.initState();
     _initializeData();
+    _initializeStatistic();
   }
 
   Future<void> _initializeData() async {
@@ -39,6 +44,24 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
     setState(() {
       result = data;
     });
+  }
+
+  Future<void> _initializeStatistic() async {
+    _izvjestajProvider = IzvjestajiProvider();
+    if (_selectedStazaInt == -1) {
+      var data = await _izvjestajProvider.getIzvjestaj(search: {
+        'godina': _selectedYear,
+      });
+      setState(() {
+        izvjestaj = data;
+      });
+    } else {
+      var data = await _izvjestajProvider.getIzvjestaj(
+          search: {'godina': _selectedYear, 'stazaId': _selectedStazaInt});
+      setState(() {
+        izvjestaj = data;
+      });
+    }
   }
 
   void resetSearch() {
@@ -148,7 +171,7 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
                     Align(
                       alignment: Alignment.topCenter,
                       child: Text(
-                        "Broj rezervacija: ${_selectedYear}",
+                        "Broj rezervacija: ${izvjestaj?.brojRezervacijeStaze}",
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.normal),
                       ),
@@ -156,7 +179,7 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
                     Align(
                       alignment: Alignment.topCenter,
                       child: Text(
-                        "Ukupna zarada: ${_selectedYear}",
+                        "Ukupna zarada: ${izvjestaj?.ukupnaZaradaStaze}",
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.normal),
                       ),
@@ -175,7 +198,7 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
                     Align(
                       alignment: Alignment.topCenter,
                       child: Text(
-                        "Ukupan broj korisnika aplikacije: ${_selectedYear}",
+                        "Ukupan broj korisnika aplikacije: ${izvjestaj?.ukupanBrojKorisnikaAplikacije}",
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.normal),
                       ),
@@ -183,7 +206,7 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
                     Align(
                       alignment: Alignment.topCenter,
                       child: Text(
-                        "Ukupna zarada kroz aplikaciju: ${_selectedYear}",
+                        "Ukupna zarada kroz aplikaciju: ${izvjestaj?.ukupnaZaradaAplikacije}",
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.normal),
                       ),
@@ -263,6 +286,7 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
               setState(() {
                 _selectedStazaInt = value!;
                 _selectedStaza = value == -1 ? 'Sve' : value.toString();
+                _initializeStatistic();
               });
             },
             decoration: const InputDecoration(
@@ -318,6 +342,7 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
               onChanged: (String? newValue) {
                 setState(() {
                   _selectedYear = newValue!;
+                  _initializeStatistic();
                 });
               },
             ),
