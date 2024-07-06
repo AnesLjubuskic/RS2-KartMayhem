@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:kartmayhem_desktop/Helpers/error_dialog.dart';
 import 'package:kartmayhem_desktop/Models/izvjestaji.dart';
 import 'package:kartmayhem_desktop/Models/search_result.dart';
 import 'package:kartmayhem_desktop/Models/staze.dart';
@@ -12,7 +13,7 @@ import 'package:kartmayhem_desktop/Screens/nagradi_screen.dart';
 import 'package:kartmayhem_desktop/Screens/rezervacije_screen.dart';
 import 'package:kartmayhem_desktop/Screens/sidebar_navigation.dart';
 import 'package:kartmayhem_desktop/Screens/staze_screen.dart';
-import 'package:pdf/pdf.dart';
+import 'package:kartmayhem_desktop/Utils/util.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 
@@ -281,6 +282,23 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
                   borderRadius: BorderRadius.circular(10))),
           onPressed: () async {
             await _pdfGenerator();
+            try {
+              _izvjestajProvider = IzvjestajiProvider();
+              Map izvjestajPost = {
+                'BrojRezervacijeStaze': izvjestaj?.brojRezervacijeStaze,
+                'UkupnaZaradaStaze': izvjestaj?.ukupnaZaradaStaze,
+                'UkupanBrojKorisnikaAplikacije':
+                    izvjestaj?.ukupanBrojKorisnikaAplikacije,
+                'UkupnaZaradaAplikacije': izvjestaj?.ukupnaZaradaAplikacije,
+                'KorisnikId': Authorization.id,
+              };
+              _izvjestajProvider.insert(izvjestajPost);
+            } on Exception catch (e) {
+              String errorMessage =
+                  e.toString().replaceFirst('Exception: ', '');
+              // ignore: use_build_context_synchronously
+              showErrorDialog(context, errorMessage);
+            }
           },
           child: const Padding(
             padding: EdgeInsets.all(10.0),

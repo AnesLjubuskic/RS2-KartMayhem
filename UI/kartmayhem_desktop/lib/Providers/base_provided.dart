@@ -90,6 +90,11 @@ abstract class BaseProvider<T> with ChangeNotifier {
         throw Exception("${data["errors"]["stazeError"][0].toString()}");
       }
 
+      if (response.body.isNotEmpty && _endpoint == "Izvjestaj") {
+        var data = jsonDecode(response.body);
+        throw Exception("${data["errors"]["izvjestajError"][0].toString()}");
+      }
+
       throw Exception('Something went wrong!');
     }
   }
