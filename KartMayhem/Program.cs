@@ -23,6 +23,7 @@ builder.Services.AddTransient<IEmailSenderService, EmailSenderService>();
 builder.Services.AddTransient<IFeedbackService, FeedbackService>();
 builder.Services.AddTransient<INagradeService, NagradeService>();
 builder.Services.AddTransient<IGradoviService, GradoviService>();
+builder.Services.AddTransient<IIzvjetajiService, IzvjestajiService>();
 builder.Services.AddTransient<IBaseService<KartMayhem.Model.Tezine, BaseSearchObject>, BaseService<KartMayhem.Model.Tezine
     , KartMayhem.Services.Database.Tezine, BaseSearchObject>>();
 

@@ -24,6 +24,8 @@
 
         public virtual ICollection<Feedback> Feedback { get; } = new List<Feedback>();
 
+        public ICollection<Izvjestaji> Izvjestajis { get; set; } = new List<Izvjestaji>();
+
         public virtual Nagrade? Nagrada { get; set; }
     }
 }

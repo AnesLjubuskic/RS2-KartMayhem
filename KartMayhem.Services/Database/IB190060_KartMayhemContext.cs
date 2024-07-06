@@ -37,6 +37,8 @@ namespace KartMayhem.Services.Database
 
         public virtual DbSet<Gradovi> Gradovis { get; set; }
 
+        public virtual DbSet<Izvjestaji> Izvjestajis { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
