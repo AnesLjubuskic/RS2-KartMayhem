@@ -8,6 +8,8 @@ import 'package:kartmayhem_mobile/Models/korisnik.dart';
 import 'package:kartmayhem_mobile/Providers/korisnik_provider.dart';
 import 'package:kartmayhem_mobile/Utils/util.dart';
 
+RegExp regexEmail = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+
 class EditProfileScreen extends StatefulWidget {
   static const routeName = "/editprofile";
   final Korisnik korisnik;
@@ -163,6 +165,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Ovo polje je obavezno';
+            } else if (!regexEmail.hasMatch(value)) {
+              return 'Unesite ispravnu email adresu';
             }
             return null;
           },

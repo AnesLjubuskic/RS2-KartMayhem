@@ -173,6 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               // ignore: unused_local_variable
                               var data = await _authProvider!.register(user);
                               if (context.mounted) {
+                                Navigator.pop(context);
                                 showSuccessDialog(context,
                                     "Uspješna registracija, prijavite se da bi ste pristupili aplikaciji!");
                               }

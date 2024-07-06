@@ -114,6 +114,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10))),
                     onPressed: () {
+                      clearForm();
+                      formKey.currentState?.reset(); // Reset the form
                       Navigator.pushNamed(context, RegisterScreen.routeName);
                     },
                     child:
@@ -164,5 +166,10 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void clearForm() {
+    email = "";
+    password = "";
   }
 }
