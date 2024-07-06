@@ -9,7 +9,7 @@ class TezinaProvider extends BaseProvider<Tezine> {
   static String? _baseUrl;
   TezinaProvider() : super("Tezine") {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://localhost:5258/");
+        defaultValue: "http://localhost:8080/");
     if (_baseUrl!.endsWith("/") == false) {
       _baseUrl = "${_baseUrl!}/";
     }

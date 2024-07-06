@@ -5,7 +5,7 @@ class GradoviProvider extends BaseProvider<Gradovi> {
   static String? _baseUrl;
   GradoviProvider() : super("Gradovi") {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://localhost:5258/");
+        defaultValue: "http://localhost:8080/");
     if (_baseUrl!.endsWith("/") == false) {
       _baseUrl = "${_baseUrl!}/";
     }

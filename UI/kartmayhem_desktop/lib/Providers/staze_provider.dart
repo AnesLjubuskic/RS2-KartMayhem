@@ -7,7 +7,7 @@ class StazeProvider extends BaseProvider<Staze> {
   static String? _baseUrl;
   StazeProvider() : super("Staze") {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://localhost:5258/");
+        defaultValue: "http://localhost:8080/");
     if (_baseUrl!.endsWith("/") == false) {
       _baseUrl = "${_baseUrl!}/";
     }

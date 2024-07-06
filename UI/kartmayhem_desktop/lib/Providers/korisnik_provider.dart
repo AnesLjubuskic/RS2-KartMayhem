@@ -6,7 +6,7 @@ class KorisnikProvider extends BaseProvider<Korisnik> {
   static String? _baseUrl;
   KorisnikProvider() : super("Korisnici") {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://localhost:5258/");
+        defaultValue: "http://localhost:8080/");
     if (_baseUrl!.endsWith("/") == false) {
       _baseUrl = "${_baseUrl!}/";
     }
