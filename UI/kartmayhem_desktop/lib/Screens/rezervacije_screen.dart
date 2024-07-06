@@ -27,7 +27,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
   SearchResult<Rezervacije>? result;
   SearchResult<Staze>? resultStaze;
   int currentPage = 1;
-  int pageSize = 5;
+  int pageSize = 4;
 
   int? _selectedStazaId;
 

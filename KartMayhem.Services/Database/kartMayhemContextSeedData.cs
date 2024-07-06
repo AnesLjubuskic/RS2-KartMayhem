@@ -76,6 +76,16 @@ namespace KartMayhem.Services.Database
                 Id = 3,
                 NazivGrada = "Bugojno",
             },
+            new Gradovi()
+            {
+                Id = 4,
+                NazivGrada = "Kiseljak",
+            },
+            new Gradovi()
+            {
+                Id = 5,
+                NazivGrada = "Visoko",
+            },
             });
 
             modelBuilder.Entity<Korisnici>().HasData(new Korisnici[]{
@@ -89,6 +99,46 @@ namespace KartMayhem.Services.Database
                 LozinkaSalt = "HvnTUyT26p/sIFWsP40X1g==",
                 IsActive = true,
             },
+            new Korisnici()
+            {
+                Id = 2,
+                Ime = "Obicna",
+                Prezime = "Osoba",
+                Email = "obicna_osoba@example.com",
+                LozinkaHash = "/1/l6bDydwzj8vpx7aFj1BnpKl4=",
+                LozinkaSalt = "lv6jjDmx9WINBmwJYuWOWQ==",
+                IsActive = true,
+            },
+            new Korisnici()
+            {
+                Id = 3,
+                Ime = "Amel",
+                Prezime = "Memic",
+                Email = "amel_osoba@example.com",
+                LozinkaHash = "/1/l6bDydwzj8vpx7aFj1BnpKl4=",
+                LozinkaSalt = "lv6jjDmx9WINBmwJYuWOWQ==",
+                IsActive = true,
+            },
+            new Korisnici()
+            {
+                Id = 4,
+                Ime = "Amar",
+                Prezime = "Omerika",
+                Email = "amar_osoba@example.com",
+                LozinkaHash = "/1/l6bDydwzj8vpx7aFj1BnpKl4=",
+                LozinkaSalt = "lv6jjDmx9WINBmwJYuWOWQ==",
+                IsActive = true,
+            },
+            new Korisnici()
+            {
+                Id = 5,
+                Ime = "Halil",
+                Prezime = "Focic",
+                Email = "halil_osoba@example.com",
+                LozinkaHash = "/1/l6bDydwzj8vpx7aFj1BnpKl4=",
+                LozinkaSalt = "lv6jjDmx9WINBmwJYuWOWQ==",
+                IsActive = true,
+            },
             });
 
 
@@ -98,6 +148,12 @@ namespace KartMayhem.Services.Database
                 Id = 1,
                 KorisnikId = 1,
                 UlogaId = 2,
+            },
+            new KorisniciUloge()
+            {
+                Id = 2,
+                KorisnikId = 2,
+                UlogaId = 1,
             },
             });
 
@@ -158,6 +214,48 @@ namespace KartMayhem.Services.Database
                 GradoviId = 2,
                 IsActive = true
             },
+            new Staze()
+            {
+                Id = 5,
+                NazivStaze = "Pro Cup Cup",
+                OpisStaze = "Staza dizajnirana za početnike.",
+                CijenaPoOsobi = 15,
+                DuzinaStaze = 1.2,
+                BrojKrugova = 2,
+                MaxBrojOsoba = 7,
+                TezinaId = 3,
+                Slika = proSlika,
+                GradoviId = 2,
+                IsActive = true
+            },
+            new Staze()
+            {
+                Id = 6,
+                NazivStaze = "Staza Qual Cup",
+                OpisStaze = "Staza dizajnirana za početnike.",
+                CijenaPoOsobi = 15,
+                DuzinaStaze = 1.2,
+                BrojKrugova = 2,
+                MaxBrojOsoba = 7,
+                TezinaId = 1,
+                Slika = pocetnikSlika,
+                GradoviId = 2,
+                IsActive = true
+            },
+            new Staze()
+            {
+                Id = 7,
+                NazivStaze = "MegaTron Cup",
+                OpisStaze = "Staza dizajnirana za početnike.",
+                CijenaPoOsobi = 15,
+                DuzinaStaze = 1.2,
+                BrojKrugova = 2,
+                MaxBrojOsoba = 7,
+                TezinaId = 2,
+                Slika = amaterSlika,
+                GradoviId = 2,
+                IsActive = true
+            },
             });
 
             modelBuilder.Entity<Rezervacije>().HasData(new Rezervacije[]{
@@ -165,14 +263,14 @@ namespace KartMayhem.Services.Database
             {
                 Id = 1,
                 KorisnikId = 1,
-                StazaId = 4,
+                StazaId = 1,
                 isCancelled = false,
                 IsGotovina = true,
                 TimeSlot = "15:00",
                 DayOfReservation = "2024-07-01",
-                BrojOsoba = 4,
+                BrojOsoba = 3,
                 CijenaRezervacije = 60,
-                ImeStaze = "Beginner Cup"
+                ImeStaze = "Mostar GP"
             },
             new Rezervacije()
             {
@@ -220,7 +318,7 @@ namespace KartMayhem.Services.Database
             {
                 Id = 1,
                 KorisnikId = 1,
-                Komentar = "Odlicna aplikacija!"
+                Komentar = "Odlična aplikacija!"
             },
             });
         }

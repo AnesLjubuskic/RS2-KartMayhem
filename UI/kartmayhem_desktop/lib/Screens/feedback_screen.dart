@@ -22,7 +22,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   late FeedbackProvider _feedbackProvider;
   SearchResult<feedbacktree.Feedback>? result;
   int currentPage = 1;
-  int pageSize = 5;
+  int pageSize = 4;
 
   @override
   void initState() {

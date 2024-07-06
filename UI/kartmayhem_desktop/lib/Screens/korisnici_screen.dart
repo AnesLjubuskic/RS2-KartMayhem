@@ -26,7 +26,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
   SearchResult<Korisnik>? result;
   TextEditingController _searchController = new TextEditingController();
   int currentPage = 1;
-  int pageSize = 5;
+  int pageSize = 4;
 
   @override
   void initState() {

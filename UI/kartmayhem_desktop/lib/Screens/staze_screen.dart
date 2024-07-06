@@ -31,7 +31,7 @@ class _StazeScreenState extends State<StazeScreen> {
   bool pro = false;
 
   int currentPage = 1;
-  int pageSize = 5;
+  int pageSize = 4;
 
   @override
   void initState() {
@@ -282,16 +282,12 @@ class _StazeScreenState extends State<StazeScreen> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                                height: MediaQuery.of(context).size.height *
-                                    0.000001),
                             Container(
                               width: MediaQuery.of(context).size.width * 0.25,
                               child: const Text(
                                 "Filtriraj staze po težini:",
                               ),
                             ),
-                            SizedBox(height: 10),
                             Container(
                               padding: const EdgeInsets.all(10.0),
                               height: MediaQuery.of(context).size.width * 0.05,
