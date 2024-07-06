@@ -6,7 +6,7 @@ namespace KartMayhem.Services.Services
 {
     public class EmailSenderService : IEmailSenderService
     {
-        private readonly string hostname = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "localhost";
+        private readonly string hostname = Environment.GetEnvironmentVariable("RABBITMQ_HOST") ?? "rabbitMQ";
         private readonly string username = Environment.GetEnvironmentVariable("RABBITMQ_USERNAME") ?? "guest";
         private readonly string password = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD") ?? "guest";
         private readonly string virtualHost = Environment.GetEnvironmentVariable("RABBITMQ_VIRTUALHOST") ?? "/";

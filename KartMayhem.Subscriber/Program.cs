@@ -22,7 +22,7 @@ public class RabbitMQHostedService : IHostedService
     {
         _service = new EmailService();
         _sendGridService = new EmailSendGridService();
-        _bus = RabbitHutch.CreateBus("host=localhost");
+        _bus = RabbitHutch.CreateBus("host=rabbitMQ");
         while (true)
         {
             try

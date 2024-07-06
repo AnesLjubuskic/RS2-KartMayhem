@@ -1,6 +1,20 @@
 version: "3"
 
 services:
+  rabbitMQ:
+   image: rabbitmq:3-management
+   container_name: 'rabbitmq_container'
+   environment:
+    - RABBITMQ_DEFAULT_USER=guest
+    - RABBITMQ_DEFAULT_PASS=guest
+   ports:
+    - 8050:15672
+    - 5672:5672
+   expose:
+    - 5672
+   networks: 
+    - kartmayhemnet 
+
   kartmayhem-db:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
@@ -19,8 +33,12 @@ services:
     build:
       context: .
     environment:
-      - ConnectionStrings:DefaultConnection=Server=kartmayhem-db,1433;Database=KartMayhem;User=sa;Password=QWElkj132!;ConnectRetryCount=0;TrustServerCertificate=True;
+      - ConnectionStrings:DefaultConnection=Server=kartmayhem-db,1433;Database=KartMayhem;User=sa;Password=QWElkj132!;ConnectRetryCount=0;TrustServerCertificate=True;MultipleActiveResultSets=True;
       - ASPNETCORE_ENVIRONMENT=Development
+      - RABBITMQ_HOST=rabbitMQ
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_VIRTUALHOST=/
     ports:
       - 8080:8080
     networks:
@@ -29,6 +47,30 @@ services:
       - kartmayhem-db
     depends_on:
       - kartmayhem-db
+      - rabbitMQ
+
+  rabbitmq-service:
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: ./KartMayhem.Subscriber/Dockerfile
+    environment:
+      - RABBITMQ_HOST=rabbitMQ
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_VIRTUALHOST=/
+      - OUTLOOK_MAIL=kartingmayhem@outlook.com
+      - OUTLOOK_PASS=MayhemKarting123!?
+      - EncryptedApiKey=BWxWphrKGGW91TgQuoTsA6IwppwN8NpghaKbpFmEYCwhL6rBArX06EwcVTZed4g1fFXLJzVko20q9vI9em62gElM+LB/WFkaqQ8uv76463U=
+      - EncryptionKey=SSODKAX9832Q01AA
+    depends_on:
+      - rabbitMQ
+      - kartmayhem-db
+      - kartmayhem-api
+    networks:
+      - kartmayhemnet
+    ports:
+      - 7101:80
 
 networks:
   kartmayhemnet:
