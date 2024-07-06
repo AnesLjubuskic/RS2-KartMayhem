@@ -21,6 +21,7 @@ class IzvjestajScreen extends StatefulWidget {
 class _IzvjestajScreenState extends State<IzvjestajScreen> {
   String _selectedYear = '2024';
   String _selectedStaza = 'Sve';
+  int _selectedStazaInt = -1;
   late StazeProvider _stazeProvider;
   SearchResult<Staze>? result;
 
@@ -246,7 +247,7 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
           child: DropdownButtonFormField<int>(
             value: _selectedStaza == 'Sve' ? -1 : int.tryParse(_selectedStaza),
             items: [
-              DropdownMenuItem<int>(
+              const DropdownMenuItem<int>(
                 value: -1,
                 child: Text('Sve'),
               ),
@@ -260,10 +261,11 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
             ],
             onChanged: (value) {
               setState(() {
+                _selectedStazaInt = value!;
                 _selectedStaza = value == -1 ? 'Sve' : value.toString();
               });
             },
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               contentPadding: EdgeInsets.only(bottom: 10, right: 10, left: 10),
               border: InputBorder.none,
               enabledBorder: InputBorder.none,

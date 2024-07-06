@@ -45,6 +45,12 @@ namespace KartMayhem.Filters
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             }
 
+            else if (context.Exception is IzvjestajException)
+            {
+                context.ModelState.AddModelError("izvjestajError", context.Exception.Message);
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+
             var errorsDictionary = context.ModelState.Where(m => m.Value.Errors.Count > 0).ToDictionary(m => m.Key, m => m.Value.Errors.Select(e => e.ErrorMessage).ToList());
             context.Result = new ObjectResult(new { Errors = errorsDictionary });
         }

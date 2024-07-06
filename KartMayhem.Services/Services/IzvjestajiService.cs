@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using KartMayhem.Model;
+using KartMayhem.Model.Exception;
 using KartMayhem.Model.RequestObjects;
 using KartMayhem.Model.SearchObject;
 using KartMayhem.Services.Database;
@@ -16,6 +17,17 @@ namespace KartMayhem.Services.Services
     {
         public IzvjestajiService(IB190060_KartMayhemContext context, IMapper mapper) : base(context, mapper)
         {
+        }
+
+        public override Task ValidationInsert(IzvjestajiInsertRequest insert)
+        {
+            var korisnik = _context.Korisnicis.Find(insert.KorisnikId);
+            if (korisnik == null)
+            {
+                throw new IzvjestajException("Ne postoji korisnik!");
+            }
+
+            return base.ValidationInsert(insert);
         }
 
         public Task<Model.Izvjestaji> GetIzvjestaj(int? stazaId, string godina)
