@@ -533,6 +533,8 @@ class _StazeScreenState extends State<StazeScreen> {
           content: const Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Text(
+                  'Brisanjem staze poništavate sve rezervacije vezane za nju.'),
               Text('Da li ste sigurni da želite da izbrišete ovu stazu?'),
             ],
           ),

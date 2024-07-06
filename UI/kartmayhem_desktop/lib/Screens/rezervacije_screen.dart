@@ -225,10 +225,8 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                                 ),
                                 Text(
                                   _selectedStazaId == -1
-                                      ? result?.totalCount.toString() ??
-                                          'Učitavanje...'
-                                      : result?.count.toString() ??
-                                          'Učitavanje...',
+                                      ? result?.totalCount.toString() ?? '...'
+                                      : result?.count.toString() ?? '...',
                                   style: const TextStyle(
                                       fontSize: 35,
                                       color: Colors.black,

@@ -46,7 +46,9 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
 
   Future<void> _initializeData() async {
     _stazeProvider = StazeProvider();
-    var data = await _stazeProvider.get();
+    var data = await _stazeProvider.get(search: {
+      'Izvjestaj': 1,
+    });
     setState(() {
       result = data;
     });
@@ -130,97 +132,101 @@ class _IzvjestajScreenState extends State<IzvjestajScreen> {
             },
           ),
           // Main content area
-          Expanded(
-            child: Container(
-              alignment: Alignment.topCenter,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 140.0, vertical: 50.0),
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Center(
-                      child: Text(
-                        "Izvještaj",
-                        style: TextStyle(
-                          fontSize: 50,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 50),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        godine(),
-                        staze(),
-                      ],
-                    ),
-                    const SizedBox(height: 50),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: (_selectedStaza == "Sve")
-                          ? Text(
-                              "Statistika za sve staze u $_selectedYear godini:",
+          result == null
+              ? SizedBox()
+              : Expanded(
+                  child: Container(
+                    alignment: Alignment.topCenter,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 140.0, vertical: 50.0),
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Center(
+                            child: Text(
+                              "Izvještaj",
+                              style: TextStyle(
+                                fontSize: 50,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 50),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              godine(),
+                              staze(),
+                            ],
+                          ),
+                          const SizedBox(height: 50),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: (_selectedStaza == "Sve")
+                                ? Text(
+                                    "Statistika za sve staze u $_selectedYear godini:",
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : Text(
+                                    "Statistika za ${result!.result.where((x) => x.id.toString() == _selectedStaza).first.nazivStaze} u $_selectedYear godini:",
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              "Broj rezervacija: ${izvjestaj?.brojRezervacijeStaze}",
                               style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            )
-                          : Text(
-                              "Statistika za ${result!.result.where((x) => x.id.toString() == _selectedStaza).first.nazivStaze} u $_selectedYear godini:",
+                                  fontSize: 20, fontWeight: FontWeight.normal),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              "Ukupna zarada: ${izvjestaj?.ukupnaZaradaStaze}KM",
                               style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.normal),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Align(
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              "Ostala statistika",
+                              style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "Broj rezervacija: ${izvjestaj?.brojRezervacijeStaze}",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.normal),
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              "Ukupan broj korisnika aplikacije: ${izvjestaj?.ukupanBrojKorisnikaAplikacije}",
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.normal),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Text(
+                              "Ukupna zarada kroz aplikaciju: ${izvjestaj?.ukupnaZaradaAplikacije}KM",
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.normal),
+                            ),
+                          ),
+                          pdfButton(),
+                        ],
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "Ukupna zarada: ${izvjestaj?.ukupnaZaradaStaze}KM",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "Ostala statistika",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "Ukupan broj korisnika aplikacije: ${izvjestaj?.ukupanBrojKorisnikaAplikacije}",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "Ukupna zarada kroz aplikaciju: ${izvjestaj?.ukupnaZaradaAplikacije}KM",
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                    pdfButton(),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
         ],
       ),
     );

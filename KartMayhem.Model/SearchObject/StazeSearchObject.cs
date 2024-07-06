@@ -11,5 +11,6 @@ namespace KartMayhem.Model.SearchObject
         public string? NazivStaze { get; set; }
         public int[]? TezineId { get; set; }
         public int? UserId { get; set; }
+        public int? Izvjestaj { get; set; }
     }
 }

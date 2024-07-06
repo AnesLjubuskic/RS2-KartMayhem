@@ -121,7 +121,7 @@ class _NagradiScreenState extends State<NagradiScreen> {
                     const SizedBox(height: 30), // Adjust spacing as needed
                     const Center(
                       child: Text(
-                        'Sistem "Nagradi korisnika" sluzi kako bi nase lojalne korisnike nagradili popustom od 50% na sljedecu rezervaciju. Broj ispunjenih rezervacija odnosi se na trenutnu godinu.',
+                        'Sistem "Nagradi korisnika" služi kako bi naše lojalne korisnike nagradili popustom od 50% na sljedeću rezervaciju. Broj ispunjenih rezervacija odnosi se na trenutnu godinu.',
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.black,
@@ -217,7 +217,7 @@ class _NagradiScreenState extends State<NagradiScreen> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10))),
                           child: Text(
-                            user.isNagrada ?? false ? 'Otkazi' : 'Nagradi',
+                            user.isNagrada ?? false ? 'Otkaži' : 'Nagradi',
                             style: TextStyle(
                                 color: user.isNagrada ?? false
                                     ? Colors.white

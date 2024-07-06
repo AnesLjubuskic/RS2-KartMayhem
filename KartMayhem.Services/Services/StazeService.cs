@@ -138,7 +138,13 @@ namespace KartMayhem.Services.Services
         {
             var filter = base.AddFilter(query, search);
 
-            filter = filter.Where(x => x.IsActive);
+            if (search != null && search.Izvjestaj != null)
+            {
+            }
+            else
+            {
+                filter = filter.Where(x => x.IsActive);
+            }
 
             if (search != null && !string.IsNullOrWhiteSpace(search.NazivStaze))
                 filter = filter.Where(x => x.NazivStaze.ToLower().Contains(search.NazivStaze.ToLower()));
@@ -183,6 +189,16 @@ namespace KartMayhem.Services.Services
             }
 
             staza.IsActive = false;
+
+            var rezervacije = _context.Rezervacijes.Where(x => x.StazaId == trackId).ToList();
+
+            if (rezervacije != null || rezervacije.Any())
+            {
+                foreach(var rezervacija  in rezervacije)
+                {
+                    rezervacija.isCancelled = true;
+                }
+            }
 
             await _context.SaveChangesAsync();
 

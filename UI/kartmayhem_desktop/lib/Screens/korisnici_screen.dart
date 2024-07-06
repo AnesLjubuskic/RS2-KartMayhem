@@ -228,7 +228,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
                                   ),
                                 ),
                                 Text(
-                                  result?.count.toString() ?? 'Učitavanje...',
+                                  result?.count.toString() ?? '...',
                                   style: const TextStyle(
                                       fontSize: 35,
                                       color: Colors.black,
@@ -292,7 +292,7 @@ class _KorisniciScreenState extends State<KorisniciScreen> {
               DataColumn(
                 label: Expanded(
                   child: Text(
-                    'Izbrisi',
+                    'Izbriši',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
