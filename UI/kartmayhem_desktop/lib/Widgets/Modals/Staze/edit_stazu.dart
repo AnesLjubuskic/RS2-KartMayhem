@@ -58,6 +58,15 @@ class _EditStazeModalState extends State<EditStazeModal> {
     _selectedGradId = widget.staze.gradovi?.id;
   }
 
+  String? nazivStazeError;
+  String? opisStazeError;
+  String? cijenaPoOsobiError;
+  String? duzinaStazeError;
+  String? brojKrugovaError;
+  String? maxBrojOsobaError;
+  String? tezinaIdError;
+  String? gradoviIdError;
+
   Future<void> _initializeData() async {
     _gradoviProvider = GradoviProvider();
     _tezinaProvider = TezinaProvider();
@@ -131,9 +140,17 @@ class _EditStazeModalState extends State<EditStazeModal> {
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      nazivStazeError = null;
+                    });
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Ovo polje je obavezno';
+                      setState(() {
+                        nazivStazeError = 'Ovo polje je obavezno';
+                      });
+                      return;
                     }
                     return null;
                   },
@@ -142,6 +159,19 @@ class _EditStazeModalState extends State<EditStazeModal> {
                   ],
                 ),
               ),
+              if (nazivStazeError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 0.0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      nazivStazeError!,
+                      style: TextStyle(color: Color(0xFF870000)),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+              if (nazivStazeError == null) Text(""),
               const SizedBox(height: 10),
               Container(
                 alignment: Alignment.topLeft,
@@ -171,9 +201,17 @@ class _EditStazeModalState extends State<EditStazeModal> {
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      opisStazeError = null;
+                    });
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Ovo polje je obavezno';
+                      setState(() {
+                        opisStazeError = 'Ovo polje je obavezno';
+                      });
+                      return;
                     }
                     return null;
                   },
@@ -182,6 +220,19 @@ class _EditStazeModalState extends State<EditStazeModal> {
                   ],
                 ),
               ),
+              if (opisStazeError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 0.0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      opisStazeError!,
+                      style: TextStyle(color: Color(0xFF870000)),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+              if (opisStazeError == null) Text(""),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -223,21 +274,50 @@ class _EditStazeModalState extends State<EditStazeModal> {
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                duzinaStazeError = null;
+                              });
+                            },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Ovo polje je obavezno';
+                                setState(() {
+                                  duzinaStazeError = 'Ovo polje je obavezno';
+                                });
+                                return;
                               }
                               double? duzina = double.tryParse(value);
                               if (duzina == null) {
-                                return 'Unesite ispravnu vrijednost';
+                                setState(() {
+                                  duzinaStazeError =
+                                      'Unesite ispravnu vrijednost';
+                                });
+                                return;
                               }
                               if (duzina < 0.5 || duzina > 10.0) {
-                                return 'Vrijednost mora biti između 0.5 i 10.0';
+                                setState(() {
+                                  duzinaStazeError =
+                                      'Vrijednost mora biti između 0.5 i 10.0';
+                                });
+                                return;
                               }
                               return null;
                             },
                           ),
                         ),
+                        if (duzinaStazeError != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 0.0),
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                duzinaStazeError!,
+                                style: TextStyle(color: Color(0xFF870000)),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ),
+                        if (duzinaStazeError == null) Text(""),
                         const SizedBox(height: 10),
                         Container(
                           alignment: Alignment.topLeft,
@@ -270,21 +350,50 @@ class _EditStazeModalState extends State<EditStazeModal> {
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                maxBrojOsobaError = null;
+                              });
+                            },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Ovo polje je obavezno';
+                                setState(() {
+                                  maxBrojOsobaError = 'Ovo polje je obavezno';
+                                });
+                                return;
                               }
                               int? broj = int.tryParse(value);
                               if (broj == null) {
-                                return 'Unesite ispravnu vrijednost';
+                                setState(() {
+                                  maxBrojOsobaError =
+                                      'Unesite ispravnu vrijednost';
+                                });
+                                return;
                               }
                               if (broj < 1 || broj > 8) {
-                                return 'Vrijednost mora biti između 1 i 8';
+                                setState(() {
+                                  maxBrojOsobaError =
+                                      'Vrijednost mora biti između 1 i 8';
+                                });
+                                return;
                               }
                               return null;
                             },
                           ),
                         ),
+                        if (maxBrojOsobaError != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 0.0),
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                maxBrojOsobaError!,
+                                style: TextStyle(color: Color(0xFF870000)),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ),
+                        if (maxBrojOsobaError == null) Text(""),
                         const SizedBox(height: 10),
                         Container(
                           alignment: Alignment.topLeft,
@@ -315,6 +424,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             onChanged: (value) {
                               setState(() {
                                 _selectedTezinaId = value;
+                                tezinaIdError = null;
                               });
                             },
                             decoration: InputDecoration(
@@ -326,12 +436,28 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             ),
                             validator: (value) {
                               if (value == null) {
-                                return 'Ovo polje je obavezno';
+                                setState(() {
+                                  tezinaIdError = 'Ovo polje je obavezno';
+                                });
+                                return;
                               }
                               return null;
                             },
                           ),
                         ),
+                        if (tezinaIdError != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 0.0),
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                tezinaIdError!,
+                                style: TextStyle(color: Color(0xFF870000)),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ),
+                        if (tezinaIdError == null) Text(""),
                       ],
                     ),
                   ),
@@ -370,21 +496,50 @@ class _EditStazeModalState extends State<EditStazeModal> {
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                brojKrugovaError = null;
+                              });
+                            },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Ovo polje je obavezno';
+                                setState(() {
+                                  brojKrugovaError = 'Ovo polje je obavezno';
+                                });
+                                return;
                               }
                               int? broj = int.tryParse(value);
                               if (broj == null) {
-                                return 'Unesite ispravnu vrijednost';
+                                setState(() {
+                                  brojKrugovaError =
+                                      'Unesite ispravnu vrijednost';
+                                });
+                                return;
                               }
                               if (broj < 1 || broj > 5) {
-                                return 'Vrijednost mora biti između 1 i 5';
+                                setState(() {
+                                  brojKrugovaError =
+                                      'Vrijednost mora biti između 1 i 5';
+                                });
+                                return;
                               }
                               return null;
                             },
                           ),
                         ),
+                        if (brojKrugovaError != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 0.0),
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                brojKrugovaError!,
+                                style: TextStyle(color: Color(0xFF870000)),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ),
+                        if (brojKrugovaError == null) Text(""),
                         const SizedBox(height: 10),
                         Container(
                           alignment: Alignment.topLeft,
@@ -417,21 +572,50 @@ class _EditStazeModalState extends State<EditStazeModal> {
                               enabledBorder: InputBorder.none,
                               focusedBorder: InputBorder.none,
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                cijenaPoOsobiError = null;
+                              });
+                            },
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Ovo polje je obavezno';
+                                setState(() {
+                                  cijenaPoOsobiError = 'Ovo polje je obavezno';
+                                });
+                                return;
                               }
                               int? cijena = int.tryParse(value);
                               if (cijena == null) {
-                                return 'Unesite ispravnu vrijednost';
+                                setState(() {
+                                  cijenaPoOsobiError =
+                                      'Unesite ispravnu vrijednost';
+                                });
+                                return;
                               }
                               if (cijena < 1 || cijena > 999) {
-                                return 'Vrijednost mora biti između 1 i 999';
+                                setState(() {
+                                  cijenaPoOsobiError =
+                                      'Vrijednost mora biti između 1 i 999';
+                                });
+                                return;
                               }
                               return null;
                             },
                           ),
                         ),
+                        if (cijenaPoOsobiError != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 0.0),
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                cijenaPoOsobiError!,
+                                style: TextStyle(color: Color(0xFF870000)),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ),
+                        if (cijenaPoOsobiError == null) Text(""),
                         const SizedBox(height: 10),
                         Container(
                           alignment: Alignment.topLeft,
@@ -462,6 +646,7 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             onChanged: (value) {
                               setState(() {
                                 _selectedGradId = value;
+                                gradoviIdError = null;
                               });
                             },
                             decoration: InputDecoration(
@@ -473,12 +658,27 @@ class _EditStazeModalState extends State<EditStazeModal> {
                             ),
                             validator: (value) {
                               if (value == null) {
-                                return 'Ovo polje je obavezno';
+                                setState(() {
+                                  gradoviIdError = "Ovo polje je obavezno";
+                                });
                               }
                               return null;
                             },
                           ),
                         ),
+                        if (gradoviIdError != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 0.0),
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                gradoviIdError!,
+                                style: TextStyle(color: Color(0xFF870000)),
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          ),
+                        if (gradoviIdError == null) Text(""),
                       ],
                     ),
                   ),
@@ -509,7 +709,21 @@ class _EditStazeModalState extends State<EditStazeModal> {
         ),
         ElevatedButton(
           onPressed: () {
-            if (formKey.currentState!.validate()) {
+            if (formKey.currentState!.validate() &&
+                nazivStazeError == null &&
+                opisStazeError == null &&
+                cijenaPoOsobiError == null &&
+                duzinaStazeError == null &&
+                brojKrugovaError == null &&
+                maxBrojOsobaError == null &&
+                tezinaIdError == null &&
+                gradoviIdError == null &&
+                _nazivStazeController.text.isNotEmpty &&
+                _opisStazeController.text.isNotEmpty &&
+                _cijenaPoOsobiController.text.isNotEmpty &&
+                _duzinaStazeController.text.isNotEmpty &&
+                _brojKrugovaController.text.isNotEmpty &&
+                _maxBrojOsobaController.text.isNotEmpty) {
               widget.handleEdit(
                   widget.staze.id!,
                   _nazivStazeController.text,
