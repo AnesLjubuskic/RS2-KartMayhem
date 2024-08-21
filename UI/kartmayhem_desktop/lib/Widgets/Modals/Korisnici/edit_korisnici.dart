@@ -19,10 +19,15 @@ class EditKorisniciModal extends StatefulWidget {
 }
 
 class _EditKorisniciModalState extends State<EditKorisniciModal> {
+  RegExp regexEmail = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late TextEditingController _imeController;
   late TextEditingController _prezimeController;
   late TextEditingController _emailController;
+
+  String? imeError;
+  String? prezimeError;
+  String? emailError;
 
   @override
   void initState() {
@@ -89,14 +94,35 @@ class _EditKorisniciModalState extends State<EditKorisniciModal> {
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      imeError = null;
+                    });
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Ovo polje je obavezno';
+                      setState(() {
+                        imeError = 'Ovo polje je obavezno';
+                      });
+                      return;
                     }
                     return null;
                   },
                 ),
               ),
+              if (imeError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 0.0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      imeError!,
+                      style: TextStyle(color: Color(0xFF870000)),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+              if (imeError == null) Text(""),
               const SizedBox(height: 10),
               Container(
                 alignment: Alignment.topLeft,
@@ -125,14 +151,35 @@ class _EditKorisniciModalState extends State<EditKorisniciModal> {
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      prezimeError = null;
+                    });
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Ovo polje je obavezno';
+                      setState(() {
+                        prezimeError = 'Ovo polje je obavezno';
+                      });
+                      return;
                     }
                     return null;
                   },
                 ),
               ),
+              if (prezimeError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 0.0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      prezimeError!,
+                      style: TextStyle(color: Color(0xFF870000)),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+              if (prezimeError == null) Text(""),
               const SizedBox(height: 10),
               Container(
                 alignment: Alignment.topLeft,
@@ -161,14 +208,41 @@ class _EditKorisniciModalState extends State<EditKorisniciModal> {
                     enabledBorder: InputBorder.none,
                     focusedBorder: InputBorder.none,
                   ),
+                  onChanged: (value) {
+                    setState(() {
+                      emailError = null;
+                    });
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Ovo polje je obavezno';
+                      setState(() {
+                        emailError = 'Ovo polje je obavezno';
+                      });
+                      return;
+                    }
+                    if (!regexEmail.hasMatch(value)) {
+                      setState(() {
+                        emailError = 'Email nije u validnom formatu';
+                      });
+                      return;
                     }
                     return null;
                   },
                 ),
               ),
+              if (emailError != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 0.0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      emailError!,
+                      style: TextStyle(color: Color(0xFF870000)),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+              if (emailError == null) Text(""),
               const SizedBox(height: 20),
             ],
           ),
@@ -195,7 +269,10 @@ class _EditKorisniciModalState extends State<EditKorisniciModal> {
         ),
         ElevatedButton(
           onPressed: () {
-            if (formKey.currentState!.validate()) {
+            if (formKey.currentState!.validate() &&
+                imeError == null &&
+                prezimeError == null &&
+                emailError == null) {
               widget.handleEdit(widget.korisnik.id!, _imeController.text,
                   _prezimeController.text, _emailController.text);
             }
