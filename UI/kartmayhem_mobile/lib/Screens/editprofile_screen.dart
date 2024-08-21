@@ -35,6 +35,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   File? _picture;
 
+  String? imeError;
+  String? prezimeError;
+  String? emailError;
+
   @override
   void initState() {
     super.initState();
@@ -101,6 +105,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               const SizedBox(height: 10),
               imeInput(),
+              if (imeError != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 0.0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      imeError!,
+                      style: const TextStyle(color: Color(0xFF870000)),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+              if (imeError == null) const Text(""),
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
@@ -117,6 +134,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               const SizedBox(height: 10),
               prezimeInput(),
+              if (prezimeError != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 0.0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      prezimeError!,
+                      style: const TextStyle(color: Color(0xFF870000)),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+              if (prezimeError == null) const Text(""),
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
@@ -133,6 +163,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               const SizedBox(height: 10),
               emailInput(),
+              if (emailError != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 0.0),
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      emailError!,
+                      style: const TextStyle(color: Color(0xFF870000)),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ),
+              if (emailError == null) const Text(""),
               const SizedBox(
                 height: 20,
               ),
@@ -162,11 +205,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
           ),
+          onChanged: (value) {
+            setState(() {
+              emailError = null;
+            });
+          },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Ovo polje je obavezno';
-            } else if (!regexEmail.hasMatch(value)) {
-              return 'Unesite ispravnu email adresu';
+              setState(() {
+                emailError = 'Ovo polje je obavezno';
+              });
+              return;
+            }
+            if (!regexEmail.hasMatch(value)) {
+              setState(() {
+                emailError = 'Email nije u validnom formatu';
+              });
+              return;
             }
             return null;
           },
@@ -193,9 +248,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
           ),
+          onChanged: (value) {
+            setState(() {
+              prezimeError = null;
+            });
+          },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Ovo polje je obavezno';
+              setState(() {
+                prezimeError = 'Ovo polje je obavezno';
+              });
+              return;
             }
             return null;
           },
@@ -222,9 +285,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             enabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
           ),
+          onChanged: (value) {
+            setState(() {
+              imeError = null;
+            });
+          },
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Ovo polje je obavezno';
+              setState(() {
+                imeError = 'Ovo polje je obavezno';
+              });
+              return;
             }
             return null;
           },
@@ -271,7 +342,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Expanded(
               child: ElevatedButton(
                 onPressed: () async {
-                  if (formKey.currentState!.validate()) {
+                  if (formKey.currentState!.validate() &&
+                      imeError == null &&
+                      prezimeError == null &&
+                      emailError == null) {
                     _korisnikProvider = KorisnikProvider();
                     try {
                       if (_picture == null) {
