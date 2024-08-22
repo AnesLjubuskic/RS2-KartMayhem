@@ -478,10 +478,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
-                  setState(() {
-                    gotovina = false;
-                    kartica = !kartica;
-                  });
+                  Navigator.pop(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF870000),

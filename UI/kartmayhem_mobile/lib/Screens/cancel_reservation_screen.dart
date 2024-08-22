@@ -30,6 +30,7 @@ class _CancelReservationScreenState extends State<CancelReservationScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showCancelDialog(context);
     });
+    await Future.delayed(const Duration(milliseconds: 1000));
     var data = await _rezervacijeProvider
         .getCashReservations(search: {'userId': Authorization.id});
     setState(() {
