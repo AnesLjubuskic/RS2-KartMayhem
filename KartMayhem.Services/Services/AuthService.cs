@@ -29,7 +29,6 @@ namespace KartMayhem.Services.Services
 
         public async Task<Model.Korisnici> Login(KorisniciLoginRequest request)
         {
-            bool admin = false;
             var entity = await _context.Korisnicis.Include("KorisniciUloges.Uloga")
                 .FirstOrDefaultAsync(x => x.Email == request.Email);
 
@@ -39,19 +38,6 @@ namespace KartMayhem.Services.Services
             }
 
             var uloge = _context.KorisniciUloges.Include(x => x.Uloga).Where(x => x.KorisnikId == entity.Id).ToList();
-
-            foreach (var uloga in uloge)
-            {
-                if (uloga.Uloga.Naziv == "Admin")
-                {
-                    admin = true;
-                }
-            }
-
-            if (admin)
-            {
-                throw new UserException("Mobilna aplikacija nije za admine!");
-            }
 
             var hash = GenerateHash(entity.LozinkaSalt, request.Lozinka);
 

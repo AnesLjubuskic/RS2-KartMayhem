@@ -82,7 +82,11 @@ namespace KartMayhem.Services.Services
                     }
                 }
                 korisnik.BrojRezervacija = korisnikCount;
-                listaKorisnika.Add(korisnik);
+
+                if (korisnik.IsActive)
+                {
+                    listaKorisnika.Add(korisnik);
+                }
             }
 
             var listaKorisnikaDto = listaKorisnika.OrderByDescending(x => x.BrojRezervacija).Take(5);

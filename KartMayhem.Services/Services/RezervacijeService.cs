@@ -131,6 +131,14 @@ namespace KartMayhem.Services.Services
             return base.AfterInsert(entity, insert);
         }
 
+        public override IQueryable<Database.Rezervacije> AddInclude(IQueryable<Database.Rezervacije> query, RezervacijeSearchRequest? search = null)
+        {
+            var includeQuery = base.AddInclude(query, search);
+            includeQuery = includeQuery.Include(x => x.Korisnik).Include(x => x.Staza);
+
+            return includeQuery;
+        }
+
         public override IQueryable<Database.Rezervacije> AddFilter(IQueryable<Database.Rezervacije> query, RezervacijeSearchRequest? search = null)
         {
             var filter = base.AddFilter(query, search);
