@@ -73,6 +73,7 @@ class _AddStazeModalState extends State<AddStazeModal> {
           key: formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Center(
                 child: Text(
@@ -88,14 +89,13 @@ class _AddStazeModalState extends State<AddStazeModal> {
               Container(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Naziv *",
+                  "Naziv",
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.black,
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
               Container(
                 height: 30,
                 decoration: BoxDecoration(
@@ -144,18 +144,17 @@ class _AddStazeModalState extends State<AddStazeModal> {
                   ),
                 ),
               if (nazivStazeError == null) Text(""),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               Container(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Deskripcija *",
+                  "Deskripcija",
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.black,
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
               Container(
                 height: 90,
                 decoration: BoxDecoration(
@@ -205,9 +204,10 @@ class _AddStazeModalState extends State<AddStazeModal> {
                   ),
                 ),
               if (opisStazeError == null) Text(""),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Column(
@@ -215,66 +215,69 @@ class _AddStazeModalState extends State<AddStazeModal> {
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Dužina staze *",
+                            "Dužina staze (broj)",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: TextFormField(
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                RegExp(r'^\d*\.?\d*'),
-                              ),
-                            ],
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  bottom: 20, right: 10, left: 10),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            height: 30,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5.0),
+                              border: Border.all(color: Colors.grey),
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                duzinaStaze = double.tryParse(value);
-                                duzinaStazeError = null;
-                              });
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
+                            child: TextFormField(
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d*\.?\d*'),
+                                ),
+                              ],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    bottom: 20, right: 10, left: 10),
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                              ),
+                              onChanged: (value) {
                                 setState(() {
-                                  duzinaStazeError = 'Ovo polje je obavezno';
+                                  duzinaStaze = double.tryParse(value);
+                                  duzinaStazeError = null;
                                 });
-                                return;
-                              }
-                              double? duzina = double.tryParse(value);
-                              if (duzina == null) {
-                                setState(() {
-                                  duzinaStazeError =
-                                      'Unesite ispravnu vrijednost';
-                                });
-                                return;
-                              }
-                              if (duzina < 0.5 || duzina > 10.0) {
-                                setState(() {
-                                  duzinaStazeError =
-                                      'Vrijednost mora biti između 0.5 i 10.0';
-                                });
-                                return;
-                              }
-                              return null;
-                            },
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  setState(() {
+                                    duzinaStazeError = 'Ovo polje je obavezno';
+                                  });
+                                  return;
+                                }
+                                double? duzina = double.tryParse(value);
+                                if (duzina == null) {
+                                  setState(() {
+                                    duzinaStazeError =
+                                        'Unesite ispravnu vrijednost';
+                                  });
+                                  return;
+                                }
+                                if (duzina < 0.5 || duzina > 10.0) {
+                                  setState(() {
+                                    duzinaStazeError =
+                                        'Vrijednost mora biti između 0.5 i 10.0';
+                                  });
+                                  return;
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                         ),
                         if (duzinaStazeError != null)
@@ -290,67 +293,70 @@ class _AddStazeModalState extends State<AddStazeModal> {
                             ),
                           ),
                         if (duzinaStazeError == null) Text(""),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 5),
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Max broj osoba *",
+                            "Max broj osoba (broj)",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  bottom: 20, right: 10, left: 10),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            height: 30,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5.0),
+                              border: Border.all(color: Colors.grey),
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                maxBrojOsoba = int.tryParse(value);
-                                maxBrojOsobaError = null;
-                              });
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    bottom: 20, right: 10, left: 10),
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                              ),
+                              onChanged: (value) {
                                 setState(() {
-                                  maxBrojOsobaError = 'Ovo polje je obavezno';
+                                  maxBrojOsoba = int.tryParse(value);
+                                  maxBrojOsobaError = null;
                                 });
-                                return;
-                              }
-                              int? broj = int.tryParse(value);
-                              if (broj == null) {
-                                setState(() {
-                                  maxBrojOsobaError =
-                                      'Unesite ispravnu vrijednost';
-                                });
-                                return;
-                              }
-                              if (broj < 1 || broj > 8) {
-                                setState(() {
-                                  maxBrojOsobaError =
-                                      'Vrijednost mora biti između 1 i 8';
-                                });
-                                return;
-                              }
-                              return null;
-                            },
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  setState(() {
+                                    maxBrojOsobaError = 'Ovo polje je obavezno';
+                                  });
+                                  return;
+                                }
+                                int? broj = int.tryParse(value);
+                                if (broj == null) {
+                                  setState(() {
+                                    maxBrojOsobaError =
+                                        'Unesite ispravnu vrijednost';
+                                  });
+                                  return;
+                                }
+                                if (broj < 1 || broj > 8) {
+                                  setState(() {
+                                    maxBrojOsobaError =
+                                        'Vrijednost mora biti između 1 i 8';
+                                  });
+                                  return;
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                         ),
                         if (maxBrojOsobaError != null)
@@ -366,18 +372,17 @@ class _AddStazeModalState extends State<AddStazeModal> {
                             ),
                           ),
                         if (maxBrojOsobaError == null) Text(""),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 5),
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Težina *",
+                            "Težina",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
                         Container(
                           height: 40,
                           decoration: BoxDecoration(
@@ -440,63 +445,66 @@ class _AddStazeModalState extends State<AddStazeModal> {
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Broj krugova *",
+                            "Broj krugova (broj)",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  bottom: 20, right: 10, left: 10),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            height: 30,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5.0),
+                              border: Border.all(color: Colors.grey),
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                brojKrugova = int.tryParse(value);
-                                brojKrugovaError = null;
-                              });
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    bottom: 20, right: 10, left: 10),
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                              ),
+                              onChanged: (value) {
                                 setState(() {
-                                  brojKrugovaError = 'Ovo polje je obavezno';
+                                  brojKrugova = int.tryParse(value);
+                                  brojKrugovaError = null;
                                 });
-                                return;
-                              }
-                              int? broj = int.tryParse(value);
-                              if (broj == null) {
-                                setState(() {
-                                  brojKrugovaError =
-                                      'Unesite ispravnu vrijednost';
-                                });
-                                return;
-                              }
-                              if (broj < 1 || broj > 5) {
-                                setState(() {
-                                  brojKrugovaError =
-                                      'Vrijednost mora biti između 1 i 5';
-                                });
-                                return;
-                              }
-                              return null;
-                            },
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  setState(() {
+                                    brojKrugovaError = 'Ovo polje je obavezno';
+                                  });
+                                  return;
+                                }
+                                int? broj = int.tryParse(value);
+                                if (broj == null) {
+                                  setState(() {
+                                    brojKrugovaError =
+                                        'Unesite ispravnu vrijednost';
+                                  });
+                                  return;
+                                }
+                                if (broj < 1 || broj > 5) {
+                                  setState(() {
+                                    brojKrugovaError =
+                                        'Vrijednost mora biti između 1 i 5';
+                                  });
+                                  return;
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                         ),
                         if (brojKrugovaError != null)
@@ -512,67 +520,71 @@ class _AddStazeModalState extends State<AddStazeModal> {
                             ),
                           ),
                         if (brojKrugovaError == null) Text(""),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 5),
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Cijena po osobi *",
+                            "Cijena po osobi (broj)",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  bottom: 20, right: 10, left: 10),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            height: 30,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5.0),
+                              border: Border.all(color: Colors.grey),
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                cijenaPoOsobi = int.tryParse(value);
-                                cijenaPoOsobiError = null;
-                              });
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    bottom: 20, right: 10, left: 10),
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                              ),
+                              onChanged: (value) {
                                 setState(() {
-                                  cijenaPoOsobiError = 'Ovo polje je obavezno';
+                                  cijenaPoOsobi = int.tryParse(value);
+                                  cijenaPoOsobiError = null;
                                 });
-                                return;
-                              }
-                              int? cijena = int.tryParse(value);
-                              if (cijena == null) {
-                                setState(() {
-                                  cijenaPoOsobiError =
-                                      'Unesite ispravnu vrijednost';
-                                });
-                                return;
-                              }
-                              if (cijena < 1 || cijena > 999) {
-                                setState(() {
-                                  cijenaPoOsobiError =
-                                      'Vrijednost mora biti između 1 i 999';
-                                });
-                                return;
-                              }
-                              return null;
-                            },
+                              },
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  setState(() {
+                                    cijenaPoOsobiError =
+                                        'Ovo polje je obavezno';
+                                  });
+                                  return;
+                                }
+                                int? cijena = int.tryParse(value);
+                                if (cijena == null) {
+                                  setState(() {
+                                    cijenaPoOsobiError =
+                                        'Unesite ispravnu vrijednost';
+                                  });
+                                  return;
+                                }
+                                if (cijena < 1 || cijena > 999) {
+                                  setState(() {
+                                    cijenaPoOsobiError =
+                                        'Vrijednost mora biti između 1 i 999';
+                                  });
+                                  return;
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                         ),
                         if (cijenaPoOsobiError != null)
@@ -588,18 +600,17 @@ class _AddStazeModalState extends State<AddStazeModal> {
                             ),
                           ),
                         if (cijenaPoOsobiError == null) Text(""),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 5),
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Grad *",
+                            "Grad",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
                         Container(
                           height: 40,
                           decoration: BoxDecoration(
@@ -662,60 +673,69 @@ class _AddStazeModalState extends State<AddStazeModal> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          style: TextButton.styleFrom(
-            backgroundColor: const Color(0xFF870000),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: const Color(0xFF870000),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 45, vertical: 16),
+              ),
+              child: const Text(
+                'Otkaži',
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          ),
-          child: const Text(
-            'Otkaži',
-            style: TextStyle(
-              color: Colors.white,
+            SizedBox(width: 16), // Add spacing between buttons
+            ElevatedButton(
+              onPressed: () {
+                if (formKey.currentState!.validate() &&
+                    nazivStazeError == null &&
+                    opisStazeError == null &&
+                    cijenaPoOsobiError == null &&
+                    duzinaStazeError == null &&
+                    brojKrugovaError == null &&
+                    maxBrojOsobaError == null &&
+                    tezinaIdError == null &&
+                    gradoviIdError == null &&
+                    nazivStaze != null &&
+                    opisStaze != null &&
+                    cijenaPoOsobi != null &&
+                    duzinaStaze != null &&
+                    brojKrugova != null &&
+                    maxBrojOsoba != null &&
+                    tezinaId != null &&
+                    gradoviId != null) {
+                  widget.handleAdd(
+                      nazivStaze,
+                      opisStaze,
+                      cijenaPoOsobi,
+                      duzinaStaze,
+                      brojKrugova,
+                      maxBrojOsoba,
+                      tezinaId,
+                      gradoviId);
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFD7D2DC),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 45, vertical: 16),
+              ),
+              child: const Text(
+                'Spasi',
+                style: TextStyle(color: Colors.black, fontSize: 15),
+              ),
             ),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            if (formKey.currentState!.validate() &&
-                nazivStazeError == null &&
-                opisStazeError == null &&
-                cijenaPoOsobiError == null &&
-                duzinaStazeError == null &&
-                brojKrugovaError == null &&
-                maxBrojOsobaError == null &&
-                tezinaIdError == null &&
-                gradoviIdError == null &&
-                nazivStaze != null &&
-                opisStaze != null &&
-                cijenaPoOsobi != null &&
-                duzinaStaze != null &&
-                brojKrugova != null &&
-                maxBrojOsoba != null &&
-                tezinaId != null &&
-                gradoviId != null) {
-              widget.handleAdd(nazivStaze, opisStaze, cijenaPoOsobi,
-                  duzinaStaze, brojKrugova, maxBrojOsoba, tezinaId, gradoviId);
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFD7D2DC),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          ),
-          child: const Text(
-            'Spasi',
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
+          ],
         ),
       ],
     );

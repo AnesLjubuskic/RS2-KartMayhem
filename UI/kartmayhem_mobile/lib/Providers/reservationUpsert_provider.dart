@@ -5,7 +5,7 @@ class RezervacijeUpsertProvider extends BaseProvider<RezervacijeUpsert> {
   static String? _baseUrl;
   RezervacijeUpsertProvider() : super("Rezervacije") {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://10.0.2.2:8080/");
+        defaultValue: "http://10.0.2.2:5258/");
     if (_baseUrl!.endsWith("/") == false) {
       _baseUrl = "${_baseUrl!}/";
     }

@@ -7,7 +7,7 @@ Future<dynamic> showCancelDialog(BuildContext context) async {
       return AlertDialog(
         title: const Text('Važno!'),
         content: const Text(
-            'Moguće je samo otkazati rezervaciju ukoliko ste odabrali gotovinu kao metodu naplate i koje su najranije sutradan!',
+            'Moguće je samo otkazati rezervaciju ukoliko ste odabrali gotovinu kao metodu naplate i ukoliko je rezervacija najmanje sutradan!',
             style: TextStyle(color: Colors.black)),
         actions: [
           TextButton(

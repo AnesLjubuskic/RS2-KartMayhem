@@ -249,47 +249,50 @@ class _EditKorisniciModalState extends State<EditKorisniciModal> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          style: TextButton.styleFrom(
-            backgroundColor: const Color(0xFF870000),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: const Color(0xFF870000),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 45, vertical: 16),
+              ),
+              child: const Text(
+                'Otkaži',
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          ),
-          child: const Text(
-            'Otkaži',
-            style: TextStyle(
-              color: Colors.white,
+            SizedBox(width: 16), // Add spacing between buttons
+
+            ElevatedButton(
+              onPressed: () {
+                if (formKey.currentState!.validate() &&
+                    imeError == null &&
+                    prezimeError == null &&
+                    emailError == null) {
+                  widget.handleEdit(widget.korisnik.id!, _imeController.text,
+                      _prezimeController.text, _emailController.text);
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFD7D2DC),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 45, vertical: 16),
+              ),
+              child: const Text(
+                'Spasi',
+                style: TextStyle(color: Colors.black, fontSize: 15),
+              ),
             ),
-          ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            if (formKey.currentState!.validate() &&
-                imeError == null &&
-                prezimeError == null &&
-                emailError == null) {
-              widget.handleEdit(widget.korisnik.id!, _imeController.text,
-                  _prezimeController.text, _emailController.text);
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFD7D2DC),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          ),
-          child: const Text(
-            'Spasi',
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
+          ],
         ),
       ],
     );

@@ -10,7 +10,7 @@ class KupovinaProvider extends BaseProvider<Kupovina> {
   static String? _baseUrl;
   KupovinaProvider() : super("Kupovina") {
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "http://10.0.2.2:8080/");
+        defaultValue: "http://10.0.2.2:5258/");
     if (_baseUrl!.endsWith("/") == false) {
       _baseUrl = "${_baseUrl!}/";
     }

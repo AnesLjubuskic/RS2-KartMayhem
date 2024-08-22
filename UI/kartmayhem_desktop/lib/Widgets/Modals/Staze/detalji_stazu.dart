@@ -82,14 +82,13 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
               Container(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Naziv *",
+                  "Naziv",
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.black,
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
               Container(
                 height: 30,
                 decoration: BoxDecoration(
@@ -115,18 +114,17 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                   },
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 5),
               Container(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Deskripcija *",
+                  "Deskripcija",
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.black,
                   ),
                 ),
               ),
-              const SizedBox(height: 10),
               Container(
                 height: 90,
                 decoration: BoxDecoration(
@@ -153,7 +151,7 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                   },
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -163,99 +161,104 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Dužina staze *",
+                            "Dužina staze",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: TextFormField(
-                            enabled: false,
-                            controller: _duzinaStazeController,
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                RegExp(r'^\d*\.?\d*'),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            height: 30,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5.0),
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: TextFormField(
+                              enabled: false,
+                              controller: _duzinaStazeController,
+                              keyboardType: TextInputType.numberWithOptions(
+                                  decimal: true),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'^\d*\.?\d*'),
+                                ),
+                              ],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    bottom: 20, right: 10, left: 10),
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
                               ),
-                            ],
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  bottom: 20, right: 10, left: 10),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Ovo polje je obavezno';
+                                }
+                                return null;
+                              },
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Ovo polje je obavezno';
-                              }
-                              return null;
-                            },
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 5),
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Max broj osoba *",
+                            "Max broj osoba",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: TextFormField(
-                            enabled: false,
-                            controller: _maxBrojOsobaController,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  bottom: 20, right: 10, left: 10),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            height: 30,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5.0),
+                              border: Border.all(color: Colors.grey),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Ovo polje je obavezno';
-                              }
-                              return null;
-                            },
+                            child: TextFormField(
+                              enabled: false,
+                              controller: _maxBrojOsobaController,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    bottom: 20, right: 10, left: 10),
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Ovo polje je obavezno';
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 5),
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Težina *",
+                            "Težina",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
                         Container(
                           height: 40,
                           decoration: BoxDecoration(
@@ -292,96 +295,101 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Broj krugova *",
+                            "Broj krugova",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: TextFormField(
-                            enabled: false,
-                            controller: _brojKrugovaController,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  bottom: 20, right: 10, left: 10),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            height: 30,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5.0),
+                              border: Border.all(color: Colors.grey),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Ovo polje je obavezno';
-                              }
-                              return null;
-                            },
+                            child: TextFormField(
+                              enabled: false,
+                              controller: _brojKrugovaController,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    bottom: 20, right: 10, left: 10),
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Ovo polje je obavezno';
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 5),
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Cijena po osobi *",
+                            "Cijena po osobi",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Container(
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child: TextFormField(
-                            enabled: false,
-                            controller: _cijenaPoOsobiController,
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                  bottom: 20, right: 10, left: 10),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            height: 30,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5.0),
+                              border: Border.all(color: Colors.grey),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Ovo polje je obavezno';
-                              }
-                              return null;
-                            },
+                            child: TextFormField(
+                              enabled: false,
+                              controller: _cijenaPoOsobiController,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(
+                                    bottom: 20, right: 10, left: 10),
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Ovo polje je obavezno';
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 5),
                         Container(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Grad *",
+                            "Grad",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 10),
                         Container(
                           height: 40,
                           decoration: BoxDecoration(
@@ -418,23 +426,26 @@ class _DetailStazeModalState extends State<DetailStazeModal> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          style: TextButton.styleFrom(
-            backgroundColor: const Color(0xFF870000),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: const Color(0xFF870000),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 45, vertical: 16),
+              ),
+              child: const Text(
+                'Zatvori',
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          ),
-          child: const Text(
-            'Zatvori',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
+          ],
         ),
       ],
     );
