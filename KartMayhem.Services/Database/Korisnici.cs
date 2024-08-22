@@ -26,6 +26,6 @@
 
         public ICollection<Izvjestaji> Izvjestajis { get; set; } = new List<Izvjestaji>();
 
-        public virtual Nagrade? Nagrada { get; set; }
+        public bool IsNagrada { get; set; }
     }
 }

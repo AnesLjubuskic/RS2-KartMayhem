@@ -29,14 +29,6 @@ namespace KartMayhem.Services.Database
             }
             });
 
-            modelBuilder.Entity<Nagrade>().HasData(new Nagrade[]{
-            new Nagrade()
-            {
-                Id = 1,
-                NazivNagrade = "50%"
-            },
-            });
-
             modelBuilder.Entity<Tezine>().HasData(new Tezine[]
             {
             new Tezine()
@@ -105,8 +97,8 @@ namespace KartMayhem.Services.Database
                 Ime = "Obicna",
                 Prezime = "Osoba",
                 Email = "obicna_osoba@example.com",
-                LozinkaHash = "/1/l6bDydwzj8vpx7aFj1BnpKl4=",
-                LozinkaSalt = "lv6jjDmx9WINBmwJYuWOWQ==",
+                LozinkaHash = "XuGq6hiLaAIYGIHlGw7d9BH1vJY=",
+                LozinkaSalt = "HvnTUyT26p/sIFWsP40X1g==",
                 IsActive = true,
             },
             new Korisnici()
@@ -262,7 +254,7 @@ namespace KartMayhem.Services.Database
             new Rezervacije()
             {
                 Id = 1,
-                KorisnikId = 1,
+                KorisnikId = 2,
                 StazaId = 1,
                 isCancelled = false,
                 IsGotovina = true,
@@ -275,7 +267,7 @@ namespace KartMayhem.Services.Database
             new Rezervacije()
             {
                 Id = 2,
-                KorisnikId = 1,
+                KorisnikId = 2,
                 StazaId = 3,
                 isCancelled = false,
                 IsGotovina = true,
@@ -288,7 +280,7 @@ namespace KartMayhem.Services.Database
             new Rezervacije()
             {
                 Id = 3,
-                KorisnikId = 1,
+                KorisnikId = 2,
                 StazaId = 4,
                 isCancelled = false,
                 IsGotovina = true,
@@ -301,7 +293,7 @@ namespace KartMayhem.Services.Database
             new Rezervacije()
             {
                 Id = 4,
-                KorisnikId = 1,
+                KorisnikId = 2,
                 StazaId = 4,
                 isCancelled = false,
                 IsGotovina = true,
@@ -317,7 +309,7 @@ namespace KartMayhem.Services.Database
             new Feedback()
             {
                 Id = 1,
-                KorisnikId = 1,
+                KorisnikId = 2,
                 Komentar = "Odlična aplikacija!"
             },
             });

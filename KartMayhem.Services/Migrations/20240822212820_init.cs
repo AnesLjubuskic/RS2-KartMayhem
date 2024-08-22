@@ -27,16 +27,24 @@ namespace KartMayhem.Services.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Nagrades",
+                name: "Korisnicis",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NazivNagrade = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Ime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Prezime = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LozinkaHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LozinkaSalt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    BrojRezervacija = table.Column<int>(type: "int", nullable: false),
+                    Slika = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsNagrada = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Nagrades", x => x.Id);
+                    table.PrimaryKey("PK_Korisnicis", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,66 +72,6 @@ namespace KartMayhem.Services.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Uloges", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Korisnicis",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Ime = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Prezime = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LozinkaHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LozinkaSalt = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    BrojRezervacija = table.Column<int>(type: "int", nullable: false),
-                    Slika = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NagradaId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Korisnicis", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Korisnicis_Nagrades_NagradaId",
-                        column: x => x.NagradaId,
-                        principalTable: "Nagrades",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Stazes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NazivStaze = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OpisStaze = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CijenaPoOsobi = table.Column<int>(type: "int", nullable: false),
-                    DuzinaStaze = table.Column<double>(type: "float", nullable: false),
-                    BrojKrugova = table.Column<int>(type: "int", nullable: false),
-                    MaxBrojOsoba = table.Column<int>(type: "int", nullable: false),
-                    TezinaId = table.Column<int>(type: "int", nullable: false),
-                    Slika = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    GradoviId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stazes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Stazes_Gradovis_GradoviId",
-                        column: x => x.GradoviId,
-                        principalTable: "Gradovis",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Stazes_Tezines_TezinaId",
-                        column: x => x.TezinaId,
-                        principalTable: "Tezines",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -166,6 +114,40 @@ namespace KartMayhem.Services.Migrations
                         name: "FK_Izvjestajis_Korisnicis_KorisnikId",
                         column: x => x.KorisnikId,
                         principalTable: "Korisnicis",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stazes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NazivStaze = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OpisStaze = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CijenaPoOsobi = table.Column<int>(type: "int", nullable: false),
+                    DuzinaStaze = table.Column<double>(type: "float", nullable: false),
+                    BrojKrugova = table.Column<int>(type: "int", nullable: false),
+                    MaxBrojOsoba = table.Column<int>(type: "int", nullable: false),
+                    TezinaId = table.Column<int>(type: "int", nullable: false),
+                    Slika = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    GradoviId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stazes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Stazes_Gradovis_GradoviId",
+                        column: x => x.GradoviId,
+                        principalTable: "Gradovis",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Stazes_Tezines_TezinaId",
+                        column: x => x.TezinaId,
+                        principalTable: "Tezines",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -317,20 +299,15 @@ namespace KartMayhem.Services.Migrations
 
             migrationBuilder.InsertData(
                 table: "Korisnicis",
-                columns: new[] { "Id", "BrojRezervacija", "Email", "Ime", "IsActive", "LozinkaHash", "LozinkaSalt", "NagradaId", "Prezime", "Slika" },
+                columns: new[] { "Id", "BrojRezervacija", "Email", "Ime", "IsActive", "IsNagrada", "LozinkaHash", "LozinkaSalt", "Prezime", "Slika" },
                 values: new object[,]
                 {
-                    { 1, 0, "anes_ljuba3@example.com", "Anes", true, "XuGq6hiLaAIYGIHlGw7d9BH1vJY=", "HvnTUyT26p/sIFWsP40X1g==", null, "Ljuba", null },
-                    { 2, 0, "obicna_osoba@example.com", "Obicna", true, "/1/l6bDydwzj8vpx7aFj1BnpKl4=", "lv6jjDmx9WINBmwJYuWOWQ==", null, "Osoba", null },
-                    { 3, 0, "obicna_osoba@example.com", "Obicna", true, "/1/l6bDydwzj8vpx7aFj1BnpKl4=", "lv6jjDmx9WINBmwJYuWOWQ==", null, "Osoba", null },
-                    { 4, 0, "obicna1_osoba@example.com", "Obicna1", true, "/1/l6bDydwzj8vpx7aFj1BnpKl4=", "lv6jjDmx9WINBmwJYuWOWQ==", null, "Osoba", null },
-                    { 5, 0, "obicna2_osoba@example.com", "Obicna2", true, "/1/l6bDydwzj8vpx7aFj1BnpKl4=", "lv6jjDmx9WINBmwJYuWOWQ==", null, "Osoba", null }
+                    { 1, 0, "anes_ljuba3@example.com", "Anes", true, false, "XuGq6hiLaAIYGIHlGw7d9BH1vJY=", "HvnTUyT26p/sIFWsP40X1g==", "Ljuba", null },
+                    { 2, 0, "obicna_osoba@example.com", "Obicna", true, false, "XuGq6hiLaAIYGIHlGw7d9BH1vJY=", "HvnTUyT26p/sIFWsP40X1g==", "Osoba", null },
+                    { 3, 0, "amel_osoba@example.com", "Amel", true, false, "/1/l6bDydwzj8vpx7aFj1BnpKl4=", "lv6jjDmx9WINBmwJYuWOWQ==", "Memic", null },
+                    { 4, 0, "amar_osoba@example.com", "Amar", true, false, "/1/l6bDydwzj8vpx7aFj1BnpKl4=", "lv6jjDmx9WINBmwJYuWOWQ==", "Omerika", null },
+                    { 5, 0, "halil_osoba@example.com", "Halil", true, false, "/1/l6bDydwzj8vpx7aFj1BnpKl4=", "lv6jjDmx9WINBmwJYuWOWQ==", "Focic", null }
                 });
-
-            migrationBuilder.InsertData(
-                table: "Nagrades",
-                columns: new[] { "Id", "NazivNagrade" },
-                values: new object[] { 1, "50%" });
 
             migrationBuilder.InsertData(
                 table: "Tezines",
@@ -354,7 +331,7 @@ namespace KartMayhem.Services.Migrations
             migrationBuilder.InsertData(
                 table: "Feedbacks",
                 columns: new[] { "Id", "Komentar", "KorisnikId" },
-                values: new object[] { 1, "Odlična aplikacija!", 1 });
+                values: new object[] { 1, "Odlična aplikacija!", 2 });
 
             migrationBuilder.InsertData(
                 table: "KorisniciUloges",
@@ -384,10 +361,10 @@ namespace KartMayhem.Services.Migrations
                 columns: new[] { "Id", "BrojOsoba", "CijenaRezervacije", "DayOfReservation", "ImeStaze", "IsGotovina", "KorisnikId", "StazaId", "TimeSlot", "isCancelled" },
                 values: new object[,]
                 {
-                    { 1, 3, 60, "2024-07-01", "Mostar GP", true, 1, 1, "15:00", false },
-                    { 2, 4, 80, "2024-11-11", "Mega Prix GP", true, 1, 3, "15:00", false },
-                    { 3, 4, 60, "2024-10-11", "Beginner Cup", true, 1, 4, "15:00", false },
-                    { 4, 4, 60, "2024-12-11", "Beginner Cup", true, 1, 4, "15:00", false }
+                    { 1, 3, 60, "2024-07-01", "Mostar GP", true, 2, 1, "15:00", false },
+                    { 2, 4, 80, "2024-11-11", "Mega Prix GP", true, 2, 3, "15:00", false },
+                    { 3, 4, 60, "2024-10-11", "Beginner Cup", true, 2, 4, "15:00", false },
+                    { 4, 4, 60, "2024-12-11", "Beginner Cup", true, 2, 4, "15:00", false }
                 });
 
             migrationBuilder.CreateIndex(
@@ -399,11 +376,6 @@ namespace KartMayhem.Services.Migrations
                 name: "IX_Izvjestajis_KorisnikId",
                 table: "Izvjestajis",
                 column: "KorisnikId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Korisnicis_NagradaId",
-                table: "Korisnicis",
-                column: "NagradaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_KorisniciStazes_KorisniciId",
@@ -493,9 +465,6 @@ namespace KartMayhem.Services.Migrations
 
             migrationBuilder.DropTable(
                 name: "Stazes");
-
-            migrationBuilder.DropTable(
-                name: "Nagrades");
 
             migrationBuilder.DropTable(
                 name: "Gradovis");

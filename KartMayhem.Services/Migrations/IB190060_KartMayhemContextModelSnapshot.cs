@@ -48,7 +48,7 @@ namespace KartMayhem.Services.Migrations
                         {
                             Id = 1,
                             Komentar = "Odlična aplikacija!",
-                            KorisnikId = 1
+                            KorisnikId = 2
                         });
                 });
 
@@ -151,6 +151,9 @@ namespace KartMayhem.Services.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsNagrada")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LozinkaHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -158,9 +161,6 @@ namespace KartMayhem.Services.Migrations
                     b.Property<string>("LozinkaSalt")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("NagradaId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Prezime")
                         .IsRequired()
@@ -170,8 +170,6 @@ namespace KartMayhem.Services.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("NagradaId");
 
                     b.ToTable("Korisnicis");
 
@@ -183,6 +181,7 @@ namespace KartMayhem.Services.Migrations
                             Email = "anes_ljuba3@example.com",
                             Ime = "Anes",
                             IsActive = true,
+                            IsNagrada = false,
                             LozinkaHash = "XuGq6hiLaAIYGIHlGw7d9BH1vJY=",
                             LozinkaSalt = "HvnTUyT26p/sIFWsP40X1g==",
                             Prezime = "Ljuba"
@@ -194,42 +193,46 @@ namespace KartMayhem.Services.Migrations
                             Email = "obicna_osoba@example.com",
                             Ime = "Obicna",
                             IsActive = true,
-                            LozinkaHash = "/1/l6bDydwzj8vpx7aFj1BnpKl4=",
-                            LozinkaSalt = "lv6jjDmx9WINBmwJYuWOWQ==",
+                            IsNagrada = false,
+                            LozinkaHash = "XuGq6hiLaAIYGIHlGw7d9BH1vJY=",
+                            LozinkaSalt = "HvnTUyT26p/sIFWsP40X1g==",
                             Prezime = "Osoba"
                         },
                         new
                         {
                             Id = 3,
                             BrojRezervacija = 0,
-                            Email = "obicna_osoba@example.com",
-                            Ime = "Obicna",
+                            Email = "amel_osoba@example.com",
+                            Ime = "Amel",
                             IsActive = true,
+                            IsNagrada = false,
                             LozinkaHash = "/1/l6bDydwzj8vpx7aFj1BnpKl4=",
                             LozinkaSalt = "lv6jjDmx9WINBmwJYuWOWQ==",
-                            Prezime = "Osoba"
+                            Prezime = "Memic"
                         },
                         new
                         {
                             Id = 4,
                             BrojRezervacija = 0,
-                            Email = "obicna1_osoba@example.com",
-                            Ime = "Obicna1",
+                            Email = "amar_osoba@example.com",
+                            Ime = "Amar",
                             IsActive = true,
+                            IsNagrada = false,
                             LozinkaHash = "/1/l6bDydwzj8vpx7aFj1BnpKl4=",
                             LozinkaSalt = "lv6jjDmx9WINBmwJYuWOWQ==",
-                            Prezime = "Osoba"
+                            Prezime = "Omerika"
                         },
                         new
                         {
                             Id = 5,
                             BrojRezervacija = 0,
-                            Email = "obicna2_osoba@example.com",
-                            Ime = "Obicna2",
+                            Email = "halil_osoba@example.com",
+                            Ime = "Halil",
                             IsActive = true,
+                            IsNagrada = false,
                             LozinkaHash = "/1/l6bDydwzj8vpx7aFj1BnpKl4=",
                             LozinkaSalt = "lv6jjDmx9WINBmwJYuWOWQ==",
-                            Prezime = "Osoba"
+                            Prezime = "Focic"
                         });
                 });
 
@@ -328,30 +331,6 @@ namespace KartMayhem.Services.Migrations
                     b.ToTable("Kupovinas");
                 });
 
-            modelBuilder.Entity("KartMayhem.Services.Database.Nagrade", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("NazivNagrade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Nagrades");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            NazivNagrade = "50%"
-                        });
-                });
-
             modelBuilder.Entity("KartMayhem.Services.Database.Rezencije", b =>
                 {
                     b.Property<int>("Id")
@@ -428,7 +407,7 @@ namespace KartMayhem.Services.Migrations
                             DayOfReservation = "2024-07-01",
                             ImeStaze = "Mostar GP",
                             IsGotovina = true,
-                            KorisnikId = 1,
+                            KorisnikId = 2,
                             StazaId = 1,
                             TimeSlot = "15:00",
                             isCancelled = false
@@ -441,7 +420,7 @@ namespace KartMayhem.Services.Migrations
                             DayOfReservation = "2024-11-11",
                             ImeStaze = "Mega Prix GP",
                             IsGotovina = true,
-                            KorisnikId = 1,
+                            KorisnikId = 2,
                             StazaId = 3,
                             TimeSlot = "15:00",
                             isCancelled = false
@@ -454,7 +433,7 @@ namespace KartMayhem.Services.Migrations
                             DayOfReservation = "2024-10-11",
                             ImeStaze = "Beginner Cup",
                             IsGotovina = true,
-                            KorisnikId = 1,
+                            KorisnikId = 2,
                             StazaId = 4,
                             TimeSlot = "15:00",
                             isCancelled = false
@@ -467,7 +446,7 @@ namespace KartMayhem.Services.Migrations
                             DayOfReservation = "2024-12-11",
                             ImeStaze = "Beginner Cup",
                             IsGotovina = true,
-                            KorisnikId = 1,
+                            KorisnikId = 2,
                             StazaId = 4,
                             TimeSlot = "15:00",
                             isCancelled = false
@@ -714,15 +693,6 @@ namespace KartMayhem.Services.Migrations
                     b.Navigation("Korisnik");
                 });
 
-            modelBuilder.Entity("KartMayhem.Services.Database.Korisnici", b =>
-                {
-                    b.HasOne("KartMayhem.Services.Database.Nagrade", "Nagrada")
-                        .WithMany("Korisnicis")
-                        .HasForeignKey("NagradaId");
-
-                    b.Navigation("Nagrada");
-                });
-
             modelBuilder.Entity("KartMayhem.Services.Database.KorisniciStaze", b =>
                 {
                     b.HasOne("KartMayhem.Services.Database.Korisnici", "Korisnici")
@@ -837,11 +807,6 @@ namespace KartMayhem.Services.Migrations
                     b.Navigation("Izvjestajis");
 
                     b.Navigation("KorisniciUloges");
-                });
-
-            modelBuilder.Entity("KartMayhem.Services.Database.Nagrade", b =>
-                {
-                    b.Navigation("Korisnicis");
                 });
 
             modelBuilder.Entity("KartMayhem.Services.Database.Staze", b =>

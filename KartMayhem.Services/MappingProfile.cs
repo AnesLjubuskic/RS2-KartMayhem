@@ -12,7 +12,6 @@ namespace KartMayhem.Services
             CreateMap<Database.KorisniciUloge, Model.KorisniciUloge>();
             CreateMap<Database.Kupovina, Model.Kupovina>();
             CreateMap<Database.Uloge, Model.Uloge>();
-            CreateMap<Database.Nagrade, Model.Nagrade>();
             CreateMap<Database.Rezencije, Model.Rezencije>();
             CreateMap<Database.Rezervacije, Model.Rezervacije>();
             CreateMap<Database.Feedback, Model.Feedback>();

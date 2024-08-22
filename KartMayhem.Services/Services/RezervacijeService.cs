@@ -105,9 +105,9 @@ namespace KartMayhem.Services.Services
 
             var user = _context.Korisnicis.Find(insert.KorisnikId);
 
-            if (user!= null && user.Nagrada != null)
+            if (user!= null && user.IsNagrada)
             {
-                user.Nagrada = null;
+                user.IsNagrada = false;
             }
 
             return base.BeforeInsert(entity, insert);

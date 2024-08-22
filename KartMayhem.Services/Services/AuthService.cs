@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using KartMayhem.Model;
 using KartMayhem.Model.Exception;
 using KartMayhem.Model.UserRequestObjects;
 using KartMayhem.Services.Database;
@@ -28,12 +29,28 @@ namespace KartMayhem.Services.Services
 
         public async Task<Model.Korisnici> Login(KorisniciLoginRequest request)
         {
-            var entity = await _context.Korisnicis.Include("KorisniciUloges.Uloga").Include(x => x.Nagrada)
+            bool admin = false;
+            var entity = await _context.Korisnicis.Include("KorisniciUloges.Uloga")
                 .FirstOrDefaultAsync(x => x.Email == request.Email);
 
             if (entity == null)
             {
                 throw new UserException("Netačan email ili lozinka!");
+            }
+
+            var uloge = _context.KorisniciUloges.Include(x => x.Uloga).Where(x => x.KorisnikId == entity.Id).ToList();
+
+            foreach (var uloga in uloge)
+            {
+                if (uloga.Uloga.Naziv == "Admin")
+                {
+                    admin = true;
+                }
+            }
+
+            if (admin)
+            {
+                throw new UserException("Mobilna aplikacija nije za admine!");
             }
 
             var hash = GenerateHash(entity.LozinkaSalt, request.Lozinka);
@@ -44,11 +61,6 @@ namespace KartMayhem.Services.Services
             }
 
             var loginEntitet = _mapper.Map<Model.Korisnici>(entity);
-
-            if (loginEntitet.Nagrada != null)
-            {
-                loginEntitet.IsNagrada = true;
-            }
 
             return loginEntitet;
         }
